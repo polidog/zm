@@ -10,7 +10,7 @@ import (
 	"github.com/polidog/zm/internal/paths"
 )
 
-const usage = `usage: zm [--pedal hw:C,D|g2four|ms50g|ms70cdr] [--dir <path>] <command> [args]
+const usage = `usage: zm [--pedal hw:C,D|g2four|ms80irplus|ms50g|ms70cdr] [--dir <path>] <command> [args]
 
   info                            機種・ファームウェア・パッチ数
   list                            全パッチの番号と名前

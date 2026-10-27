@@ -5,7 +5,7 @@
 //	45: F0 52 00 <dev> 45 00 00 bL bM pL pM | lenL lenM | packed(len) | crc(5) | F7
 //	64: F0 52 00 <dev> 64 12 01             | lenL lenM | packed(len) | crc(5) | F7
 //
-// len は 8bit に戻した後のバイト数（G2 FOUR は常に 832）。
+// len は 8bit に戻した後のバイト数（G2 FOUR は常に 832、MS-80IR+ は 848）。
 // crc は ~CRC32(8bit データ) を 7bit ずつ下位から 5 バイトに分けたもの。
 package codec
 

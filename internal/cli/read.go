@@ -92,7 +92,12 @@ func Show(args []string) error {
 		if *raw {
 			return printJSON(p)
 		}
-		cat, err := ops.CatalogFor(device.ModelOfSysex(msg))
+		// 6E は G2 FOUR と MS-80IR+ で同じなので、--pedal で機種を指していればそちらを使う
+		m := device.ModelOfSysex(msg)
+		if t, ok := device.TargetModel(); ok && t.DeviceID == m.DeviceID {
+			m = t
+		}
+		cat, err := ops.CatalogFor(m)
 		if err != nil {
 			return err
 		}

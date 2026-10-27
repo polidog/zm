@@ -1,6 +1,6 @@
 // Package catalog はエフェクトカタログ (L3)。ID → 名前 / パラメータ名 / 範囲 / 説明。
 //
-// catalog/g2four.json は `zm catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
+// catalog/<機種>.json（g2four.json / ms80irplus.json）は `zm catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
 // 旧 MS（MS-50G / MS-70CDR）はペダルからエフェクトの定義を取り出せないので、g200kg/zoom-ms-utility（MIT）の
 // エフェクト一覧から作った legacy/<機種>.json を埋め込む（作り方は legacy/gen.mjs）。
 package catalog
@@ -59,7 +59,8 @@ type Catalog struct {
 	Effects     []Effect `json:"effects"`
 }
 
-func Path() string { return filepath.Join(paths.Catalog(), "g2four.json") }
+// Path は機種 key（device.Model.Key）のカタログの置き場。
+func Path(key string) string { return filepath.Join(paths.Catalog(), key+".json") }
 
 //go:embed legacy/*.json
 var legacyFS embed.FS
@@ -88,8 +89,13 @@ func Legacy(key string) (*Catalog, error) {
 	return &c, nil
 }
 
-// ZD2Dir はペダルから取った ZD2 のキャッシュ。
-func ZD2Dir() string { return filepath.Join(paths.Catalog(), "zd2") }
+// ZD2Dir はペダルから取った ZD2 のキャッシュ。G2 FOUR は前からの置き場の catalog/zd2/、ほかは catalog/zd2-<機種>/。
+func ZD2Dir(key string) string {
+	if key == "g2four" {
+		return filepath.Join(paths.Catalog(), "zd2")
+	}
+	return filepath.Join(paths.Catalog(), "zd2-"+key)
+}
 
 // SystemEffects は ZD2 を持たない、パッチの中だけに現れる ID。
 var SystemEffects = map[string]string{

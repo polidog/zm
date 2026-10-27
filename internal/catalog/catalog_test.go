@@ -113,7 +113,7 @@ func TestBuildMatchesCatalog(t *testing.T) {
 	if _, err := os.Stat(dir); err != nil {
 		t.Skip("catalog/zd2 がない")
 	}
-	built, err := catalog.Build(dir, time.Now(), func(file string, err error) { t.Logf("%s: %v", file, err) })
+	built, err := catalog.Build(dir, "ZOOM G2 FOUR", time.Now(), func(file string, err error) { t.Logf("%s: %v", file, err) })
 	if err != nil {
 		t.Fatal(err)
 	}

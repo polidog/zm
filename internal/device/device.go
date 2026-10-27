@@ -1,7 +1,7 @@
 // Package device はペダル 1 台分の操作をまとめる。CLI・TUI・MCP サーバーはこの上に乗る。
 //
 // 機種の違いは protocol に閉じ込める。いまあるのは 2 つ。
-//   - four.go:   G2 FOUR（デバイス ID 6E）。45 / 46 でパッチメモリを直接読み書き、64 20 で編集
+//   - four.go:   G2 FOUR と MS-80IR+（デバイス ID 6E）。45 / 46 でパッチメモリを直接読み書き、64 20 で編集
 //   - legacy.go: 旧 MS-50G（デバイス ID 58）。Program Change で選んで 29 / 28、31 で編集、32 で保存
 //
 // どちらもパッチは *patch.Patch（Name・Effects）として返す。ops から上は機種を気にしない。
@@ -28,6 +28,8 @@ type Model struct {
 	// Key は機種の短い名前。--pedal で選ぶときと、カタログ・バックアップの置き場に使う。
 	Key      string
 	DeviceID byte
+	// IdentityModel は Identity Reply の model コード。G2 FOUR と MS-80IR+ はデバイス ID がどちらも 6E で、ここでしか見分けられない。
+	IdentityModel int
 	// Patches はパッチメモリの数、PatchesPerBank は 1 バンクの数。
 	Patches        int
 	PatchesPerBank int
@@ -42,7 +44,12 @@ type Model struct {
 }
 
 // G2Four: バンク 30 × 10。
-var G2Four = Model{Name: "ZOOM G2 FOUR", Key: "g2four", DeviceID: 0x6e, Patches: 300, PatchesPerBank: 10, UserSlots: 6}
+var G2Four = Model{Name: "ZOOM G2 FOUR", Key: "g2four", DeviceID: 0x6e, IdentityModel: 0x1d, Patches: 300, PatchesPerBank: 10, UserSlots: 6}
+
+// MS80IRPlus: MS-80IR+。メッセージとパッチ形式は G2 FOUR と同じ。パッチ 80（バンク 8 × 10、44 の応答と 46 で確かめた）。
+// 64 20 00 64 0F が AUTO SAVE なのと、64 20 での編集・45 での保存と復元は実機で確かめた（ファームウェア 1.00）。
+// 45 の応答の PTCF の後ろには直前に読んだパッチの残骸が入り、読むたびに変わる（中身は変わらない）。
+var MS80IRPlus = Model{Name: "ZOOM MS-80IR+", Key: "ms80irplus", DeviceID: 0x6e, IdentityModel: 0x28, Patches: 80, PatchesPerBank: 10, UserSlots: 3, BackupDir: "ms80irplus"}
 
 // MS50G: 旧 MS-50G。パッチ 50、エフェクト 6 個まで。
 var MS50G = Model{Name: "ZOOM MS-50G", Key: "ms50g", DeviceID: sysex.LegacyDeviceID, Patches: 50, PatchesPerBank: 50, UserSlots: 6, BackupDir: "ms50g", Legacy: true}
@@ -52,12 +59,13 @@ var MS50G = Model{Name: "ZOOM MS-50G", Key: "ms50g", DeviceID: sysex.LegacyDevic
 var MS70CDR = Model{Name: "ZOOM MS-70CDR", Key: "ms70cdr", DeviceID: sysex.MS70CDRDeviceID, Patches: 50, PatchesPerBank: 50, UserSlots: 6, BackupDir: "ms70cdr", Legacy: true}
 
 // Models は対応している機種。Identity Reply のデバイス ID で選ぶ。
-var Models = []Model{G2Four, MS50G, MS70CDR}
+var Models = []Model{G2Four, MS80IRPlus, MS50G, MS70CDR}
 
-// ModelByID はデバイス ID で機種を引く。
+// ModelByID はデバイス ID で機種を引く。6E は G2 FOUR と MS-80IR+ で同じなので G2 FOUR を返す（やりとりの仕方を決めるのには足りる）。
 func ModelByID(dev byte) (Model, bool) { return modelFor(dev) }
 
 // ModelOfSysex はパッチの SysEx の 4 バイト目（デバイス ID）から機種を引く。知らなければ G2 FOUR。
+// 6E（G2 FOUR と MS-80IR+）は SysEx からは見分けられず、G2 FOUR を返す。
 func ModelOfSysex(msg []byte) Model {
 	if len(msg) > 3 {
 		if m, ok := modelFor(msg[3]); ok {
@@ -76,7 +84,17 @@ func modelFor(dev byte) (Model, bool) {
 	return Model{}, false
 }
 
-// ModelByKey は Key（g2four / ms50g / ms70cdr）か Name で機種を引く。大文字小文字と空白・ハイフンは問わない。
+// modelForIdentity は Identity Reply で機種を引く。デバイス ID と model コードの両方を見る。
+func modelForIdentity(ident sysex.Identity) (Model, bool) {
+	for _, m := range Models {
+		if m.DeviceID == ident.DeviceID && (m.IdentityModel == 0 || m.IdentityModel == ident.Model) {
+			return m, true
+		}
+	}
+	return Model{}, false
+}
+
+// ModelByKey は Key（g2four / ms80irplus / ms50g / ms70cdr）か Name で機種を引く。大文字小文字と空白・ハイフンは問わない。
 func ModelByKey(s string) (Model, bool) {
 	squash := strings.NewReplacer(" ", "", "-", "", "zoom", "")
 	q := squash.Replace(strings.ToLower(s))
@@ -137,7 +155,7 @@ type Zoom struct {
 }
 
 // Target はどのペダルを使うか。空なら名前に ZOOM を含むポートを順に当たり、最初に対応している機種を使う。
-// hw:C,D ならそのポート、g2four / ms50g / ms70cdr などの機種名ならその機種のペダル。CLI の --pedal と $ZM_PEDAL で決まる。
+// hw:C,D ならそのポート、g2four / ms80irplus / ms50g / ms70cdr などの機種名ならその機種のペダル。CLI の --pedal と $ZM_PEDAL で決まる。
 var Target string
 
 // Open は Target のペダルを開く。edit なら書き込めるようにする（G2 FOUR はエディタモード ON と AUTO SAVE OFF）。
@@ -215,9 +233,9 @@ func identify(conn *midi.Conn) (sysex.Identity, Model, error) {
 	if err != nil {
 		return sysex.Identity{}, Model{}, err
 	}
-	model, ok := modelFor(ident.DeviceID)
+	model, ok := modelForIdentity(ident)
 	if !ok {
-		return ident, Model{}, fmt.Errorf("対応していない機種（デバイス ID %02X, ファームウェア %s）", ident.DeviceID, ident.Version)
+		return ident, Model{}, fmt.Errorf("対応していない機種（デバイス ID %02X, model %02X, ファームウェア %s）", ident.DeviceID, ident.Model, ident.Version)
 	}
 	return ident, model, nil
 }

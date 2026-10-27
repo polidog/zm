@@ -11,7 +11,7 @@ import (
 	"github.com/polidog/zm/internal/sysex"
 )
 
-// four は G2 FOUR（デバイス ID 6E）。
+// four は G2 FOUR と MS-80IR+（デバイス ID 6E）。
 //
 // 書き込みは 2 種類。どちらも Open(true) でエディタモードを ON、AUTO SAVE を OFF にしてから使う。
 //   - 64 20 による現在パッチの個別編集（保存しない。パッチを選び直せば戻る）

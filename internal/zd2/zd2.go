@@ -82,6 +82,9 @@ type prm struct {
 	Explanation string `json:"explanation"`
 }
 
+// trailingComma は ] や } の直前のカンマ。MS-80IR+ の一部の ZD2（KRMPS_ST, WCANVAS）は配列の最後に付いている。
+var trailingComma = regexp.MustCompile(`,(\s*[\]}])`)
+
 func parsePrm(text string) ([]prm, error) {
 	// 末尾に NUL やゴミが付くので最後の } までで切る
 	end := strings.LastIndex(text, "}")
@@ -91,7 +94,7 @@ func parsePrm(text string) ([]prm, error) {
 	var v struct {
 		Parameters []prm `json:"Parameters"`
 	}
-	if err := json.Unmarshal([]byte(text[:end+1]), &v); err != nil {
+	if err := json.Unmarshal([]byte(trailingComma.ReplaceAllString(text[:end+1], "$1")), &v); err != nil {
 		return nil, fmt.Errorf("PRM の JSON: %w", err)
 	}
 	return v.Parameters, nil

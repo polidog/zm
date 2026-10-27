@@ -19,24 +19,24 @@ import (
 
 var (
 	catMu  sync.Mutex
-	loaded *catalog.Catalog
+	loaded = map[string]*catalog.Catalog{}
 )
 
-// CatalogFor は機種 m のカタログ。G2 FOUR は catalog/g2four.json を読み（読めたら覚えておく）、旧 MS は埋め込みを使う。
+// CatalogFor は機種 m のカタログ。G2 FOUR / MS-80IR+ は catalog/<機種>.json を読み（読めたら覚えておく）、旧 MS は埋め込みを使う。
 func CatalogFor(m device.Model) (*catalog.Catalog, error) {
 	if m.Legacy {
 		return catalog.Legacy(m.Key)
 	}
 	catMu.Lock()
 	defer catMu.Unlock()
-	if loaded != nil {
-		return loaded, nil
+	if c, ok := loaded[m.Key]; ok {
+		return c, nil
 	}
-	c, err := catalog.Load(catalog.Path())
+	c, err := catalog.Load(catalog.Path(m.Key))
 	if err != nil {
 		return nil, err
 	}
-	loaded = c
+	loaded[m.Key] = c
 	return c, nil
 }
 
@@ -60,7 +60,7 @@ func Catalog() (*catalog.Catalog, error) { return CatalogFor(Model()) }
 // ResetCatalog は覚えているカタログを捨てる（zm catalog で作り直した後）。
 func ResetCatalog() {
 	catMu.Lock()
-	loaded = nil
+	loaded = map[string]*catalog.Catalog{}
 	catMu.Unlock()
 }
 

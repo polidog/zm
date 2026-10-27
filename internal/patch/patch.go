@@ -7,9 +7,9 @@
 //	TXE1 | len | ascii            （英語の説明。空なら len=0）
 //	EDTB | len | effect[fxCount]  （1 つ 24 バイト）
 //	PRM2 | len | 32 バイト         （パッチ全体の設定）
-//	NAME | len | ascii            （14 文字まで空白で埋め、NUL 2 つで 16 バイト）
+//	NAME | len | ascii            （G2 FOUR は 14 文字まで空白で埋め、NUL 2 つで 16 バイト。MS-80IR+ は 32 バイトを空白で埋める）
 //
-// PTCF は 832 バイト固定のバッファの先頭に入り、後ろには前のデータの残骸が残っている。
+// PTCF は機種ごとに大きさの決まったバッファ（G2 FOUR は 832、MS-80IR+ は 848 バイト）の先頭に入り、後ろには前のデータの残骸が残っている。
 // 意味の分からないビットは構造体に残し、Encode でバイト一致させる。
 // JSON のキーは TypeScript 版と同じにしてあり、出力をそのまま突き合わせられる。
 package patch
@@ -180,8 +180,14 @@ type Patch struct {
 	DescriptionEn string   `json:"descriptionEn"`
 	Effects       []Effect `json:"effects"`
 	Prm2          Prm2     `json:"prm2"`
-	// Trailer は 832 バイトのバッファのうち PTCF の後ろ（前のデータの残骸, hex）。
+	// Trailer はバッファのうち PTCF の後ろ（前のデータの残骸, hex）。
 	Trailer string `json:"trailer"`
+	// Size はバッファの大きさ。0 なら BufferBytes（G2 FOUR）。Decode で読んだ大きさを入れ、Encode はその大きさで返す。
+	Size int `json:"size,omitempty"`
+	// NameBytes は NAME の大きさ、NameWidth はそのうち名前と空白で埋める幅（残りは NUL）。
+	// 0 なら G2 FOUR の 16 / NameChars。Size と同じく Decode で読んだものを Encode で使う。
+	NameBytes int `json:"nameBytes,omitempty"`
+	NameWidth int `json:"nameWidth,omitempty"`
 }
 
 type reader struct {
@@ -296,6 +302,12 @@ func Decode(buffer []byte) (*Patch, error) {
 	p.TXJ1 = hex.EncodeToString(txj1)
 	p.DescriptionJa = strings.TrimRight(decodeSJIS(txj1), "\x00")
 	p.Trailer = hex.EncodeToString(buffer[size:])
+	if len(buffer) != BufferBytes {
+		p.Size = len(buffer)
+	}
+	if width := len(bytes.TrimRight(name, "\x00")); len(name) != nameBytes || width != NameChars {
+		p.NameBytes, p.NameWidth = len(name), width
+	}
 	return p, nil
 }
 
@@ -312,7 +324,7 @@ func pad4(b []byte) []byte { return fit(b, (len(b)+3)&^3) }
 const (
 	NameChars = 14
 	nameBytes = 16
-	// BufferBytes は PTCF を入れるバッファの大きさ。
+	// BufferBytes は G2 FOUR の PTCF を入れるバッファの大きさ。ほかの機種は Patch.Size。
 	BufferBytes = 832
 )
 
@@ -343,11 +355,15 @@ func Encode(p *Patch) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	name := []rune(p.Name)
-	if len(name) > NameChars {
-		name = name[:NameChars]
+	nameSize, width := nameBytes, NameChars
+	if p.NameBytes > 0 {
+		nameSize, width = p.NameBytes, p.NameWidth
 	}
-	padded := string(name) + strings.Repeat(" ", NameChars-len(name))
+	name := []rune(p.Name)
+	if len(name) > width {
+		name = name[:width]
+	}
+	padded := string(name) + strings.Repeat(" ", width-len(name))
 
 	var body bytes.Buffer
 	body.Write(u32(p.Version))
@@ -362,13 +378,17 @@ func Encode(p *Patch) ([]byte, error) {
 	body.Write(chunk("TXE1", pad4(encodeLatin1(p.DescriptionEn))))
 	body.Write(chunk("EDTB", edtb))
 	body.Write(chunk("PRM2", prm2))
-	body.Write(chunk("NAME", fit(encodeLatin1(padded), nameBytes)))
+	body.Write(chunk("NAME", fit(encodeLatin1(padded), nameSize)))
 
 	size := 8 + body.Len()
 	ptcf := append(append([]byte("PTCF"), u32(uint32(size))...), body.Bytes()...)
-	rest := BufferBytes - len(ptcf)
+	total := BufferBytes
+	if p.Size > 0 {
+		total = p.Size
+	}
+	rest := total - len(ptcf)
 	if rest < 0 {
-		return nil, fmt.Errorf("PTCF が %d バイトを超える: %d", BufferBytes, len(ptcf))
+		return nil, fmt.Errorf("PTCF が %d バイトを超える: %d", total, len(ptcf))
 	}
 	// 残骸はそのまま戻す（ラウンドトリップ用）。PTCF の長さが変わって合わなければ 0 で埋める
 	trailer, err := hex.DecodeString(p.Trailer)

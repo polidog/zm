@@ -17,9 +17,9 @@ zm is not an official ZOOM tool. The commands that write to the pedal (`save` / 
 | ZOOM MS-50G | 50 | embedded (172 effects) | 3.10 |
 | ZOOM MS-70CDR | 50 | embedded (137 effects) | 2.10 |
 
-The G2 FOUR, MS-50G and MS-70CDR work the same way: reading, editing, saving, restoring and backups from the CLI and MCP server, and reading, editing and saving from the TUI. `rename` is CLI only and works on the MS-50G / MS-70CDR only.
+All four work the same way: reading, editing, saving, restoring and backups from the CLI and MCP server, and reading, editing and saving from the TUI. `rename` is CLI only and works on the MS-50G / MS-70CDR only.
 
-The MS-80IR+ is read-only for now (`info` / `list` / `show` / `effects` / `backup` / `catalog`). Editing and saving stay disabled until they have been checked on the pedal. Its IR effects have no ZD2 file and show as `(unknown)`.
+The MS-80IR+'s IR effects have no ZD2 file and show as `(unknown)`.
 
 Other models are not recognized. The MS-60B uses a different patch format, and the other MS+ models and FOUR models have not been tested.
 

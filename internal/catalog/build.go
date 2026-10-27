@@ -10,8 +10,8 @@ import (
 	"github.com/polidog/zm/internal/zd2"
 )
 
-// Build は dir の ZD2 からカタログを作る。読めない ZD2 は warn に渡して飛ばす。
-func Build(dir string, now time.Time, warn func(file string, err error)) (*Catalog, error) {
+// Build は dir の ZD2 から device（機種名）のカタログを作る。読めない ZD2 は warn に渡して飛ばす。
+func Build(dir, device string, now time.Time, warn func(file string, err error)) (*Catalog, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -23,7 +23,7 @@ func Build(dir string, now time.Time, warn func(file string, err error)) (*Catal
 		}
 	}
 	sort.Strings(files)
-	c := &Catalog{Device: "ZOOM G2 FOUR", GeneratedAt: now.UTC().Format("2006-01-02T15:04:05.000Z"), Effects: []Effect{}}
+	c := &Catalog{Device: device, GeneratedAt: now.UTC().Format("2006-01-02T15:04:05.000Z"), Effects: []Effect{}}
 	for _, file := range files {
 		data, err := os.ReadFile(filepath.Join(dir, file))
 		if err != nil {
