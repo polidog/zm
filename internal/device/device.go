@@ -47,7 +47,7 @@ type Model struct {
 var G2Four = Model{Name: "ZOOM G2 FOUR", Key: "g2four", DeviceID: 0x6e, IdentityModel: 0x1d, Patches: 300, PatchesPerBank: 10, UserSlots: 6}
 
 // MS80IRPlus: MS-80IR+。メッセージとパッチ形式は G2 FOUR と同じ。パッチ 80（バンク 8 × 10、44 の応答と 46 で確かめた）。
-// 64 20 00 64 0F が AUTO SAVE なのと、64 20 での編集・45 での保存と復元は実機で確かめた（ファームウェア 1.00）。
+// 64 20 00 64 0F が AUTO SAVE なのと、64 20 での編集・45 での保存と復元は実機で確かめた（ファームウェア 1.00 と 1.10）。
 // 45 の応答の PTCF の後ろには直前に読んだパッチの残骸が入り、読むたびに変わる（中身は変わらない）。
 var MS80IRPlus = Model{Name: "ZOOM MS-80IR+", Key: "ms80irplus", DeviceID: 0x6e, IdentityModel: 0x28, Patches: 80, PatchesPerBank: 10, UserSlots: 3, BackupDir: "ms80irplus"}
 

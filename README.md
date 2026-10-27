@@ -13,7 +13,7 @@ zm is not an official ZOOM tool. The commands that write to the pedal (`save` / 
 | Pedal | Patches | Effect catalog | Tested firmware |
 | --- | --- | --- | --- |
 | ZOOM G2 FOUR | 300 | built from the pedal with `zm catalog` | 1.00 |
-| ZOOM MS-80IR+ | 80 | built from the pedal with `zm catalog` | 1.00 |
+| ZOOM MS-80IR+ | 80 | built from the pedal with `zm catalog` | 1.00, 1.10 |
 | ZOOM MS-50G | 50 | embedded (172 effects) | 3.10 |
 | ZOOM MS-70CDR | 50 | embedded (137 effects) | 2.10 |
 

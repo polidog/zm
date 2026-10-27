@@ -60,11 +60,12 @@ func (f *Files) List() ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		// 応答: F0 52 00 dev 60 04 ... name は 15 バイト目から NUL まで
+		// 応答: F0 52 00 dev 60 04 ... name は 15 バイト目から 12 バイト（8.3 形式）で、短ければ NUL で終わる。
+		// すぐ後ろのバイトは 0 とは限らない（MS-80IR+ はパッチを読み出した後に 02 になる）ので、12 バイトで切る
 		if len(reply) <= 15 || reply[5] != 0x04 {
 			break
 		}
-		rest := reply[15 : len(reply)-1]
+		rest := reply[15:min(15+12, len(reply)-1)]
 		if i := bytes.IndexByte(rest, 0); i >= 0 {
 			rest = rest[:i]
 		}
