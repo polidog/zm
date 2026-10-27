@@ -2,11 +2,26 @@
 
 [English](README.md) | 日本語
 
-ZOOM G2 FOUR と旧 MS-50G / MS-70CDR を、CLI・TUI・MCP サーバー（Claude Code から音作り）で操作する。1 本の Go のバイナリで動く。
+ZOOM G2 FOUR・MS-80IR+ と旧 MS-50G / MS-70CDR を、CLI・TUI・MCP サーバー（Claude Code から音作り）で操作する。1 本の Go のバイナリで動く。
 
 Linux の ALSA rawmidi（`/dev/snd/midiCxDy`）を直接読み書きするので、ほかの OS では動かない。
 
 ZOOM 公式のツールではない。ペダルに書き込むコマンド（`save` / `restore`）は上書き前の中身を退避するが、使う前に `zm backup` を取っておくこと。
+
+## 対応ペダル
+
+| ペダル | パッチ数 | エフェクトカタログ | 確かめたファームウェア |
+| --- | --- | --- | --- |
+| ZOOM G2 FOUR | 300 | `zm catalog` でペダルから作る | 1.00 |
+| ZOOM MS-80IR+ | 80 | `zm catalog` でペダルから作る | 1.00 |
+| ZOOM MS-50G | 50 | 埋め込み（172 エフェクト） | 3.10 |
+| ZOOM MS-70CDR | 50 | 埋め込み（137 エフェクト） | 2.10 |
+
+G2 FOUR・MS-50G・MS-70CDR は同じように使える。CLI と MCP サーバーからは読み出し・編集・保存・復元・バックアップ、TUI からは読み出し・編集・保存ができる。`rename` は CLI だけで、MS-50G / MS-70CDR でしか使えない。
+
+MS-80IR+ はいまのところ読み出しだけ（`info` / `list` / `show` / `effects` / `backup` / `catalog`）。編集と保存は実機で確かめるまで止めてある。IR 系のエフェクトは ZD2 を持たないので `(unknown)` と出る。
+
+ほかの機種は認識しない。MS-60B はパッチの形式が違い、ほかの MS+ シリーズと FOUR 系は試していない。
 
 ## 入れ方
 
@@ -39,7 +54,7 @@ zm probe                          疎通確認（開発用）
 ```
 
 - 番号はペダルの画面に合わせる（パッチは 1〜300 / 旧 MS は 1〜50、スロットは 1〜6）
-- `zm --pedal ms50g …`（ms70cdr / g2four）/ `zm --pedal hw:5,0 …`（または `$ZM_PEDAL`）で使うペダルを選ぶ。省くと最初に見つかった ZOOM
+- `zm --pedal ms50g …`（ms70cdr / g2four / ms80irplus）/ `zm --pedal hw:5,0 …`（または `$ZM_PEDAL`）で使うペダルを選ぶ。省くと最初に見つかった ZOOM
 - 読み出し系は `--json` で機械向けの出力を出す。`zm show --file x.syx` で保存済みの SysEx も読める
 - 編集（set-effect / set / on / off / toggle）は「いま鳴っているパッチ」への変更で、保存しない。パッチを選び直せば戻る
 - MIDI ポートは 1 プロセスしか開けない。TUI を開いている間は CLI と MCP からは使えない
@@ -81,7 +96,7 @@ internal/
   zd2/             ZD2 の解析（PRME / PRMJ と ELF のパラメータ表）
   catalog/         カタログの読み書き、パッチの名前つき表示（旧 MS のカタログは埋め込み）
   pedalfs/         ペダル内ファイルの一覧と読み出し（読み出しのみ）
-  device/          機種ごとの値と選び方。G2 FOUR（four.go）と旧 MS-50G / MS-70CDR（legacy.go）の読み出し・編集・保存
+  device/          機種ごとの値と選び方。G2 FOUR / MS-80IR+（four.go）と旧 MS-50G / MS-70CDR（legacy.go）の読み出し・編集・保存
   backups/         backups/ への退避と復元
   ops/             CLI・TUI・MCP が共有する操作（名前で解決、範囲の検証、番号の変換、保存時の退避）
   cli/ tui/ mcpserver/

@@ -2,11 +2,26 @@
 
 English | [日本語](README.ja.md)
 
-Control a ZOOM G2 FOUR and the older MS-50G / MS-70CDR from a CLI, a TUI, or an MCP server (shape your tone from Claude Code). It is a single Go binary.
+Control a ZOOM G2 FOUR, MS-80IR+ and the older MS-50G / MS-70CDR from a CLI, a TUI, or an MCP server (shape your tone from Claude Code). It is a single Go binary.
 
 zm reads and writes ALSA rawmidi (`/dev/snd/midiCxDy`) directly, so it runs on Linux only.
 
 zm is not an official ZOOM tool. The commands that write to the pedal (`save` / `restore`) back up what they overwrite, but take a `zm backup` before you use them.
+
+## Supported pedals
+
+| Pedal | Patches | Effect catalog | Tested firmware |
+| --- | --- | --- | --- |
+| ZOOM G2 FOUR | 300 | built from the pedal with `zm catalog` | 1.00 |
+| ZOOM MS-80IR+ | 80 | built from the pedal with `zm catalog` | 1.00 |
+| ZOOM MS-50G | 50 | embedded (172 effects) | 3.10 |
+| ZOOM MS-70CDR | 50 | embedded (137 effects) | 2.10 |
+
+The G2 FOUR, MS-50G and MS-70CDR work the same way: reading, editing, saving, restoring and backups from the CLI and MCP server, and reading, editing and saving from the TUI. `rename` is CLI only and works on the MS-50G / MS-70CDR only.
+
+The MS-80IR+ is read-only for now (`info` / `list` / `show` / `effects` / `backup` / `catalog`). Editing and saving stay disabled until they have been checked on the pedal. Its IR effects have no ZD2 file and show as `(unknown)`.
+
+Other models are not recognized. The MS-60B uses a different patch format, and the other MS+ models and FOUR models have not been tested.
 
 ## Install
 
@@ -38,7 +53,7 @@ zm probe                          connectivity check (for development)
 ```
 
 - Numbers match the pedal's display (patches 1–300, or 1–50 on legacy MS; slots 1–6)
-- Pick a pedal with `zm --pedal ms50g …` (ms70cdr / g2four), `zm --pedal hw:5,0 …`, or `$ZM_PEDAL`. Without one, zm uses the first ZOOM pedal it finds
+- Pick a pedal with `zm --pedal ms50g …` (ms70cdr / g2four / ms80irplus), `zm --pedal hw:5,0 …`, or `$ZM_PEDAL`. Without one, zm uses the first ZOOM pedal it finds
 - Read commands take `--json` for machine-readable output. `zm show --file x.syx` reads a saved SysEx file
 - Edits (set-effect / set / on / off / toggle) change the patch currently playing and are not saved. Selecting another patch discards them
 - Only one process can open the MIDI port. While the TUI is open, the CLI and MCP server cannot reach the pedal
@@ -80,7 +95,7 @@ internal/
   zd2/             ZD2 parsing (PRME / PRMJ and the ELF parameter tables)
   catalog/         catalog I/O, named patch display (legacy MS catalogs are embedded)
   pedalfs/         listing and reading files on the pedal (read-only)
-  device/          per-model values and selection; read / edit / save for G2 FOUR (four.go) and legacy MS-50G / MS-70CDR (legacy.go)
+  device/          per-model values and selection; read / edit / save for G2 FOUR / MS-80IR+ (four.go) and legacy MS-50G / MS-70CDR (legacy.go)
   backups/         backing up to and restoring from backups/
   ops/             operations shared by CLI, TUI and MCP (name lookup, range checks, number conversion, backup before save)
   cli/ tui/ mcpserver/
