@@ -14,6 +14,7 @@ const usage = `usage: zoom <command> [args]
   effects [group]                 エフェクト一覧
   effect <name>                   エフェクトの説明とパラメータ
   backup                          全パッチを backups/ に退避
+  catalog [--refresh]             ペダルの ZD2 からカタログを作る
   probe                           P0 の疎通確認（開発用）
 
 読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300、スロット 1〜6）。
@@ -30,6 +31,7 @@ func commands() map[string]command {
 		"effects": Effects,
 		"effect":  EffectCmd,
 		"backup":  Backup,
+		"catalog": CatalogCmd,
 		"probe":   Probe,
 	}
 }
