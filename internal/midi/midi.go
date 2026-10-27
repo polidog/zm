@@ -75,10 +75,13 @@ func ListPorts() ([]Port, error) {
 
 var zoomName = regexp.MustCompile(`(?i)zoom`)
 
+func IsZoom(p Port) bool { return zoomName.MatchString(p.Name) }
+
+// FindZoomPort は名前に ZOOM を含む最初のポート。
 func FindZoomPort() (Port, bool) {
 	ports, _ := ListPorts()
 	for _, p := range ports {
-		if zoomName.MatchString(p.Name) {
+		if IsZoom(p) {
 			return p, true
 		}
 	}

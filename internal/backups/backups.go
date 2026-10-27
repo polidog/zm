@@ -27,7 +27,7 @@ func All(z *device.Zoom, progress func(done int)) (string, error) {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}
-	for n := range device.PatchCount {
+	for n := range z.Model.Patches {
 		msg, err := z.PatchSysex(n)
 		if err != nil {
 			return "", err

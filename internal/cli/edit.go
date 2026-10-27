@@ -29,16 +29,8 @@ func printSlot(v ops.SlotView, asJSON bool) error {
 	return nil
 }
 
-func slotArg(s string) (int, error) {
-	n, err := atoi("スロット番号", s)
-	if err != nil {
-		return 0, err
-	}
-	if _, err := ops.SlotIndex(n); err != nil {
-		return 0, err
-	}
-	return n, nil
-}
+// slotArg と numberArg は数字かどうかだけを見る。範囲は機種で違うので、繋いでから ops が確かめる。
+func slotArg(s string) (int, error) { return atoi("スロット番号", s) }
 
 func SetEffectCmd(args []string) error {
 	const usage = "set-effect <slot> <effect> [--json]"
@@ -121,16 +113,7 @@ func confirm(question string) error {
 	return nil
 }
 
-func numberArg(s string) (int, error) {
-	n, err := atoi("パッチ番号", s)
-	if err != nil {
-		return 0, err
-	}
-	if _, err := ops.PatchIndex(n); err != nil {
-		return 0, err
-	}
-	return n, nil
-}
+func numberArg(s string) (int, error) { return atoi("パッチ番号", s) }
 
 func SaveCmd(args []string) error {
 	const usage = "save <n> [--yes] [--json]"
@@ -147,7 +130,11 @@ func SaveCmd(args []string) error {
 	}
 	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.SaveResult, error) {
 		if !*yes {
-			target, err := z.Patch(number - 1)
+			n, err := ops.PatchIndex(z.Model, number)
+			if err != nil {
+				return ops.SaveResult{}, err
+			}
+			target, err := z.Patch(n)
 			if err != nil {
 				return ops.SaveResult{}, err
 			}
@@ -185,20 +172,22 @@ func RestoreCmd(args []string) error {
 	if err != nil {
 		return err
 	}
-	path, data, err := ops.LatestBackup(number)
-	if err != nil {
-		return err
-	}
-	if !*yes {
-		p, err := device.DecodeSysex(data)
-		if err != nil {
-			return fmt.Errorf("%s: %w", path, err)
+	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.RestoreResult, error) {
+		if !*yes {
+			path, data, err := ops.LatestBackup(z.Model, number)
+			if err != nil {
+				return ops.RestoreResult{}, err
+			}
+			p, err := device.DecodeSysex(data)
+			if err != nil {
+				return ops.RestoreResult{}, fmt.Errorf("%s: %w", path, err)
+			}
+			if err := confirm(fmt.Sprintf("パッチ %d を %s の %q に戻す。", number, path, p.Name)); err != nil {
+				return ops.RestoreResult{}, err
+			}
 		}
-		if err := confirm(fmt.Sprintf("パッチ %d を %s の %q に戻す。", number, path, p.Name)); err != nil {
-			return err
-		}
-	}
-	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.RestoreResult, error) { return ops.Restore(z, number) })
+		return ops.Restore(z, number)
+	})
 	if err != nil {
 		return err
 	}

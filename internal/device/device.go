@@ -5,6 +5,7 @@
 //   - 45 によるパッチメモリへの保存（フラッシュに書く）
 //
 // 番号はすべて 0 始まり。画面の 1 始まりとの変換は ops でやる。
+// パッチ数やスロット数は機種 (Model) が持ち、決め打ちにしない。今の実装は G2 FOUR (デバイス ID 6E) だけ。
 package device
 
 import (
@@ -20,11 +21,31 @@ import (
 	"github.com/polidog/zoom-ai/internal/sysex"
 )
 
-// G2 FOUR: バンク 30 × 10。
-const (
-	PatchesPerBank = 10
-	PatchCount     = 300
-)
+// Model は機種ごとに違う値。
+type Model struct {
+	Name     string
+	DeviceID byte
+	// Patches はパッチメモリの数、PatchesPerBank は 1 バンクの数。
+	Patches        int
+	PatchesPerBank int
+	// UserSlots はユーザーが使えるスロット数（G2 FOUR の 7, 8 番目は Output VP とシステム用）。
+	UserSlots int
+}
+
+// G2Four: バンク 30 × 10。
+var G2Four = Model{Name: "ZOOM G2 FOUR", DeviceID: 0x6e, Patches: 300, PatchesPerBank: 10, UserSlots: 6}
+
+// Models は対応している機種。Identity Reply のデバイス ID で選ぶ。
+var Models = []Model{G2Four}
+
+func modelFor(dev byte) (Model, bool) {
+	for _, m := range Models {
+		if m.DeviceID == dev {
+			return m, true
+		}
+	}
+	return Model{}, false
+}
 
 // zoomReply は 5 バイト目以降（F0 52 00 dev の後ろ）が prefix で始まるか。
 func zoomReply(prefix ...byte) func([]byte) bool {
@@ -35,26 +56,47 @@ func zoomReply(prefix ...byte) func([]byte) bool {
 var IsPatchNotice = zoomReply(0x64, 0x12, 0x00)
 
 // Location は 0 始まりの通し番号 → バンク / プログラム。
-func Location(n int) (codec.Location, error) {
-	if n < 0 || n >= PatchCount {
-		return codec.Location{}, fmt.Errorf("パッチ番号は 0..%d", PatchCount-1)
+func (m Model) Location(n int) (codec.Location, error) {
+	if n < 0 || n >= m.Patches {
+		return codec.Location{}, fmt.Errorf("パッチ番号は 0..%d", m.Patches-1)
 	}
-	return codec.Location{Bank: n / PatchesPerBank, Program: n % PatchesPerBank}, nil
+	return codec.Location{Bank: n / m.PatchesPerBank, Program: n % m.PatchesPerBank}, nil
 }
 
 type Zoom struct {
 	Conn     *midi.Conn
 	Identity sysex.Identity
+	Model    Model
 	Editable bool
 }
 
-// Open は ZOOM のポートを開く。edit ならエディタモードを ON、AUTO SAVE を OFF にする。
+// Open は対応している機種の ZOOM を探して開く。edit ならエディタモードを ON、AUTO SAVE を OFF にする。
+// ZOOM が何台か繋がっていれば、名前に ZOOM を含むポートを順に当たり、最初に対応している機種を使う。
 // 使い終わったら必ず Close する（開いたまま抜けると以降のオープンが EBUSY になる）。
 func Open(edit bool) (*Zoom, error) {
-	port, ok := midi.FindZoomPort()
-	if !ok {
+	ports, err := midi.ListPorts()
+	if err != nil {
+		return nil, err
+	}
+	var errs []error
+	for _, p := range ports {
+		if !midi.IsZoom(p) {
+			continue
+		}
+		z, err := OpenPort(p, edit)
+		if err == nil {
+			return z, nil
+		}
+		errs = append(errs, fmt.Errorf("hw:%d,%d %s: %w", p.Card, p.Device, p.Name, err))
+	}
+	if len(errs) == 0 {
 		return nil, errors.New("ZOOM のポートが見つからない")
 	}
+	return nil, errors.Join(errs...)
+}
+
+// OpenPort はポートを指定して開く。
+func OpenPort(port midi.Port, edit bool) (*Zoom, error) {
 	conn, err := midi.Open(port)
 	if err != nil {
 		return nil, err
@@ -79,7 +121,11 @@ func open(conn *midi.Conn, edit bool) (*Zoom, error) {
 	if err != nil {
 		return nil, err
 	}
-	z := &Zoom{Conn: conn, Identity: ident}
+	model, ok := modelFor(ident.DeviceID)
+	if !ok {
+		return nil, fmt.Errorf("対応していない機種（デバイス ID %02X, ファームウェア %s）", ident.DeviceID, ident.Version)
+	}
+	z := &Zoom{Conn: conn, Identity: ident, Model: model}
 	if edit {
 		if _, err := z.expect(sysex.EditorModeOn(z.DeviceID()), 2*time.Second, 0x00, 0x00); err != nil {
 			return nil, err
@@ -127,7 +173,7 @@ func (z *Zoom) Close() error {
 
 // PatchSysex は生の SysEx（45 応答）を返す。バックアップ用。
 func (z *Zoom) PatchSysex(n int) ([]byte, error) {
-	loc, err := Location(n)
+	loc, err := z.Model.Location(n)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +221,8 @@ type Entry struct {
 }
 
 func (z *Zoom) ListPatches() ([]Entry, error) {
-	out := make([]Entry, 0, PatchCount)
-	for n := range PatchCount {
+	out := make([]Entry, 0, z.Model.Patches)
+	for n := range z.Model.Patches {
 		p, err := z.Patch(n)
 		if err != nil {
 			return nil, err
@@ -252,7 +298,7 @@ func (z *Zoom) SavePatch(n int, p *patch.Patch) error {
 	if err := z.assertEditable(); err != nil {
 		return err
 	}
-	loc, err := Location(n)
+	loc, err := z.Model.Location(n)
 	if err != nil {
 		return err
 	}
@@ -284,7 +330,7 @@ func (z *Zoom) WritePatchSysex(n int, msg []byte) error {
 	if err := z.assertEditable(); err != nil {
 		return err
 	}
-	want, err := Location(n)
+	want, err := z.Model.Location(n)
 	if err != nil {
 		return err
 	}

@@ -73,8 +73,8 @@ func Show(args []string) error {
 		if err != nil {
 			return err
 		}
-		if _, err := ops.PatchIndex(n); err != nil {
-			return err
+		if n < 1 {
+			return fmt.Errorf("パッチ番号は 1 から")
 		}
 		number = n
 	}
@@ -106,7 +106,11 @@ func Show(args []string) error {
 			if number == 0 {
 				return z.CurrentPatch()
 			}
-			return z.Patch(number - 1)
+			n, err := ops.PatchIndex(z.Model, number)
+			if err != nil {
+				return nil, err
+			}
+			return z.Patch(n)
 		})
 		if err != nil {
 			return err

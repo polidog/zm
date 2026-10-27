@@ -17,9 +17,6 @@ import (
 	"github.com/polidog/zoom-ai/internal/device"
 )
 
-// UserSlots はユーザーが使えるスロット数（7, 8 番目は Output VP とシステム用）。
-const UserSlots = 6
-
 var (
 	catMu  sync.Mutex
 	loaded *catalog.Catalog
@@ -47,18 +44,18 @@ func ResetCatalog() {
 	catMu.Unlock()
 }
 
-// PatchIndex は画面の番号 1〜300 を 0 始まりにする。
-func PatchIndex(number int) (int, error) {
-	if number < 1 || number > device.PatchCount {
-		return 0, fmt.Errorf("パッチ番号は 1〜%d", device.PatchCount)
+// PatchIndex は画面の番号（G2 FOUR なら 1〜300）を 0 始まりにする。
+func PatchIndex(m device.Model, number int) (int, error) {
+	if number < 1 || number > m.Patches {
+		return 0, fmt.Errorf("パッチ番号は 1〜%d", m.Patches)
 	}
 	return number - 1, nil
 }
 
-// SlotIndex はスロット番号 1〜6 を 0 始まりにする。
-func SlotIndex(slot int) (int, error) {
-	if slot < 1 || slot > UserSlots {
-		return 0, fmt.Errorf("スロット番号は 1〜%d", UserSlots)
+// SlotIndex はスロット番号（G2 FOUR なら 1〜6）を 0 始まりにする。
+func SlotIndex(m device.Model, slot int) (int, error) {
+	if slot < 1 || slot > m.UserSlots {
+		return 0, fmt.Errorf("スロット番号は 1〜%d", m.UserSlots)
 	}
 	return slot - 1, nil
 }
@@ -92,12 +89,12 @@ type Identity struct {
 
 func Identify(z *device.Zoom) Identity {
 	return Identity{
-		Device:       "ZOOM G2 FOUR",
+		Device:       z.Model.Name,
 		Manufacturer: fmt.Sprintf("0x%x", z.Identity.Manufacturer),
 		Model:        fmt.Sprintf("0x%x", z.Identity.Model),
 		Firmware:     z.Identity.Version,
-		Patches:      device.PatchCount,
-		UserSlots:    UserSlots,
+		Patches:      z.Model.Patches,
+		UserSlots:    z.Model.UserSlots,
 	}
 }
 
@@ -137,7 +134,7 @@ func GetPatch(z *device.Zoom, number int) (PatchView, error) {
 		}
 		return PatchView{Number: "current", NamedPatch: cat.Describe(p)}, nil
 	}
-	n, err := PatchIndex(number)
+	n, err := PatchIndex(z.Model, number)
 	if err != nil {
 		return PatchView{}, err
 	}
@@ -155,7 +152,7 @@ type BackupResult struct {
 
 func BackupAll(z *device.Zoom, progress func(done int)) (BackupResult, error) {
 	dir, err := backups.All(z, progress)
-	return BackupResult{Saved: device.PatchCount, Dir: dir}, err
+	return BackupResult{Saved: z.Model.Patches, Dir: dir}, err
 }
 
 // ---- カタログ ----
@@ -267,7 +264,7 @@ func slotView(z *device.Zoom, slot int) (SlotView, error) {
 
 // SetEffect はスロットのエフェクトを差し替える。パラメータは既定値か、同じ電源投入中に前回そのエフェクトで使った値になる。
 func SetEffect(z *device.Zoom, slot int, effect string) (SlotView, error) {
-	i, err := SlotIndex(slot)
+	i, err := SlotIndex(z.Model, slot)
 	if err != nil {
 		return SlotView{}, err
 	}
@@ -308,7 +305,7 @@ func ResolveParam(e *catalog.Effect, param string, value int) (int, error) {
 }
 
 func slotEffect(z *device.Zoom, slot int) (*catalog.Effect, int, error) {
-	i, err := SlotIndex(slot)
+	i, err := SlotIndex(z.Model, slot)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -346,7 +343,7 @@ func SetParam(z *device.Zoom, slot int, param string, value int) (SlotView, erro
 
 // Toggle はスロットの ON / OFF を変える。enabled が nil なら反転。
 func Toggle(z *device.Zoom, slot int, enabled *bool) (SlotView, error) {
-	i, err := SlotIndex(slot)
+	i, err := SlotIndex(z.Model, slot)
 	if err != nil {
 		return SlotView{}, err
 	}
@@ -379,7 +376,7 @@ type SaveResult struct {
 
 // Save はいま鳴っているパッチをパッチメモリ number に保存する。上書きされる中身は先に退避する。
 func Save(z *device.Zoom, number int) (SaveResult, error) {
-	n, err := PatchIndex(number)
+	n, err := PatchIndex(z.Model, number)
 	if err != nil {
 		return SaveResult{}, err
 	}
@@ -409,8 +406,8 @@ type RestoreResult struct {
 }
 
 // LatestBackup は Restore で使う退避のパス。無ければエラー。
-func LatestBackup(number int) (string, []byte, error) {
-	n, err := PatchIndex(number)
+func LatestBackup(m device.Model, number int) (string, []byte, error) {
+	n, err := PatchIndex(m, number)
 	if err != nil {
 		return "", nil, err
 	}
@@ -426,8 +423,8 @@ func LatestBackup(number int) (string, []byte, error) {
 
 // Restore は Save で上書きしたパッチ number を、上書き直前の中身に戻す（いちばん新しい退避を使う）。
 func Restore(z *device.Zoom, number int) (RestoreResult, error) {
-	n, _ := PatchIndex(number)
-	path, data, err := LatestBackup(number)
+	n, _ := PatchIndex(z.Model, number)
+	path, data, err := LatestBackup(z.Model, number)
 	if err != nil {
 		return RestoreResult{}, err
 	}
