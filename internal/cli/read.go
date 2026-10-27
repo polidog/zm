@@ -212,7 +212,7 @@ func EffectCmd(args []string) error {
 	asJSON := fs.Bool("json", false, "JSON で出す")
 	pos := parse(fs, args)
 	if len(pos) == 0 {
-		return fmt.Errorf("usage: zoom %s", usage)
+		return fmt.Errorf("usage: zm %s", usage)
 	}
 	d, err := ops.DescribeEffect(strings.Join(pos, " "))
 	if err != nil {

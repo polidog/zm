@@ -1,25 +1,20 @@
-// Package testdata は実機から取った backups/ と catalog/ をテストから探す。
+// Package testdata は実機から取った backups/ と catalog/ をテストから探す。置き場は CLI と同じ（paths.Root）。
 //
-// どちらも git に入れていないので、無ければテストはスキップする（zoom backup / zoom catalog で作る）。
+// どちらも git に入れていないので、無ければテストはスキップする（zm backup / zm catalog で作る）。
 package testdata
 
 import (
 	"os"
 	"path/filepath"
-	"runtime"
 	"sort"
 	"strings"
 	"testing"
+
+	"github.com/polidog/zoom-ai/internal/paths"
 )
 
-// Root はリポジトリの直下。
-func Root() string {
-	_, file, _, _ := runtime.Caller(0)
-	return filepath.Join(filepath.Dir(file), "..", "..")
-}
-
-func Backups() string { return filepath.Join(Root(), "backups") }
-func Catalog() string { return filepath.Join(Root(), "catalog") }
+func Backups() string { return paths.Backups() }
+func Catalog() string { return paths.Catalog() }
 
 // LatestAll はいちばん新しい backups/all-*/ の .syx を番号順に返す。無ければスキップ。
 func LatestAll(t testing.TB) (string, []string) {
@@ -39,7 +34,7 @@ func LatestAllIn(t testing.TB, sub string) (string, []string) {
 		}
 	}
 	if len(dirs) == 0 {
-		t.Skipf("%s/all-* がない（zoom backup で作る）", root)
+		t.Skipf("%s/all-* がない（zm backup で作る）", root)
 	}
 	sort.Strings(dirs)
 	dir := filepath.Join(root, dirs[len(dirs)-1])

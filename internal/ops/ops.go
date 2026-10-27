@@ -1,6 +1,6 @@
 // Package ops は CLI・TUI・MCP が共有する操作。
 //
-// 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、MS-50G は 50）、スロットは 1〜6。0 始まりへの変換と範囲の検証はここでやる。
+// 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、旧 MS は 50）、スロットは 1〜6。0 始まりへの変換と範囲の検証はここでやる。
 // SetEffect などの編集は「いま鳴っているパッチ」への変更で、保存しない（パッチを選び直せば元に戻る）。
 // 保存は Save だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
 //
@@ -57,7 +57,7 @@ func Model() device.Model {
 // Catalog は使うペダルの機種のカタログ（ペダルを開かずに使う場面向け）。開いているなら CatalogFor(z.Model) を使う。
 func Catalog() (*catalog.Catalog, error) { return CatalogFor(Model()) }
 
-// ResetCatalog は覚えているカタログを捨てる（zoom catalog で作り直した後）。
+// ResetCatalog は覚えているカタログを捨てる（zm catalog で作り直した後）。
 func ResetCatalog() {
 	catMu.Lock()
 	loaded = nil

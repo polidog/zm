@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/polidog/zoom-ai/internal/ops"
+	"github.com/polidog/zoom-ai/internal/paths"
 )
 
 // parse はフラグと位置引数が混ざっていても読む（標準の flag は最初の位置引数で止まるので）。
@@ -29,8 +30,9 @@ func parse(fs *flag.FlagSet, args []string) []string {
 
 func newFlags(name, usage string) *flag.FlagSet {
 	fs := flag.NewFlagSet(name, flag.ExitOnError)
+	fs.StringVar(&paths.Dir, "dir", paths.Dir, "backups/ と catalog/ の置き場（省略で $ZM_DIR か ~/.config/zm）")
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "usage: zoom %s\n", usage)
+		fmt.Fprintf(os.Stderr, "usage: zm %s\n", usage)
 		fs.PrintDefaults()
 	}
 	return fs
@@ -55,7 +57,7 @@ func atoi(name, s string) (int, error) {
 
 func want(args []string, min, max int, usage string) error {
 	if len(args) < min || len(args) > max {
-		return fmt.Errorf("usage: zoom %s", usage)
+		return fmt.Errorf("usage: zm %s", usage)
 	}
 	return nil
 }

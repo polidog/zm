@@ -25,7 +25,7 @@ func printSlot(v ops.SlotView, asJSON bool) error {
 		}
 	}
 	fmt.Printf("%d %s %s  %s\n", v.Slot, mark, v.Effect, strings.Join(ps, "  "))
-	fmt.Println("（保存していない。残すなら zoom save <n>）")
+	fmt.Println("（保存していない。残すなら zm save <n>）")
 	return nil
 }
 
@@ -38,7 +38,7 @@ func SetEffectCmd(args []string) error {
 	asJSON := fs.Bool("json", false, "JSON で出す")
 	pos := parse(fs, args)
 	if len(pos) < 2 {
-		return fmt.Errorf("usage: zoom %s", usage)
+		return fmt.Errorf("usage: zm %s", usage)
 	}
 	slot, err := slotArg(pos[0])
 	if err != nil {
@@ -59,7 +59,7 @@ func RenameCmd(args []string) error {
 	asJSON := fs.Bool("json", false, "JSON で出す")
 	pos := parse(fs, args)
 	if len(pos) == 0 {
-		return fmt.Errorf("usage: zoom %s", usage)
+		return fmt.Errorf("usage: zm %s", usage)
 	}
 	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.RenameResult, error) {
 		return ops.Rename(z, strings.Join(pos, " "))
@@ -70,7 +70,7 @@ func RenameCmd(args []string) error {
 	if *asJSON {
 		return printJSON(r)
 	}
-	fmt.Printf("名前を %q にした\n（保存していない。残すなら zoom save <n>）\n", r.Name)
+	fmt.Printf("名前を %q にした\n（保存していない。残すなら zm save <n>）\n", r.Name)
 	return nil
 }
 
@@ -80,7 +80,7 @@ func SetCmd(args []string) error {
 	asJSON := fs.Bool("json", false, "JSON で出す")
 	pos := parse(fs, args)
 	if len(pos) < 3 {
-		return fmt.Errorf("usage: zoom %s", usage)
+		return fmt.Errorf("usage: zm %s", usage)
 	}
 	slot, err := slotArg(pos[0])
 	if err != nil {

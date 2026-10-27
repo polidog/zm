@@ -1,4 +1,4 @@
-# zoom
+# zm
 
 ZOOM G2 FOUR と旧 MS-50G / MS-70CDR を、CLI・TUI・MCP サーバー（Claude Code から音作り）で操作する。1 本の Go のバイナリで動く。
 
@@ -7,54 +7,55 @@ Linux の ALSA rawmidi（`/dev/snd/midiCxDy`）を直接読み書きするので
 ## 使い方
 
 ```sh
-go build -o zoom ./cmd/zoom      # または go install ./cmd/zoom
+go build -o zm ./cmd/zm          # または go install ./cmd/zm
 
-zoom info                         機種・ファームウェア・パッチ数
-zoom list                         全パッチの番号と名前
-zoom show [n]                     パッチの中身（省略で、いま鳴っているパッチ）
-zoom effects [group]              エフェクト一覧
-zoom effect <name>                エフェクトの説明とパラメータ
-zoom set-effect <slot> <effect>   エフェクト差し替え（保存しない）
-zoom set <slot> <param> <value>   パラメータ変更（保存しない）
-zoom on|off|toggle <slot>         ON / OFF（保存しない）
-zoom rename <name>                パッチ名の変更（保存しない。いまは旧 MS だけ）
-zoom save <n> [--yes]             いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
-zoom restore <n> [--yes]          save で上書きした n を戻す
-zoom backup                       全パッチを backups/ に退避
-zoom catalog [--refresh]          ペダルの ZD2 からカタログを作る
-zoom tui                          TUI
-zoom mcp                          MCP サーバー (stdio)
-zoom probe                        疎通確認（開発用）
+zm info                           機種・ファームウェア・パッチ数
+zm list                           全パッチの番号と名前
+zm show [n]                       パッチの中身（省略で、いま鳴っているパッチ）
+zm effects [group]                エフェクト一覧
+zm effect <name>                  エフェクトの説明とパラメータ
+zm set-effect <slot> <effect>     エフェクト差し替え（保存しない）
+zm set <slot> <param> <value>     パラメータ変更（保存しない）
+zm on|off|toggle <slot>           ON / OFF（保存しない）
+zm rename <name>                  パッチ名の変更（保存しない。いまは旧 MS だけ）
+zm save <n> [--yes]               いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
+zm restore <n> [--yes]            save で上書きした n を戻す
+zm backup                         全パッチを backups/ に退避
+zm catalog [--refresh]            ペダルの ZD2 からカタログを作る
+zm tui                            TUI
+zm mcp                            MCP サーバー (stdio)
+zm probe                          疎通確認（開発用）
 ```
 
 - 番号はペダルの画面に合わせる（パッチは 1〜300 / 旧 MS は 1〜50、スロットは 1〜6）
-- `zoom --pedal ms50g …`（ms70cdr / g2four）/ `zoom --pedal hw:5,0 …`（または `$ZOOM_PEDAL`）で使うペダルを選ぶ。省くと最初に見つかった ZOOM
-- 読み出し系は `--json` で機械向けの出力を出す。`zoom show --file x.syx` で保存済みの SysEx も読める
+- `zm --pedal ms50g …`（ms70cdr / g2four）/ `zm --pedal hw:5,0 …`（または `$ZM_PEDAL`）で使うペダルを選ぶ。省くと最初に見つかった ZOOM
+- 読み出し系は `--json` で機械向けの出力を出す。`zm show --file x.syx` で保存済みの SysEx も読める
 - 編集（set-effect / set / on / off / toggle）は「いま鳴っているパッチ」への変更で、保存しない。パッチを選び直せば戻る
 - MIDI ポートは 1 プロセスしか開けない。TUI を開いている間は CLI と MCP からは使えない
 
 ### はじめに
 
 ```sh
-zoom backup     # 全パッチを退避（ペダルには書かない）
-zoom catalog    # ペダルの ZD2 を読み出してエフェクトカタログを作る（ペダルには書かない）
+zm backup       # 全パッチを退避（ペダルには書かない）
+zm catalog      # ペダルの ZD2 を読み出してエフェクトカタログを作る（ペダルには書かない）
 ```
 
-`backups/` と `catalog/` は `$ZOOM_DIR`（無ければカレントディレクトリ）に置く。
+`backups/` と `catalog/` は `~/.config/zm/`（`$XDG_CONFIG_HOME` があれば `$XDG_CONFIG_HOME/zm/`）に置き、無ければ書くときに作る。
+`--dir <path>`（`zm --dir x backup` でも `zm backup --dir x` でもよい）か `$ZM_DIR` で場所を変えられる。どこで実行しても同じ場所を使う。
 どちらも ZOOM の著作物を含むので git には入れない。
 
-旧 MS（MS-50G / MS-70CDR）のカタログは g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作ってバイナリに埋め込んであるので、`zoom catalog` は要らない。
+旧 MS（MS-50G / MS-70CDR）のカタログは g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作ってバイナリに埋め込んであるので、`zm catalog` は要らない。
 旧 MS のバックアップは `backups/ms50g/`・`backups/ms70cdr/` に置く。旧 MS 固有の注意（AUTO SAVE、エディタモード）は [docs/legacy-ms.md](docs/legacy-ms.md)。
 
 ### Claude Code から使う
 
-`.mcp.json` に `go run ./cmd/zoom mcp` を登録してある。このディレクトリで Claude Code を開けば `zoom` の MCP サーバーが使える。
-`zoom` を PATH に入れたなら、`"command": "zoom", "args": ["mcp"]` にしてもよい。
+`.mcp.json` に `go run ./cmd/zm mcp` を登録してある。このディレクトリで Claude Code を開けば `zm` の MCP サーバーが使える。
+`zm` を PATH に入れたなら、`"command": "zm", "args": ["mcp"]` にしてもよい。
 
 ## 構成
 
 ```
-cmd/zoom/          サブコマンドの振り分け
+cmd/zm/            サブコマンドの振り分け
 internal/
   midi/            ALSA rawmidi。SysEx を 1 つずつ受け取る
   sysex/           メッセージの組み立て、Identity Reply

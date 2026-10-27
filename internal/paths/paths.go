@@ -1,7 +1,7 @@
 // Package paths は backups/ と catalog/ を置く場所を決める。
 //
-// ZOOM_DIR があればそこ、無ければカレントディレクトリ。TypeScript 版はリポジトリ直下に置いていたので、
-// リポジトリで実行すれば同じファイルを読み書きする。
+// --dir、$ZM_DIR、$XDG_CONFIG_HOME/zm（無ければ ~/.config/zm）の順に見る。
+// どこで実行しても同じ場所を読み書きするよう、カレントディレクトリは見ない。ディレクトリは書くときに作る。
 package paths
 
 import (
@@ -9,12 +9,18 @@ import (
 	"path/filepath"
 )
 
+// Dir は --dir で渡された場所。空なら環境変数と既定の場所を見る。
+var Dir string
+
 func Root() string {
-	if d := os.Getenv("ZOOM_DIR"); d != "" {
+	if Dir != "" {
+		return Dir
+	}
+	if d := os.Getenv("ZM_DIR"); d != "" {
 		return d
 	}
-	if d, err := os.Getwd(); err == nil {
-		return d
+	if d, err := os.UserConfigDir(); err == nil {
+		return filepath.Join(d, "zm")
 	}
 	return "."
 }

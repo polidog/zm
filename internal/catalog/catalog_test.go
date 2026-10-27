@@ -1,6 +1,6 @@
 // カタログ (catalog/g2four.json) を実機パッチと突き合わせる。
 //
-// catalog/ と backups/ は git に入れていないので、無ければスキップする（zoom catalog / zoom backup で作る）。
+// catalog/ と backups/ は git に入れていないので、無ければスキップする（zm catalog / zm backup で作る）。
 package catalog_test
 
 import (
@@ -22,7 +22,7 @@ func load(t *testing.T) (*catalog.Catalog, []*patch.Patch) {
 	t.Helper()
 	path := filepath.Join(testdata.Catalog(), "g2four.json")
 	if _, err := os.Stat(path); err != nil {
-		t.Skip("catalog/g2four.json がない（zoom catalog で作る）")
+		t.Skip("catalog/g2four.json がない（zm catalog で作る）")
 	}
 	c, err := catalog.Load(path)
 	if err != nil {

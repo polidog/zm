@@ -1,6 +1,6 @@
 // Package mcpserver は MCP サーバー (L4, stdio)。
 //
-// 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、MS-50G は 50）、スロットは 1〜6。
+// 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、旧 MS は 50）、スロットは 1〜6。
 // set_effect などの編集は「いま鳴っているパッチ」への変更で、保存しない（パッチを選び直せば元に戻る）。
 // 保存は save_patch だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
 // 曖昧な指示（「80 年代っぽいクリーンに」）の解釈は Claude 側に任せ、ここは素直な操作だけを出す。
@@ -73,11 +73,11 @@ func intRange(s *jsonschema.Schema, lo, hi int) {
 type noArgs struct{}
 
 type numberArg struct {
-	Number *int `json:"number,omitempty" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、MS-50G は 50。ペダルの画面と同じ）"`
+	Number *int `json:"number,omitempty" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
 }
 
 type requiredNumberArg struct {
-	Number int `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、MS-50G は 50。ペダルの画面と同じ）"`
+	Number int `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
 }
 
 type groupArg struct {
@@ -111,7 +111,7 @@ func numberRange(p map[string]*jsonschema.Schema) {
 
 func New(version string) *mcp.Server {
 	model = ops.Model()
-	s := mcp.NewServer(&mcp.Implementation{Name: "zoom-g2four", Version: version}, nil)
+	s := mcp.NewServer(&mcp.Implementation{Name: "zm", Version: version}, nil)
 	readOnly := &mcp.ToolAnnotations{ReadOnlyHint: true}
 	destructive := &mcp.ToolAnnotations{DestructiveHint: ptr(true)}
 
@@ -236,7 +236,7 @@ func New(version string) *mcp.Server {
 
 	s.AddResource(&mcp.Resource{
 		Name:        "catalog",
-		URI:         "zoom://catalog",
+		URI:         "zm://catalog",
 		Description: "エフェクトカタログ全体（説明・パラメータの意味・範囲・既定値）",
 		MIMEType:    "application/json",
 	}, func(_ context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
@@ -253,7 +253,7 @@ func New(version string) *mcp.Server {
 
 	s.AddResource(&mcp.Resource{
 		Name:        "current_patch",
-		URI:         "zoom://patch/current",
+		URI:         "zm://patch/current",
 		Description: "いま鳴っている（編集中の）パッチ",
 		MIMEType:    "application/json",
 	}, func(_ context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {

@@ -1,6 +1,6 @@
 // Package catalog はエフェクトカタログ (L3)。ID → 名前 / パラメータ名 / 範囲 / 説明。
 //
-// catalog/g2four.json は `zoom catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
+// catalog/g2four.json は `zm catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
 // 旧 MS（MS-50G / MS-70CDR）はペダルからエフェクトの定義を取り出せないので、g200kg/zoom-ms-utility（MIT）の
 // エフェクト一覧から作った legacy/<機種>.json を埋め込む（作り方は legacy/gen.mjs）。
 package catalog
@@ -103,7 +103,7 @@ func FormatID(id uint32) string { return fmt.Sprintf("0x%08x", id) }
 func Load(path string) (*Catalog, error) {
 	b, err := os.ReadFile(path)
 	if errors.Is(err, fs.ErrNotExist) {
-		return nil, fmt.Errorf("%s がない。zoom catalog で作る", path)
+		return nil, fmt.Errorf("%s がない。zm catalog で作る", path)
 	}
 	if err != nil {
 		return nil, err

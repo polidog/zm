@@ -25,7 +25,7 @@ func CatalogCmd(args []string) error {
 		return err
 	}
 	if m, ok := device.TargetModel(); ok && m.Legacy {
-		return fmt.Errorf("%s のカタログは zoom に埋め込んである（ペダルから作るものはない）", m.Name)
+		return fmt.Errorf("%s のカタログは zm に埋め込んである（ペダルから作るものはない）", m.Name)
 	}
 	cache := catalog.ZD2Dir()
 	if err := os.MkdirAll(cache, 0o755); err != nil {

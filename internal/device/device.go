@@ -137,7 +137,7 @@ type Zoom struct {
 }
 
 // Target はどのペダルを使うか。空なら名前に ZOOM を含むポートを順に当たり、最初に対応している機種を使う。
-// hw:C,D ならそのポート、g2four / ms50g / ms70cdr などの機種名ならその機種のペダル。CLI の --pedal と $ZOOM_PEDAL で決まる。
+// hw:C,D ならそのポート、g2four / ms50g / ms70cdr などの機種名ならその機種のペダル。CLI の --pedal と $ZM_PEDAL で決まる。
 var Target string
 
 // Open は Target のペダルを開く。edit なら書き込めるようにする（G2 FOUR はエディタモード ON と AUTO SAVE OFF）。

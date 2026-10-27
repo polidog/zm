@@ -7,9 +7,10 @@ import (
 	"strings"
 
 	"github.com/polidog/zoom-ai/internal/device"
+	"github.com/polidog/zoom-ai/internal/paths"
 )
 
-const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g|ms70cdr] <command> [args]
+const usage = `usage: zm [--pedal hw:C,D|g2four|ms50g|ms70cdr] [--dir <path>] <command> [args]
 
   info                            機種・ファームウェア・パッチ数
   list                            全パッチの番号と名前
@@ -29,9 +30,9 @@ const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g|ms70cdr] <command> [args
   probe                           P0 の疎通確認（開発用）
 
 読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300 / 旧 MS は 1〜50、スロット 1〜6）。
-backups/ と catalog/ は $ZOOM_DIR（無ければカレントディレクトリ）に置く。
+backups/ と catalog/ は --dir（無ければ $ZM_DIR、それも無ければ ~/.config/zm）に置く。--dir はコマンドの後ろに書いてもよい。
 
---pedal（無ければ $ZOOM_PEDAL）で使うペダルを選ぶ。省略すると、名前に ZOOM を含むポートのうち最初に答えた対応機種。
+--pedal（無ければ $ZM_PEDAL）で使うペダルを選ぶ。省略すると、名前に ZOOM を含むポートのうち最初に答えた対応機種。
 `
 
 type command func(args []string) error
@@ -62,16 +63,27 @@ func commands() map[string]command {
 }
 
 func Run(args []string) error {
-	device.Target = os.Getenv("ZOOM_PEDAL")
-	for len(args) > 0 && strings.HasPrefix(args[0], "--pedal") {
-		if v, ok := strings.CutPrefix(args[0], "--pedal="); ok {
-			device.Target, args = v, args[1:]
+	device.Target = os.Getenv("ZM_PEDAL")
+	for len(args) > 0 {
+		var dst *string
+		var name string
+		switch {
+		case strings.HasPrefix(args[0], "--pedal"):
+			dst, name = &device.Target, "--pedal"
+		case strings.HasPrefix(args[0], "--dir"):
+			dst, name = &paths.Dir, "--dir"
+		}
+		if dst == nil {
+			break
+		}
+		if v, ok := strings.CutPrefix(args[0], name+"="); ok {
+			*dst, args = v, args[1:]
 			continue
 		}
-		if len(args) < 2 {
-			return fmt.Errorf("--pedal には hw:C,D か機種名を渡す")
+		if args[0] != name || len(args) < 2 {
+			return fmt.Errorf("%s には値を渡す", name)
 		}
-		device.Target, args = args[1], args[2:]
+		*dst, args = args[1], args[2:]
 	}
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" || args[0] == "help" {
 		fmt.Fprint(os.Stderr, usage)

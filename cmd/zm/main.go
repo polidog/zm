@@ -1,4 +1,4 @@
-// zoom は ZOOM G2 FOUR を CLI・TUI・MCP サーバーから操作する。
+// zm は ZOOM G2 FOUR を CLI・TUI・MCP サーバーから操作する。
 package main
 
 import (
@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if err := cli.Run(os.Args[1:]); err != nil {
-		fmt.Fprintln(os.Stderr, "zoom:", err)
+		fmt.Fprintln(os.Stderr, "zm:", err)
 		os.Exit(1)
 	}
 }

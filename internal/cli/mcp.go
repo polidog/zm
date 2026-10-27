@@ -9,7 +9,7 @@ import (
 	"github.com/polidog/zoom-ai/internal/mcpserver"
 )
 
-// Version は zoom の版。MCP の serverInfo に出す。
+// Version は zm の版。MCP の serverInfo に出す。
 var Version = "0.1.0"
 
 // MCP は stdio で MCP サーバーを動かす。ペダルのポートは呼び出しごとに開いて閉じる。
