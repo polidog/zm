@@ -1,9 +1,12 @@
 // Package catalog はエフェクトカタログ (L3)。ID → 名前 / パラメータ名 / 範囲 / 説明。
 //
 // catalog/g2four.json は `zoom catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
+// 旧 MS-50G はペダルからエフェクトの定義を取り出せないので、g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作った
+// ms50g/ms50g.json を埋め込む（作り方は ms50g/gen.mjs）。
 package catalog
 
 import (
+	_ "embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/polidog/zoom-ai/internal/patch"
 	"github.com/polidog/zoom-ai/internal/paths"
@@ -56,6 +60,18 @@ type Catalog struct {
 }
 
 func Path() string { return filepath.Join(paths.Catalog(), "g2four.json") }
+
+//go:embed ms50g/ms50g.json
+var ms50gJSON []byte
+
+// MS50G は埋め込みの MS-50G のカタログ。
+var MS50G = sync.OnceValues(func() (*Catalog, error) {
+	var c Catalog
+	if err := json.Unmarshal(ms50gJSON, &c); err != nil {
+		return nil, fmt.Errorf("ms50g.json: %w", err)
+	}
+	return &c, nil
+})
 
 // ZD2Dir はペダルから取った ZD2 のキャッシュ。
 func ZD2Dir() string { return filepath.Join(paths.Catalog(), "zd2") }

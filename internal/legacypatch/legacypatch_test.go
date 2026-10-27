@@ -1,0 +1,90 @@
+package legacypatch
+
+import (
+	"bytes"
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/polidog/zoom-ai/internal/testdata"
+)
+
+// empty は zoom-ms-utility の apatch.js にある MS-50G の空パッチ（THRU だけ、名前 Empty）。
+var empty = []byte{
+	0xf0, 0x52, 0x00, 0x58, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0f, 0x45, 0x00, 0x6d, 0x70, 0x74, 0x79, 0x20, 0x20,
+	0x20, 0x00, 0x20, 0x20, 0x00, 0xf7,
+}
+
+func TestEmpty(t *testing.T) {
+	p, err := Parse(empty)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if p.Name() != "Empty" || p.UsedSlots() != 1 || p.EditSlot() != 0 || p.Tempo() != 120 {
+		t.Errorf("name %q used %d edit %d tempo %d", p.Name(), p.UsedSlots(), p.EditSlot(), p.Tempo())
+	}
+	for s := range Slots {
+		if e := p.Effect(s); e.ID != 0 || e.Params != [MaxParams]int{} {
+			t.Errorf("slot %d: %+v", s, e)
+		}
+	}
+}
+
+func TestSetEffect(t *testing.T) {
+	p, _ := Parse(empty)
+	params := [MaxParams]int{24, 30, 86, 48, 45, 44, 52, 8, 0}
+	p.SetEffect(2, 0x00100008, params, &Amp{GuitarCab: true})
+	p.SetEnabled(2, true)
+	e := p.Effect(2)
+	if e.ID != 0x00100008 || !e.Enabled || e.Params != params {
+		t.Errorf("%+v", e)
+	}
+	if p.UsedSlots() != 3 || p.Raw[cabAt[2]] != 0x40 {
+		t.Errorf("used %d cab %#x", p.UsedSlots(), p.Raw[cabAt[2]])
+	}
+	if err := p.SetName("Clean"); err != nil || p.Name() != "Clean" {
+		t.Errorf("name %q, %v", p.Name(), err)
+	}
+}
+
+// 実機の全パッチで、読んだ値をいったん 0 にしてから書き戻すと元のバイト列に戻るか
+// （ビット位置の表に重なりや抜けがないか）。
+func TestRoundtrip(t *testing.T) {
+	dir, files := testdata.LatestAllIn(t, "ms50g")
+	t.Logf("%s: %d 件", filepath.Base(dir), len(files))
+	for _, file := range files {
+		t.Run(filepath.Base(file), func(t *testing.T) {
+			raw, err := os.ReadFile(file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			p, err := Parse(raw)
+			if err != nil {
+				t.Fatal(err)
+			}
+			name := p.Name()
+			for s := range Slots {
+				for k, fs := range bits[s] {
+					v := get(p.Raw, fs)
+					set(p.Raw, fs, 0)
+					if got := get(p.Raw, fs); got != 0 {
+						t.Fatalf("slot %d field %d: 0 にしても %d", s, k, got)
+					}
+					set(p.Raw, fs, v)
+				}
+			}
+			if err := p.SetName(name); err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(p.Raw, raw) {
+				t.Errorf("書き戻すと変わる\n got % x\nwant % x", p.Raw, raw)
+			}
+		})
+	}
+}

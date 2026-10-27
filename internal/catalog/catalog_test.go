@@ -124,3 +124,47 @@ func TestBuildMatchesCatalog(t *testing.T) {
 		t.Error("作り直したカタログが一致しない")
 	}
 }
+
+// 埋め込みの MS-50G のカタログ（ms50g/ms50g.json）。
+func TestMS50G(t *testing.T) {
+	c, err := catalog.MS50G()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(c.Effects) == 0 {
+		t.Fatal("エフェクトがない")
+	}
+	for _, e := range c.Effects {
+		if len(e.Params) > 9 {
+			t.Errorf("%s: パラメータが %d 個（旧 MS は 9 個まで）", e.Name, len(e.Params))
+		}
+	}
+	if e, err := c.Resolve("fd combo"); err != nil || e.ID != "0x00100008" {
+		t.Errorf("FD COMBO: %v %v", e, err)
+	}
+
+	// 実機の全パッチのエフェクトがカタログにあり、値が範囲に収まるか（backups/ms50g が無ければスキップ）
+	_, files := testdata.LatestAllIn(t, device.MS50G.BackupDir)
+	for _, f := range files {
+		raw, _ := os.ReadFile(f)
+		p, err := device.DecodeSysex(raw)
+		if err != nil {
+			t.Fatalf("%s: %v", f, err)
+		}
+		for slot, fx := range p.Effects {
+			if fx.ID == 0 {
+				continue
+			}
+			e := c.Find(fx.ID)
+			if e == nil {
+				t.Errorf("%s slot %d: カタログにない ID %s", filepath.Base(f), slot+1, catalog.FormatID(fx.ID))
+				continue
+			}
+			for i, prm := range e.Params {
+				if fx.Params[i] > prm.Max {
+					t.Errorf("%s slot %d %s %s: %d > %d", filepath.Base(f), slot+1, e.Name, prm.Name, fx.Params[i], prm.Max)
+				}
+			}
+		}
+	}
+}

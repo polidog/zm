@@ -64,6 +64,33 @@ func SetAutoSave(dev byte, on bool) []byte {
 	return Zoom(dev, append([]byte{0x64, 0x20, 0x00, 0x64, 0x0f}, Split35(v)...)...)
 }
 
+// ---- 旧 MS（MS-50G など、デバイス ID 58）----
+
+// LegacyDeviceID は MS+ より前の MS シリーズ（MS-50G）の機種 ID。
+const LegacyDeviceID = 0x58
+
+// 旧 MS のメッセージは g200kg/zoom-ms-utility の midimessage.md と、MS-50G (ファームウェア 3.10) の実機で確かめたもの。
+// 50 / 51（エディタモード）には応答がない。33 と 29 はエディタモード中しか答えない。
+
+// LegacyRequestCurrentPatch は現在パッチ（編集中の中身）の要求。応答は 28 で始まる 146 バイト。
+// 応答と同じ形の 28 を送ると、現在パッチの中身がそれに置き換わる（保存はしない）。
+func LegacyRequestCurrentPatch(dev byte) []byte { return Zoom(dev, 0x29) }
+
+// LegacySetParameter は現在パッチのパラメータを 1 つ変える（保存しない）。応答はない。
+// paramNo: 0 = ON/OFF, 2.. = パラメータ 1..9。値は 14bit。
+func LegacySetParameter(dev byte, slot, paramNo, value int) []byte {
+	v := Split14(value)
+	return Zoom(dev, 0x31, byte(slot), byte(paramNo), v[0], v[1])
+}
+
+// LegacyStore は現在パッチをパッチメモリ n（0 始まり）に保存する。応答は 00 で始まる。
+func LegacyStore(dev byte, n int) []byte {
+	return Zoom(dev, 0x32, 0x01, 0x00, 0x00, byte(n), 0x00, 0x00, 0x00, 0x00, 0x00)
+}
+
+// ProgramChange はパッチを選ぶ（チャンネル 1）。旧 MS の 33 にもこの形で返ってくる（前に CC0 / CC32 が付く）。
+func ProgramChange(n int) []byte { return []byte{0xc0, byte(n & 0x7f)} }
+
 // RequestPatchInfo の応答 43: パッチ数・パッチ長・バンク数など。
 func RequestPatchInfo(dev byte) []byte { return Zoom(dev, 0x44) }
 

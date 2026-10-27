@@ -24,6 +24,9 @@ func CatalogCmd(args []string) error {
 	if err := want(parse(fs, args), 0, 0, usage); err != nil {
 		return err
 	}
+	if m, ok := device.TargetModel(); ok && m.Key == device.MS50G.Key {
+		return fmt.Errorf("MS-50G のカタログは zoom に埋め込んである（ペダルから作るものはない）")
+	}
 	cache := catalog.ZD2Dir()
 	if err := os.MkdirAll(cache, 0o755); err != nil {
 		return err
@@ -31,6 +34,9 @@ func CatalogCmd(args []string) error {
 	cached, _ := filepath.Glob(filepath.Join(cache, "*.ZD2"))
 	if *refresh || len(cached) == 0 {
 		if _, err := ops.WithZoom(false, func(z *device.Zoom) (struct{}, error) {
+			if z.Model.Key != device.G2Four.Key {
+				return struct{}{}, fmt.Errorf("%s のカタログはペダルから作らない（--pedal で G2 FOUR を選ぶ）", z.Model.Name)
+			}
 			return struct{}{}, download(pedalfs.New(z.Conn, z.DeviceID()), cache, *refresh)
 		}); err != nil {
 			return err

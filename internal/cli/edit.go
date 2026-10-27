@@ -53,6 +53,27 @@ func SetEffectCmd(args []string) error {
 	return printSlot(v, *asJSON)
 }
 
+func RenameCmd(args []string) error {
+	const usage = "rename <name> [--json]"
+	fs := newFlags("rename", usage)
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if len(pos) == 0 {
+		return fmt.Errorf("usage: zoom %s", usage)
+	}
+	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.RenameResult, error) {
+		return ops.Rename(z, strings.Join(pos, " "))
+	})
+	if err != nil {
+		return err
+	}
+	if *asJSON {
+		return printJSON(r)
+	}
+	fmt.Printf("名前を %q にした\n（保存していない。残すなら zoom save <n>）\n", r.Name)
+	return nil
+}
+
 func SetCmd(args []string) error {
 	const usage = "set <slot> <param> <value> [--json]"
 	fs := newFlags("set", usage)

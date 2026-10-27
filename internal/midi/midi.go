@@ -88,6 +88,30 @@ func FindZoomPort() (Port, bool) {
 	return Port{}, false
 }
 
+// ParsePort は hw:C,D（,D は省略可）をポートにする。
+func ParsePort(spec string) (Port, error) {
+	card, dev, _ := strings.Cut(strings.TrimPrefix(spec, "hw:"), ",")
+	if dev == "" {
+		dev = "0"
+	}
+	c, err := strconv.Atoi(card)
+	if err != nil {
+		return Port{}, fmt.Errorf("ポートは hw:C,D: %w", err)
+	}
+	d, err := strconv.Atoi(dev)
+	if err != nil {
+		return Port{}, fmt.Errorf("ポートは hw:C,D: %w", err)
+	}
+	name := spec
+	ports, _ := ListPorts()
+	for _, p := range ports {
+		if p.Card == c && p.Device == d {
+			name = p.Name
+		}
+	}
+	return Port{Card: c, Device: d, Name: name}, nil
+}
+
 // Conn は開いている rawmidi ポート。受信は goroutine で SysEx 単位に切り分け、Messages に流す。
 //
 // Messages を読むのは 1 つの goroutine だけにする（Request もそこから読む）。
@@ -104,6 +128,9 @@ type Conn struct {
 	// Unmatched は Request / Drain が読み捨てた SysEx を受け取る（nil なら捨てる）。
 	// ペダルが自分から送ってくる通知 (64 12 00 など) を拾うのに使う。
 	Unmatched func([]byte)
+
+	// tap は受信した生バイトを、SysEx に切り分ける前にそのまま受け取る（nil なら呼ばない）。
+	tap func([]byte)
 }
 
 func Open(p Port) (*Conn, error) {
@@ -124,6 +151,12 @@ func (c *Conn) readLoop() {
 	for {
 		n, err := c.f.Read(chunk)
 		if n > 0 {
+			c.mu.Lock()
+			tap := c.tap
+			c.mu.Unlock()
+			if tap != nil {
+				tap(append([]byte(nil), chunk[:n]...))
+			}
 			buf = append(buf, chunk[:n]...)
 			for {
 				start := bytes.IndexByte(buf, 0xf0)
@@ -150,6 +183,14 @@ func (c *Conn) readLoop() {
 			return
 		}
 	}
+}
+
+// SetTap は受信した生バイトを f に渡す。SysEx 以外のメッセージ（Program Change など）を見るのに使う。
+// f は受信の goroutine から呼ばれる。nil で外す。
+func (c *Conn) SetTap(f func([]byte)) {
+	c.mu.Lock()
+	c.tap = f
+	c.mu.Unlock()
 }
 
 // Messages は受信した SysEx。ポートを閉じると閉じる。

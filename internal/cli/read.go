@@ -92,7 +92,7 @@ func Show(args []string) error {
 		if *raw {
 			return printJSON(p)
 		}
-		cat, err := ops.Catalog()
+		cat, err := ops.CatalogFor(device.ModelOfSysex(msg))
 		if err != nil {
 			return err
 		}

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/polidog/zoom-ai/internal/backups"
@@ -21,22 +21,6 @@ func hexdump(data []byte) string {
 		lines = append(lines, "    "+sysex.ToHex(data[i:min(i+16, len(data))]))
 	}
 	return strings.Join(lines, "\n")
-}
-
-func parsePort(spec string) (midi.Port, error) {
-	card, dev, _ := strings.Cut(strings.TrimPrefix(spec, "hw:"), ",")
-	if dev == "" {
-		dev = "0"
-	}
-	c, err := strconv.Atoi(card)
-	if err != nil {
-		return midi.Port{}, fmt.Errorf("--port は hw:C,D: %w", err)
-	}
-	d, err := strconv.Atoi(dev)
-	if err != nil {
-		return midi.Port{}, fmt.Errorf("--port は hw:C,D: %w", err)
-	}
-	return midi.Port{Card: c, Device: d, Name: spec}, nil
 }
 
 // Probe は P0 の疎通確認: Identity Request → 現在プログラム → 現在パッチのダンプ。
@@ -57,7 +41,7 @@ func Probe(args []string) error {
 
 	var port midi.Port
 	if *portSpec != "" {
-		p, err := parsePort(*portSpec)
+		p, err := midi.ParsePort(*portSpec)
 		if err != nil {
 			return err
 		}
@@ -128,6 +112,10 @@ func Probe(args []string) error {
 		}()
 	}
 
+	if dev == sysex.LegacyDeviceID {
+		return probeLegacy(conn, dev, save)
+	}
+
 	fmt.Println("\n[2] 現在のバンク / プログラム (33)")
 	reply, err = conn.Request(sysex.GetCurrentProgram(dev), 2*time.Second, nil)
 	if err != nil {
@@ -158,6 +146,81 @@ func Probe(args []string) error {
 	tag := "想定外のヘッダ"
 	if reply[4] == 0x64 && reply[5] == 0x12 {
 		tag = "ok (64 12)"
+	}
+	fmt.Printf("  %d bytes, %s\n", len(reply), tag)
+	return save("current-patch", reply)
+}
+
+// probeLegacy は旧 MS (58) 向け。--editor-mode に関わらずエディタモードを ON にする（33 と 29 はエディタモード中しか答えない）。
+// 33 には SysEx 以外で返る可能性があるので、受信の生バイトをそのまま見る。
+func probeLegacy(conn *midi.Conn, dev byte, save func(string, []byte) error) error {
+	var mu sync.Mutex
+	var raw []byte
+	conn.SetTap(func(b []byte) {
+		mu.Lock()
+		raw = append(raw, b...)
+		mu.Unlock()
+	})
+	takeRaw := func() []byte {
+		mu.Lock()
+		defer mu.Unlock()
+		out := raw
+		raw = nil
+		return out
+	}
+
+	fmt.Println("\n[2] 現在のプログラム (33)、SysEx 以外も含めて 2 秒待つ")
+	takeRaw()
+	if err := conn.Send(sysex.GetCurrentProgram(dev)); err != nil {
+		return err
+	}
+	time.Sleep(2 * time.Second)
+	if got := takeRaw(); len(got) == 0 {
+		fmt.Println("  応答なし")
+	} else {
+		fmt.Println(hexdump(got))
+		if err := save("program-raw", got); err != nil {
+			return err
+		}
+	}
+	conn.Drain()
+
+	// 51 (OFF) は送らない。旧 MS は 51 で未保存の編集を捨てる
+	ack, err := conn.Request(sysex.EditorModeOn(dev), 2*time.Second, nil)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("\n[*] editor mode on (50): %s\n", orNone(ack))
+
+	fmt.Println("\n[3] 現在のプログラム (33)、エディタモード中")
+	takeRaw()
+	if err := conn.Send(sysex.GetCurrentProgram(dev)); err != nil {
+		return err
+	}
+	time.Sleep(2 * time.Second)
+	if got := takeRaw(); len(got) == 0 {
+		fmt.Println("  応答なし")
+	} else {
+		fmt.Println(hexdump(got))
+		if err := save("program-editor-raw", got); err != nil {
+			return err
+		}
+	}
+	conn.Drain()
+
+	fmt.Println("\n[4] 現在パッチのダンプ (29)")
+	reply, err := conn.Request(sysex.LegacyRequestCurrentPatch(dev), 4*time.Second, nil)
+	if err != nil {
+		return err
+	}
+	if reply == nil {
+		fmt.Println("  応答なし")
+		return nil
+	}
+	fmt.Println(hexdump(reply))
+	tag := "想定外のヘッダ"
+	if len(reply) > 4 && reply[4] == 0x28 {
+		tag = "ok (28)"
 	}
 	fmt.Printf("  %d bytes, %s\n", len(reply), tag)
 	return save("current-patch", reply)

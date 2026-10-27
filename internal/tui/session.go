@@ -25,7 +25,7 @@ type Pedal interface {
 // session は TUI の間ずっと開いておく 1 本の接続。
 //
 // ポートからの受信を読むのは 1 か所だけにしたいので、要求も通知の待ち受けも mu の中でやる。
-// 要求の途中に届いた通知 (64 12 00) は Unmatched で拾い、空いている間は watch が短く待って拾う。
+// 要求の途中に届いた通知（G2 FOUR は 64 12 00、旧 MS は 31）は Unmatched で拾い、空いている間は watch が短く待って拾う。
 type session struct {
 	mu     sync.Mutex
 	z      *device.Zoom
@@ -47,10 +47,7 @@ func openSession(notify func(*patch.Patch)) (*session, error) {
 }
 
 func (s *session) onMessage(msg []byte) {
-	if !device.IsPatchNotice(msg) {
-		return
-	}
-	if p, err := device.DecodeSysex(msg); err == nil {
+	if p, ok := s.z.Notice(msg); ok {
 		s.notify(p)
 	}
 }

@@ -1,6 +1,6 @@
 // Package ops は CLI・TUI・MCP が共有する操作。
 //
-// 番号はペダルの画面に合わせる: パッチは 1〜300、スロットは 1〜6。0 始まりへの変換と範囲の検証はここでやる。
+// 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、MS-50G は 50）、スロットは 1〜6。0 始まりへの変換と範囲の検証はここでやる。
 // SetEffect などの編集は「いま鳴っているパッチ」への変更で、保存しない（パッチを選び直せば元に戻る）。
 // 保存は Save だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
 //
@@ -22,8 +22,11 @@ var (
 	loaded *catalog.Catalog
 )
 
-// Catalog はカタログを読む（読めたら覚えておく）。
-func Catalog() (*catalog.Catalog, error) {
+// CatalogFor は機種 m のカタログ。G2 FOUR は catalog/g2four.json を読み（読めたら覚えておく）、MS-50G は埋め込みを使う。
+func CatalogFor(m device.Model) (*catalog.Catalog, error) {
+	if m.Key == device.MS50G.Key {
+		return catalog.MS50G()
+	}
 	catMu.Lock()
 	defer catMu.Unlock()
 	if loaded != nil {
@@ -36,6 +39,23 @@ func Catalog() (*catalog.Catalog, error) {
 	loaded = c
 	return c, nil
 }
+
+// Model は使うペダルの機種。--pedal が機種名ならそれ、そうでなければ繋がっているペダルに聞く。
+// ペダルが見つからない（ほかのプロセスが開いている、など）ときは G2 FOUR とみなす。
+func Model() device.Model {
+	if m, ok := device.TargetModel(); ok {
+		return m
+	}
+	zoomMu.Lock()
+	defer zoomMu.Unlock()
+	if m, err := device.Identify(); err == nil {
+		return m
+	}
+	return device.G2Four
+}
+
+// Catalog は使うペダルの機種のカタログ（ペダルを開かずに使う場面向け）。開いているなら CatalogFor(z.Model) を使う。
+func Catalog() (*catalog.Catalog, error) { return CatalogFor(Model()) }
 
 // ResetCatalog は覚えているカタログを捨てる（zoom catalog で作り直した後）。
 func ResetCatalog() {
@@ -123,7 +143,7 @@ type PatchView struct {
 
 // GetPatch はパッチの中身を名前つきで返す。number が 0 なら、いま鳴っている（編集中の）パッチ。
 func GetPatch(z *device.Zoom, number int) (PatchView, error) {
-	cat, err := Catalog()
+	cat, err := CatalogFor(z.Model)
 	if err != nil {
 		return PatchView{}, err
 	}
@@ -164,8 +184,10 @@ type EffectSummary struct {
 }
 
 // ListEffects はエフェクトの一覧。group が空でなければそのグループだけ（大文字小文字は問わない）。
-func ListEffects(group string) ([]EffectSummary, error) {
-	cat, err := Catalog()
+func ListEffects(group string) ([]EffectSummary, error) { return ListEffectsFor(Model(), group) }
+
+func ListEffectsFor(m device.Model, group string) ([]EffectSummary, error) {
+	cat, err := CatalogFor(m)
 	if err != nil {
 		return nil, err
 	}
@@ -205,8 +227,10 @@ func orElse(a, b string) string {
 	return b
 }
 
-func DescribeEffect(query string) (EffectDetail, error) {
-	cat, err := Catalog()
+func DescribeEffect(query string) (EffectDetail, error) { return DescribeEffectFor(Model(), query) }
+
+func DescribeEffectFor(m device.Model, query string) (EffectDetail, error) {
+	cat, err := CatalogFor(m)
 	if err != nil {
 		return EffectDetail{}, err
 	}
@@ -245,7 +269,7 @@ func (s SlotView) MarshalJSON() ([]byte, error) {
 }
 
 func slotView(z *device.Zoom, slot int) (SlotView, error) {
-	cat, err := Catalog()
+	cat, err := CatalogFor(z.Model)
 	if err != nil {
 		return SlotView{}, err
 	}
@@ -268,7 +292,7 @@ func SetEffect(z *device.Zoom, slot int, effect string) (SlotView, error) {
 	if err != nil {
 		return SlotView{}, err
 	}
-	cat, err := Catalog()
+	cat, err := CatalogFor(z.Model)
 	if err != nil {
 		return SlotView{}, err
 	}
@@ -309,7 +333,7 @@ func slotEffect(z *device.Zoom, slot int) (*catalog.Effect, int, error) {
 	if err != nil {
 		return nil, 0, err
 	}
-	cat, err := Catalog()
+	cat, err := CatalogFor(z.Model)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -365,6 +389,23 @@ func Toggle(z *device.Zoom, slot int, enabled *bool) (SlotView, error) {
 	return slotView(z, slot)
 }
 
+// RenameResult は名前を変えた後の現在パッチ。
+type RenameResult struct {
+	Name string `json:"name"`
+}
+
+// Rename はいま鳴っているパッチの名前を変える（保存しない）。旧 MS は 10 文字までの ASCII。
+func Rename(z *device.Zoom, name string) (RenameResult, error) {
+	if err := z.SetName(name); err != nil {
+		return RenameResult{}, err
+	}
+	p, err := z.CurrentPatch()
+	if err != nil {
+		return RenameResult{}, err
+	}
+	return RenameResult{Name: p.Name}, nil
+}
+
 // ---- 保存（フラッシュに書く） ----
 
 type SaveResult struct {
@@ -375,6 +416,7 @@ type SaveResult struct {
 }
 
 // Save はいま鳴っているパッチをパッチメモリ number に保存する。上書きされる中身は先に退避する。
+// 旧 MS は保存の後、number を選んだ状態になる。
 func Save(z *device.Zoom, number int) (SaveResult, error) {
 	n, err := PatchIndex(z.Model, number)
 	if err != nil {
@@ -411,7 +453,7 @@ func LatestBackup(m device.Model, number int) (string, []byte, error) {
 	if err != nil {
 		return "", nil, err
 	}
-	path, data, err := backups.LatestOverwritten(n)
+	path, data, err := backups.LatestOverwritten(m, n)
 	if err != nil {
 		return "", nil, err
 	}

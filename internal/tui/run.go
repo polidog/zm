@@ -11,10 +11,6 @@ import (
 
 // Run は TUI を動かす。MIDI ポートは 1 プロセスしか開けないので、動いている間は MCP や CLI からは使えない。
 func Run() error {
-	cat, err := ops.Catalog()
-	if err != nil {
-		return err
-	}
 	var program atomic.Pointer[tea.Program]
 	s, err := openSession(func(p *patch.Patch) {
 		if prog := program.Load(); prog != nil {
@@ -22,6 +18,11 @@ func Run() error {
 		}
 	})
 	if err != nil {
+		return err
+	}
+	cat, err := ops.CatalogFor(s.Model())
+	if err != nil {
+		s.Close()
 		return err
 	}
 	prog := tea.NewProgram(New(s, cat))

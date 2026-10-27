@@ -24,7 +24,14 @@ func Catalog() string { return filepath.Join(Root(), "catalog") }
 // LatestAll はいちばん新しい backups/all-*/ の .syx を番号順に返す。無ければスキップ。
 func LatestAll(t testing.TB) (string, []string) {
 	t.Helper()
-	entries, _ := os.ReadDir(Backups())
+	return LatestAllIn(t, "")
+}
+
+// LatestAllIn は backups/<sub>/all-*/ で LatestAll と同じことをする（sub は device.Model.BackupDir）。
+func LatestAllIn(t testing.TB, sub string) (string, []string) {
+	t.Helper()
+	root := filepath.Join(Backups(), sub)
+	entries, _ := os.ReadDir(root)
 	var dirs []string
 	for _, e := range entries {
 		if e.IsDir() && strings.HasPrefix(e.Name(), "all-") {
@@ -32,10 +39,10 @@ func LatestAll(t testing.TB) (string, []string) {
 		}
 	}
 	if len(dirs) == 0 {
-		t.Skip("backups/all-* がない（zoom backup で作る）")
+		t.Skipf("%s/all-* がない（zoom backup で作る）", root)
 	}
 	sort.Strings(dirs)
-	dir := filepath.Join(Backups(), dirs[len(dirs)-1])
+	dir := filepath.Join(root, dirs[len(dirs)-1])
 	files, _ := filepath.Glob(filepath.Join(dir, "*.syx"))
 	sort.Strings(files)
 	return dir, files
