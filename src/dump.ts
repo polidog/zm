@@ -5,16 +5,20 @@
  *   bun run dump current      いま鳴っているパッチ
  *   bun run dump list         全パッチの番号と名前
  *   bun run dump file.syx     保存済みの SysEx
+ *
+ * --named を付けると、カタログでエフェクト名・パラメータ名を引いた形で出す。
  */
 
 import { readFileSync } from "node:fs";
+import { describePatch, loadCatalog } from "./catalog";
 import { decodePatchSysex } from "./codec";
 import { Zoom } from "./device";
-import { decodePatch } from "./patch";
+import { decodePatch, type Patch } from "./patch";
 
-const arg = process.argv[2];
+const named = process.argv.includes("--named");
+const arg = process.argv.slice(2).find((a) => !a.startsWith("--"));
 if (!arg) {
-  console.error("usage: bun run dump <n|current|list|file.syx>");
+  console.error("usage: bun run dump <n|current|list|file.syx> [--named]");
   process.exit(1);
 }
 
@@ -28,4 +32,5 @@ if (arg.endsWith(".syx")) {
     : arg === "list" ? await zoom.listPatches()
     : await zoom.getPatch(Number(arg));
 }
+if (named && arg !== "list") result = describePatch(loadCatalog(), result as Patch);
 console.log(JSON.stringify(result, null, 2));

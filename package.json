@@ -8,6 +8,7 @@
     "probe": "bun run src/probe.ts",
     "backup": "bun run src/backup.ts",
     "dump": "bun run src/dump.ts",
+    "catalog": "bun run src/build-catalog.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
