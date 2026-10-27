@@ -1,7 +1,8 @@
-node_modules/
 # 実機から取ったパッチ。ZOOM のプリセットを含むのでリポジトリには入れない
 /backups/
 # ペダルから取り出した ZD2 と、そこから作るカタログ。ZOOM の著作物なので入れない
 /catalog/
 # go build ./cmd/zoom の出力
 /zoom
+# TypeScript 版の名残。消してよい
+node_modules/
