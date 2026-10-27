@@ -16,10 +16,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/codec"
-	"github.com/polidog/zoom-ai/internal/midi"
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/codec"
+	"github.com/polidog/zm/internal/midi"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 // Model は機種ごとに違う値。

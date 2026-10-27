@@ -5,7 +5,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
+	"github.com/polidog/zm/internal/catalog"
 )
 
 // picker はエフェクト選択。←→ でグループ、文字を打つと名前で絞り込み、↑↓ で選ぶ。

@@ -5,8 +5,8 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/polidog/zoom-ai/internal/ops"
-	"github.com/polidog/zoom-ai/internal/patch"
+	"github.com/polidog/zm/internal/ops"
+	"github.com/polidog/zm/internal/patch"
 )
 
 // Run は TUI を動かす。MIDI ポートは 1 プロセスしか開けないので、動いている間は MCP や CLI からは使えない。

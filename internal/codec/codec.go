@@ -15,7 +15,7 @@ import (
 	"fmt"
 	"hash/crc32"
 
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 // Pack7 は 7 バイトごとに先頭へ MSB をまとめる。先頭バイトの bit6 が 1 つ目のデータに対応する。

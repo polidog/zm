@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/codec"
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/codec"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 // four は G2 FOUR（デバイス ID 6E）。

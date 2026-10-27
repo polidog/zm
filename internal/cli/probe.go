@@ -9,11 +9,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/backups"
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/midi"
-	"github.com/polidog/zoom-ai/internal/paths"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/backups"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/midi"
+	"github.com/polidog/zm/internal/paths"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 func hexdump(data []byte) string {

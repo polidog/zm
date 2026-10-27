@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/paths"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/paths"
 )
 
 const usage = `usage: zm [--pedal hw:C,D|g2four|ms50g|ms70cdr] [--dir <path>] <command> [args]

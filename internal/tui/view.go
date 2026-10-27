@@ -7,8 +7,8 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/ops"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/ops"
 )
 
 var (

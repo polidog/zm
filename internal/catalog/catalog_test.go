@@ -12,10 +12,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/testdata"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/testdata"
 )
 
 func load(t *testing.T) (*catalog.Catalog, []*patch.Patch) {

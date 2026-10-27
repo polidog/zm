@@ -8,9 +8,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/polidog/zoom-ai/internal/codec"
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/testdata"
+	"github.com/polidog/zm/internal/codec"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/testdata"
 )
 
 func TestPack7(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/polidog/zoom-ai/internal/testdata"
+	"github.com/polidog/zm/internal/testdata"
 )
 
 // empty は zoom-ms-utility の apatch.js にある MS-50G の空パッチ（THRU だけ、名前 Empty）。

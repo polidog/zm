@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/polidog/zoom-ai/internal/cli"
+	"github.com/polidog/zm/internal/cli"
 )
 
 func main() {

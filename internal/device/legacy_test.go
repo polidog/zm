@@ -3,8 +3,8 @@ package device
 import (
 	"testing"
 
-	"github.com/polidog/zoom-ai/internal/legacypatch"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/legacypatch"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 // legacyEmpty は zoom-ms-utility の apatch.js にある MS-50G の空パッチ。

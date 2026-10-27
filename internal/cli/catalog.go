@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/ops"
-	"github.com/polidog/zoom-ai/internal/pedalfs"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/ops"
+	"github.com/polidog/zm/internal/pedalfs"
 )
 
 // CatalogCmd はペダルの ZD2 を全部読み出し、catalog/g2four.json を作る。

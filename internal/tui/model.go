@@ -12,8 +12,8 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/patch"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/patch"
 )
 
 type mode int

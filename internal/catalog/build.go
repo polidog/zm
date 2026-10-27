@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/zd2"
+	"github.com/polidog/zm/internal/zd2"
 )
 
 // Build は dir の ZD2 からカタログを作る。読めない ZD2 は warn に渡して飛ばす。

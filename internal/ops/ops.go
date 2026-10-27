@@ -12,9 +12,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/polidog/zoom-ai/internal/backups"
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/device"
+	"github.com/polidog/zm/internal/backups"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/device"
 )
 
 var (

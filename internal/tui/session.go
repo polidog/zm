@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/ops"
-	"github.com/polidog/zoom-ai/internal/patch"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/ops"
+	"github.com/polidog/zm/internal/patch"
 )
 
 // Pedal は TUI がペダルにやってほしいこと。テストでは偽物に差し替える。

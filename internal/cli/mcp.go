@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/polidog/zoom-ai/internal/mcpserver"
+	"github.com/polidog/zm/internal/mcpserver"
 )
 
 // Version は zm の版。MCP の serverInfo に出す。

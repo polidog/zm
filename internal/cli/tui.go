@@ -1,6 +1,6 @@
 package cli
 
-import "github.com/polidog/zoom-ai/internal/tui"
+import "github.com/polidog/zm/internal/tui"
 
 func TUI(args []string) error {
 	fs := newFlags("tui", "tui")

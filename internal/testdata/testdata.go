@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/polidog/zoom-ai/internal/paths"
+	"github.com/polidog/zm/internal/paths"
 )
 
 func Backups() string { return paths.Backups() }

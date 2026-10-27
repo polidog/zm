@@ -1,4 +1,4 @@
-module github.com/polidog/zoom-ai
+module github.com/polidog/zm
 
 go 1.27.3
 

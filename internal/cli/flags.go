@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/polidog/zoom-ai/internal/ops"
-	"github.com/polidog/zoom-ai/internal/paths"
+	"github.com/polidog/zm/internal/ops"
+	"github.com/polidog/zm/internal/paths"
 )
 
 // parse はフラグと位置引数が混ざっていても読む（標準の flag は最初の位置引数で止まるので）。

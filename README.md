@@ -1,82 +1,101 @@
 # zm
 
-ZOOM G2 FOUR と旧 MS-50G / MS-70CDR を、CLI・TUI・MCP サーバー（Claude Code から音作り）で操作する。1 本の Go のバイナリで動く。
+English | [日本語](README.ja.md)
 
-Linux の ALSA rawmidi（`/dev/snd/midiCxDy`）を直接読み書きするので、ほかの OS では動かない。
+Control a ZOOM G2 FOUR and the older MS-50G / MS-70CDR from a CLI, a TUI, or an MCP server (shape your tone from Claude Code). It is a single Go binary.
 
-## 使い方
+zm reads and writes ALSA rawmidi (`/dev/snd/midiCxDy`) directly, so it runs on Linux only.
+
+zm is not an official ZOOM tool. The commands that write to the pedal (`save` / `restore`) back up what they overwrite, but take a `zm backup` before you use them.
+
+## Install
 
 ```sh
-go build -o zm ./cmd/zm          # または go install ./cmd/zm
+go install github.com/polidog/zm/cmd/zm@latest
+```
 
-zm info                           機種・ファームウェア・パッチ数
-zm list                           全パッチの番号と名前
-zm show [n]                       パッチの中身（省略で、いま鳴っているパッチ）
-zm effects [group]                エフェクト一覧
-zm effect <name>                  エフェクトの説明とパラメータ
-zm set-effect <slot> <effect>     エフェクト差し替え（保存しない）
-zm set <slot> <param> <value>     パラメータ変更（保存しない）
-zm on|off|toggle <slot>           ON / OFF（保存しない）
-zm rename <name>                  パッチ名の変更（保存しない。いまは旧 MS だけ）
-zm save <n> [--yes]               いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
-zm restore <n> [--yes]            save で上書きした n を戻す
-zm backup                         全パッチを backups/ に退避
-zm catalog [--refresh]            ペダルの ZD2 からカタログを作る
+Requires Go 1.27 or later. To build from a checkout: `go build -o zm ./cmd/zm`.
+
+## Usage
+
+```sh
+zm info                           model, firmware, number of patches
+zm list                           number and name of every patch
+zm show [n]                       contents of a patch (omit n for the patch currently playing)
+zm effects [group]                list effects
+zm effect <name>                  an effect's description and parameters
+zm set-effect <slot> <effect>     replace an effect (not saved)
+zm set <slot> <param> <value>     change a parameter (not saved)
+zm on|off|toggle <slot>           switch an effect on / off (not saved)
+zm rename <name>                  rename the patch (not saved; legacy MS only for now)
+zm save <n> [--yes]               save the current patch to n (asks first, backs up what it overwrites)
+zm restore <n> [--yes]            undo a save to n
+zm backup                         back up every patch to backups/
+zm catalog [--refresh]            build the effect catalog from the pedal's ZD2 files
 zm tui                            TUI
-zm mcp                            MCP サーバー (stdio)
-zm probe                          疎通確認（開発用）
+zm mcp                            MCP server (stdio)
+zm probe                          connectivity check (for development)
 ```
 
-- 番号はペダルの画面に合わせる（パッチは 1〜300 / 旧 MS は 1〜50、スロットは 1〜6）
-- `zm --pedal ms50g …`（ms70cdr / g2four）/ `zm --pedal hw:5,0 …`（または `$ZM_PEDAL`）で使うペダルを選ぶ。省くと最初に見つかった ZOOM
-- 読み出し系は `--json` で機械向けの出力を出す。`zm show --file x.syx` で保存済みの SysEx も読める
-- 編集（set-effect / set / on / off / toggle）は「いま鳴っているパッチ」への変更で、保存しない。パッチを選び直せば戻る
-- MIDI ポートは 1 プロセスしか開けない。TUI を開いている間は CLI と MCP からは使えない
+- Numbers match the pedal's display (patches 1–300, or 1–50 on legacy MS; slots 1–6)
+- Pick a pedal with `zm --pedal ms50g …` (ms70cdr / g2four), `zm --pedal hw:5,0 …`, or `$ZM_PEDAL`. Without one, zm uses the first ZOOM pedal it finds
+- Read commands take `--json` for machine-readable output. `zm show --file x.syx` reads a saved SysEx file
+- Edits (set-effect / set / on / off / toggle) change the patch currently playing and are not saved. Selecting another patch discards them
+- Only one process can open the MIDI port. While the TUI is open, the CLI and MCP server cannot reach the pedal
 
-### はじめに
+### Getting started
 
 ```sh
-zm backup       # 全パッチを退避（ペダルには書かない）
-zm catalog      # ペダルの ZD2 を読み出してエフェクトカタログを作る（ペダルには書かない）
+zm backup       # back up every patch (does not write to the pedal)
+zm catalog      # read the pedal's ZD2 files and build the effect catalog (does not write to the pedal)
 ```
 
-`backups/` と `catalog/` は `~/.config/zm/`（`$XDG_CONFIG_HOME` があれば `$XDG_CONFIG_HOME/zm/`）に置き、無ければ書くときに作る。
-`--dir <path>`（`zm --dir x backup` でも `zm backup --dir x` でもよい）か `$ZM_DIR` で場所を変えられる。どこで実行しても同じ場所を使う。
-どちらも ZOOM の著作物を含むので git には入れない。
+`backups/` and `catalog/` live in `~/.config/zm/` (`$XDG_CONFIG_HOME/zm/` if set) and are created on first write.
+Use `--dir <path>` (either `zm --dir x backup` or `zm backup --dir x`) or `$ZM_DIR` to put them elsewhere. zm uses the same place wherever you run it.
+Both contain ZOOM's copyrighted material, so keep them out of git.
 
-旧 MS（MS-50G / MS-70CDR）のカタログは g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作ってバイナリに埋め込んであるので、`zm catalog` は要らない。
-旧 MS のバックアップは `backups/ms50g/`・`backups/ms70cdr/` に置く。旧 MS 固有の注意（AUTO SAVE、エディタモード）は [docs/legacy-ms.md](docs/legacy-ms.md)。
+The legacy MS (MS-50G / MS-70CDR) catalogs are built from the effect list in g200kg/zoom-ms-utility (MIT) and embedded in the binary, so they need no `zm catalog`.
+Legacy MS backups go to `backups/ms50g/` and `backups/ms70cdr/`. Legacy-specific caveats (AUTO SAVE, editor mode) are in [docs/legacy-ms.md](docs/legacy-ms.md) (Japanese).
 
-### Claude Code から使う
+### Use from Claude Code
 
-`.mcp.json` に `go run ./cmd/zm mcp` を登録してある。このディレクトリで Claude Code を開けば `zm` の MCP サーバーが使える。
-`zm` を PATH に入れたなら、`"command": "zm", "args": ["mcp"]` にしてもよい。
+With `zm` on your PATH, register it as an MCP server:
 
-## 構成
+```sh
+claude mcp add zm -- zm mcp
+```
+
+This repository's `.mcp.json` registers `go run ./cmd/zm mcp`, so opening Claude Code here works as is.
+
+## Layout
 
 ```
-cmd/zm/            サブコマンドの振り分け
+cmd/zm/            subcommand dispatch
 internal/
-  midi/            ALSA rawmidi。SysEx を 1 つずつ受け取る
-  sysex/           メッセージの組み立て、Identity Reply
-  codec/           7bit パック、CRC、パッチ SysEx の枠（45 / 64 12）
-  patch/           PTCF ⇔ 構造体
-  legacypatch/     旧 MS-50G / MS-70CDR のパッチ（146 バイトの 28 SysEx）
-  zd2/             ZD2 の解析（PRME / PRMJ と ELF のパラメータ表）
-  catalog/         カタログの読み書き、パッチの名前つき表示（旧 MS のカタログは埋め込み）
-  pedalfs/         ペダル内ファイルの一覧と読み出し（読み出しのみ）
-  device/          機種ごとの値と選び方。G2 FOUR（four.go）と旧 MS-50G / MS-70CDR（legacy.go）の読み出し・編集・保存
-  backups/         backups/ への退避と復元
-  ops/             CLI・TUI・MCP が共有する操作（名前で解決、範囲の検証、番号の変換、保存時の退避）
+  midi/            ALSA rawmidi; receives one SysEx at a time
+  sysex/           message builders, Identity Reply
+  codec/           7-bit packing, CRC, patch SysEx framing (45 / 64 12)
+  patch/           PTCF <-> structs
+  legacypatch/     legacy MS-50G / MS-70CDR patches (the 146-byte 28 SysEx)
+  zd2/             ZD2 parsing (PRME / PRMJ and the ELF parameter tables)
+  catalog/         catalog I/O, named patch display (legacy MS catalogs are embedded)
+  pedalfs/         listing and reading files on the pedal (read-only)
+  device/          per-model values and selection; read / edit / save for G2 FOUR (four.go) and legacy MS-50G / MS-70CDR (legacy.go)
+  backups/         backing up to and restoring from backups/
+  ops/             operations shared by CLI, TUI and MCP (name lookup, range checks, number conversion, backup before save)
   cli/ tui/ mcpserver/
 ```
 
-実機で分かったプロトコルの事実は [docs/go-rewrite.md](docs/go-rewrite.md) の「引き継ぐ実機の事実」にまとめてある。
+Protocol facts learned from real hardware are collected in [docs/go-rewrite.md](docs/go-rewrite.md) (Japanese).
 
-## テスト
+## Tests
 
 ```sh
 go test ./...
 ```
 
-実機のパッチ（`backups/all-*`、`backups/ms50g/all-*`、`backups/ms70cdr/all-*`）とカタログ（`catalog/`）を使うテストは、無ければスキップする。
+Tests that use real patches (`backups/all-*`, `backups/ms50g/all-*`, `backups/ms70cdr/all-*`) and the catalog (`catalog/`) look in the same place as the CLI (`~/.config/zm/` or `$ZM_DIR`) and are skipped if those are missing.
+
+## License
+
+MIT. Notices for the projects zm builds on (zoom-ms-utility, zoom-zt2, zoom-explorer) are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

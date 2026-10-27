@@ -16,8 +16,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/paths"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/paths"
 )
 
 type Param struct {

@@ -15,9 +15,9 @@ import (
 	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/device"
-	"github.com/polidog/zoom-ai/internal/ops"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/device"
+	"github.com/polidog/zm/internal/ops"
 )
 
 // model は引数の範囲（パッチ数・スロット数）とカタログを決める機種。New で、--pedal か繋がっているペダルから決める。

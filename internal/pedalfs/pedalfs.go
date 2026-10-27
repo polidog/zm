@@ -10,9 +10,9 @@ import (
 	"hash/crc32"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/codec"
-	"github.com/polidog/zoom-ai/internal/midi"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/codec"
+	"github.com/polidog/zm/internal/midi"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 func ascii(s string) []byte { return append([]byte(s), 0x00) }

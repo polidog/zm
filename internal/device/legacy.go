@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/polidog/zoom-ai/internal/catalog"
-	"github.com/polidog/zoom-ai/internal/legacypatch"
-	"github.com/polidog/zoom-ai/internal/patch"
-	"github.com/polidog/zoom-ai/internal/sysex"
+	"github.com/polidog/zm/internal/catalog"
+	"github.com/polidog/zm/internal/legacypatch"
+	"github.com/polidog/zm/internal/patch"
+	"github.com/polidog/zm/internal/sysex"
 )
 
 // legacy は旧 MS（MS-50G はデバイス ID 58、MS-70CDR は 61）。下の癖は MS-50G で確かめたもの。
