@@ -1,15 +1,22 @@
-// ms50g.json を g200kg/zoom-ms-utility（MIT）の js/effectslist.js から作る。
+// 旧 MS のカタログ（ms50g.json / ms70cdr.json）を g200kg/zoom-ms-utility（MIT）の js/effectslist.js から作る。
 //
-//   node internal/catalog/ms50g/gen.mjs path/to/effectslist.js > internal/catalog/ms50g/ms50g.json
+//   node internal/catalog/legacy/gen.mjs ms50g   path/to/effectslist.js > internal/catalog/legacy/ms50g.json
+//   node internal/catalog/legacy/gen.mjs ms70cdr path/to/effectslist.js > internal/catalog/legacy/ms70cdr.json
 //
-// いまの ms50g.json は 5bf930c8e1622b0c70c0c3d761424f84955a227a (2022-12-20) の effectslist.js から作った。
+// いまの json は 5bf930c8e1622b0c70c0c3d761424f84955a227a (2022-12-20) の effectslist.js から作った。
 //
-// MS-50G で使えるのは ver の下位 4bit が 1 以上のもの（数字は入ったファームウェアの主番号）。
-// G-AMP の CAB は index.html の gampcab（ver 3.00）で置き換える。値は飛び飛びなので説明に並べる。
+// ver は 4bit ずつ、下から MS-50G / MS-60B / MS-70CDR で使えるか（数字は入ったファームウェアの主番号、0 は使えない）。
+// MS-50G の G-AMP の CAB は index.html の gampcab（ver 3.00）で置き換える。値は飛び飛びなので説明に並べる。
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 
-const src = readFileSync(process.argv[2], "utf8");
+const models = {
+  ms50g: { device: "ZOOM MS-50G", shift: 0 },
+  ms70cdr: { device: "ZOOM MS-70CDR", shift: 8 },
+};
+const model = models[process.argv[2]];
+if (!model) throw new Error(`機種は ${Object.keys(models).join(" / ")}`);
+const src = readFileSync(process.argv[3], "utf8");
 const ctx = { module: {} };
 vm.runInNewContext(src, ctx);
 const list = ctx.module.exports;
@@ -22,12 +29,11 @@ const gampcab = {
 const groups = [];
 const effects = [];
 for (const [key, e] of Object.entries(list)) {
-  const v50 = e.ver & 0xf;
-  if (v50 === 0 || e.group === "THRU") continue;
+  if (((e.ver >> model.shift) & 0xf) === 0 || e.group === "THRU") continue;
   const params = e.param.map((p, i) => {
     let max = p.max;
     let disp = p.disp;
-    if (e.group === "AMP" && i === 7) {
+    if (model.shift === 0 && e.group === "AMP" && i === 7) {
       max = Math.max(...gampcab.max);
       disp = gampcab.max.map((v, j) => `${v}=${gampcab.disp[j]}`).join(", ");
     } else if (Array.isArray(disp)) {
@@ -61,7 +67,7 @@ for (const e of effects) {
   delete e.order;
 }
 const out = {
-  device: "ZOOM MS-50G",
+  device: model.device,
   generatedAt: "g200kg/zoom-ms-utility@5bf930c js/effectslist.js",
   effects,
 };

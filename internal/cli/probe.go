@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/polidog/zoom-ai/internal/backups"
+	"github.com/polidog/zoom-ai/internal/device"
 	"github.com/polidog/zoom-ai/internal/midi"
 	"github.com/polidog/zoom-ai/internal/paths"
 	"github.com/polidog/zoom-ai/internal/sysex"
@@ -112,7 +113,8 @@ func Probe(args []string) error {
 		}()
 	}
 
-	if dev == sysex.LegacyDeviceID {
+	if m, ok := device.ModelByID(dev); ok && m.Legacy {
+		fmt.Printf("  %s（旧 MS）\n", m.Name)
 		return probeLegacy(conn, dev, save)
 	}
 
@@ -151,7 +153,7 @@ func Probe(args []string) error {
 	return save("current-patch", reply)
 }
 
-// probeLegacy は旧 MS (58) 向け。--editor-mode に関わらずエディタモードを ON にする（33 と 29 はエディタモード中しか答えない）。
+// probeLegacy は旧 MS (58 / 61) 向け。--editor-mode に関わらずエディタモードを ON にする（33 と 29 はエディタモード中しか答えない）。
 // 33 には SysEx 以外で返る可能性があるので、受信の生バイトをそのまま見る。
 func probeLegacy(conn *midi.Conn, dev byte, save func(string, []byte) error) error {
 	var mu sync.Mutex

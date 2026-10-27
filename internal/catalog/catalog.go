@@ -1,12 +1,12 @@
 // Package catalog はエフェクトカタログ (L3)。ID → 名前 / パラメータ名 / 範囲 / 説明。
 //
 // catalog/g2four.json は `zoom catalog` でペダルの ZD2 から作る（ZOOM の著作物を含むので git には入れない）。
-// 旧 MS-50G はペダルからエフェクトの定義を取り出せないので、g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作った
-// ms50g/ms50g.json を埋め込む（作り方は ms50g/gen.mjs）。
+// 旧 MS（MS-50G / MS-70CDR）はペダルからエフェクトの定義を取り出せないので、g200kg/zoom-ms-utility（MIT）の
+// エフェクト一覧から作った legacy/<機種>.json を埋め込む（作り方は legacy/gen.mjs）。
 package catalog
 
 import (
-	_ "embed"
+	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -61,17 +61,32 @@ type Catalog struct {
 
 func Path() string { return filepath.Join(paths.Catalog(), "g2four.json") }
 
-//go:embed ms50g/ms50g.json
-var ms50gJSON []byte
+//go:embed legacy/*.json
+var legacyFS embed.FS
 
-// MS50G は埋め込みの MS-50G のカタログ。
-var MS50G = sync.OnceValues(func() (*Catalog, error) {
-	var c Catalog
-	if err := json.Unmarshal(ms50gJSON, &c); err != nil {
-		return nil, fmt.Errorf("ms50g.json: %w", err)
+var (
+	legacyMu     sync.Mutex
+	legacyLoaded = map[string]*Catalog{}
+)
+
+// Legacy は埋め込みの旧 MS のカタログ。key は device.Model.Key（ms50g / ms70cdr）。
+func Legacy(key string) (*Catalog, error) {
+	legacyMu.Lock()
+	defer legacyMu.Unlock()
+	if c, ok := legacyLoaded[key]; ok {
+		return c, nil
 	}
+	b, err := legacyFS.ReadFile("legacy/" + key + ".json")
+	if err != nil {
+		return nil, fmt.Errorf("%s のカタログは埋め込んでいない", key)
+	}
+	var c Catalog
+	if err := json.Unmarshal(b, &c); err != nil {
+		return nil, fmt.Errorf("%s.json: %w", key, err)
+	}
+	legacyLoaded[key] = &c
 	return &c, nil
-})
+}
 
 // ZD2Dir はペダルから取った ZD2 のキャッシュ。
 func ZD2Dir() string { return filepath.Join(paths.Catalog(), "zd2") }

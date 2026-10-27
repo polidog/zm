@@ -38,12 +38,24 @@ func TestLegacyNotice(t *testing.T) {
 }
 
 func TestModelByKey(t *testing.T) {
-	for in, want := range map[string]string{"ms50g": "ms50g", "MS-50G": "ms50g", "ZOOM MS-50G": "ms50g", "g2four": "g2four", "G2 FOUR": "g2four"} {
+	for in, want := range map[string]string{"ms50g": "ms50g", "MS-50G": "ms50g", "ZOOM MS-50G": "ms50g", "g2four": "g2four", "G2 FOUR": "g2four", "MS-70CDR": "ms70cdr"} {
 		if m, ok := ModelByKey(in); !ok || m.Key != want {
 			t.Errorf("%q → %q %v", in, m.Key, ok)
 		}
 	}
 	if _, ok := ModelByKey("ms60b"); ok {
 		t.Error("ms60b は対応していない")
+	}
+}
+
+func TestMS70CDRIsLegacy(t *testing.T) {
+	m, ok := ModelByID(sysex.MS70CDRDeviceID)
+	if !ok || !m.Legacy || m.protocol() != (legacy{}) {
+		t.Fatalf("%+v", m)
+	}
+	msg := legacyEmpty()
+	msg[3] = sysex.MS70CDRDeviceID
+	if p, err := DecodeSysex(msg); err != nil || p.Name != "Empty" {
+		t.Errorf("%v %v", p, err)
 	}
 }

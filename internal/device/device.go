@@ -35,16 +35,27 @@ type Model struct {
 	UserSlots int
 	// BackupDir は backups/ の下の置き場。空なら backups/ の直下（G2 FOUR の既存の置き場）。
 	BackupDir string
+	// Legacy は旧 MS（Program Change + 29/28 でやりとりし、カタログを埋め込む）か。
+	Legacy bool
+	// ReadOnly は編集と保存をまだ実機で確かめていない機種。Open(true) を断る。
+	ReadOnly bool
 }
 
 // G2Four: バンク 30 × 10。
 var G2Four = Model{Name: "ZOOM G2 FOUR", Key: "g2four", DeviceID: 0x6e, Patches: 300, PatchesPerBank: 10, UserSlots: 6}
 
 // MS50G: 旧 MS-50G。パッチ 50、エフェクト 6 個まで。
-var MS50G = Model{Name: "ZOOM MS-50G", Key: "ms50g", DeviceID: sysex.LegacyDeviceID, Patches: 50, PatchesPerBank: 50, UserSlots: 6, BackupDir: "ms50g"}
+var MS50G = Model{Name: "ZOOM MS-50G", Key: "ms50g", DeviceID: sysex.LegacyDeviceID, Patches: 50, PatchesPerBank: 50, UserSlots: 6, BackupDir: "ms50g", Legacy: true}
+
+// MS70CDR: 旧 MS-70CDR。パッチ形式とメッセージは MS-50G と同じ（midimessage.md）。
+// MS-50G で見つけた癖（51 で編集が消える、切り替えで AUTO SAVE、31 はスロット 1〜3 だけ）も同じだった（ファームウェア 2.10）。
+var MS70CDR = Model{Name: "ZOOM MS-70CDR", Key: "ms70cdr", DeviceID: sysex.MS70CDRDeviceID, Patches: 50, PatchesPerBank: 50, UserSlots: 6, BackupDir: "ms70cdr", Legacy: true}
 
 // Models は対応している機種。Identity Reply のデバイス ID で選ぶ。
-var Models = []Model{G2Four, MS50G}
+var Models = []Model{G2Four, MS50G, MS70CDR}
+
+// ModelByID はデバイス ID で機種を引く。
+func ModelByID(dev byte) (Model, bool) { return modelFor(dev) }
 
 // ModelOfSysex はパッチの SysEx の 4 バイト目（デバイス ID）から機種を引く。知らなければ G2 FOUR。
 func ModelOfSysex(msg []byte) Model {
@@ -65,7 +76,7 @@ func modelFor(dev byte) (Model, bool) {
 	return Model{}, false
 }
 
-// ModelByKey は Key（g2four / ms50g）か Name で機種を引く。大文字小文字と空白・ハイフンは問わない。
+// ModelByKey は Key（g2four / ms50g / ms70cdr）か Name で機種を引く。大文字小文字と空白・ハイフンは問わない。
 func ModelByKey(s string) (Model, bool) {
 	squash := strings.NewReplacer(" ", "", "-", "", "zoom", "")
 	q := squash.Replace(strings.ToLower(s))
@@ -78,7 +89,7 @@ func ModelByKey(s string) (Model, bool) {
 }
 
 func (m Model) protocol() protocol {
-	if m.DeviceID == sysex.LegacyDeviceID {
+	if m.Legacy {
 		return legacy{}
 	}
 	return four{}
@@ -126,7 +137,7 @@ type Zoom struct {
 }
 
 // Target はどのペダルを使うか。空なら名前に ZOOM を含むポートを順に当たり、最初に対応している機種を使う。
-// hw:C,D ならそのポート、g2four / ms50g などの機種名ならその機種のペダル。CLI の --pedal と $ZOOM_PEDAL で決まる。
+// hw:C,D ならそのポート、g2four / ms50g / ms70cdr などの機種名ならその機種のペダル。CLI の --pedal と $ZOOM_PEDAL で決まる。
 var Target string
 
 // Open は Target のペダルを開く。edit なら書き込めるようにする（G2 FOUR はエディタモード ON と AUTO SAVE OFF）。
@@ -218,6 +229,9 @@ func open(conn *midi.Conn, edit bool, want *Model) (*Zoom, error) {
 	}
 	if want != nil && model.Key != want.Key {
 		return nil, fmt.Errorf("%s ではない（%s）", want.Name, model.Name)
+	}
+	if edit && model.ReadOnly {
+		return nil, fmt.Errorf("%s の編集と保存は、実機で確かめるまで止めてある（読み出しはできる）", model.Name)
 	}
 	z := &Zoom{Conn: conn, Identity: ident, Model: model, proto: model.protocol()}
 	if err := z.proto.open(z, edit); err != nil {
@@ -322,8 +336,10 @@ func (z *Zoom) KeepCurrent(fn func() error) error { return z.proto.keepCurrent(z
 
 // DecodeSysex はパッチの SysEx（G2 FOUR の 45 / 64 12、旧 MS の 28）を読む。
 func DecodeSysex(msg []byte) (*patch.Patch, error) {
-	if len(msg) > 4 && msg[3] == sysex.LegacyDeviceID {
-		return decodeLegacy(msg)
+	if len(msg) > 4 {
+		if m, ok := modelFor(msg[3]); ok && m.Legacy {
+			return decodeLegacy(msg)
+		}
 	}
 	_, buffer, err := codec.DecodePatchSysex(msg)
 	if err != nil {

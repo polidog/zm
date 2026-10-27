@@ -9,7 +9,7 @@ import (
 	"github.com/polidog/zoom-ai/internal/device"
 )
 
-const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g] <command> [args]
+const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g|ms70cdr] <command> [args]
 
   info                            機種・ファームウェア・パッチ数
   list                            全パッチの番号と名前
@@ -19,7 +19,7 @@ const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g] <command> [args]
   set-effect <slot> <effect>      エフェクト差し替え（保存しない）
   set <slot> <param> <value>      パラメータ変更（保存しない）
   on|off|toggle <slot>            ON / OFF（保存しない）
-  rename <name>                   パッチ名の変更（保存しない。いまは MS-50G だけ）
+  rename <name>                   パッチ名の変更（保存しない。いまは旧 MS だけ）
   save <n> [--yes]                いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
   restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
@@ -28,7 +28,7 @@ const usage = `usage: zoom [--pedal hw:C,D|g2four|ms50g] <command> [args]
   mcp                             MCP サーバー (stdio)
   probe                           P0 の疎通確認（開発用）
 
-読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300 / MS-50G は 1〜50、スロット 1〜6）。
+読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300 / 旧 MS は 1〜50、スロット 1〜6）。
 backups/ と catalog/ は $ZOOM_DIR（無ければカレントディレクトリ）に置く。
 
 --pedal（無ければ $ZOOM_PEDAL）で使うペダルを選ぶ。省略すると、名前に ZOOM を含むポートのうち最初に答えた対応機種。

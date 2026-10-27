@@ -1,0 +1,7889 @@
+{
+  "device": "ZOOM MS-70CDR",
+  "generatedAt": "g200kg/zoom-ms-utility@5bf930c js/effectslist.js",
+  "effects": [
+    {
+      "id": "0x00100002",
+      "name": "Comp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0201",
+      "description": "MXR DynaComp style comp",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ATTCK",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Slow, 1=Fast",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200002",
+      "name": "RackComp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0221",
+      "description": "Comp with more detailed parameter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 50,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Ratio",
+          "max": 9,
+          "default": 5,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ATTCK",
+          "max": 9,
+          "default": 6,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400002",
+      "name": "M Comp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0212",
+      "description": "More natural sound comp",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 50,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Ratio",
+          "max": 9,
+          "default": 3,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ATTCK",
+          "max": 9,
+          "default": 0,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600002",
+      "name": "OptComp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0212",
+      "description": "APHex Punch FACTORY style comp",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Drive",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 54,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000002",
+      "name": "SlowATTCK",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0211",
+      "description": "Violin like slow attack sounds",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 49,
+          "default": 20,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Curve",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200002",
+      "name": "ZNR",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0111",
+      "description": "ZOOM's unique noise reduction",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 24,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DETCT",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=GtrIn, 1=EfxIn",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400002",
+      "name": "NoiseGate",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0222",
+      "description": "Cuts the sound during playing pauses",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 24,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600002",
+      "name": "DirtyGate",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0223",
+      "description": "Gate with vintage style way of closing",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 24,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000102",
+      "name": "OrangeLim",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0223",
+      "description": "ORANGE SQUEEZER modeling",
+      "descriptionJa": "",
+      "params": [],
+      "file": ""
+    },
+    {
+      "id": "0x00200102",
+      "name": "GrayComp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0223",
+      "description": "ROSS Compressor modiling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "SUSTN",
+          "max": 100,
+          "default": 63,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "OUT",
+          "max": 100,
+          "default": 88,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00100004",
+      "name": "LineSel",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0111",
+      "description": "Send directly to OUTPUT when OFF",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "EFX_L",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "OUT_L",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200004",
+      "name": "GraphicEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0201",
+      "description": "6-band quealizer",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "160Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "400Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "800Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "3.2kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "6.4kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "12kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400004",
+      "name": "ParaEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0201",
+      "description": "2-band parametric equalizer",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Freq1",
+          "max": 30,
+          "default": 8,
+          "explanation": "0=20Hz, 1=25Hz, 2=32Hz, 3=40Hz, 4=50Hz, 5=63Hz, 6=80Hz, 7=100Hz, 8=125Hz, 9=160Hz, 10=200Hz, 11=250Hz, 12=320Hz, 13=400Hz, 14=500Hz, 15=630Hz, 16=800Hz, 17=1.0kHz, 18=1.2kHz, 19=1.6kHz, 20=2.0kHz, 21=2.5kHz, 22=3.2kHz, 23=4.0kHz, 24=5.0kHz, 25=6.3kHz, 26=8.0kHz, 27=10kHz, 28=12kHz, 29=16kHz, 30=20kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Q1",
+          "max": 5,
+          "default": 1,
+          "explanation": "0=0.5, 1=1, 2=2, 3=4, 4=8, 5=16",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Gain1",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Freq2",
+          "max": 30,
+          "default": 15,
+          "explanation": "0=20Hz, 1=25Hz, 2=32Hz, 3=40Hz, 4=50Hz, 5=63Hz, 6=80Hz, 7=100Hz, 8=125Hz, 9=160Hz, 10=200Hz, 11=250Hz, 12=320Hz, 13=400Hz, 14=500Hz, 15=630Hz, 16=800Hz, 17=1.0kHz, 18=1.2kHz, 19=1.6kHz, 20=2.0kHz, 21=2.5kHz, 22=3.2kHz, 23=4.0kHz, 24=5.0kHz, 25=6.3kHz, 26=8.0kHz, 27=10kHz, 28=12kHz, 29=16kHz, 30=20kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Q2",
+          "max": 5,
+          "default": 1,
+          "explanation": "0=0.5, 1=1, 2=2, 3=4, 4=8, 5=16",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Gain2",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600004",
+      "name": "Exciter",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0212",
+      "description": "2-band phase exciter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Bass",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Trebl",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000004",
+      "name": "CombFLTR",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0202",
+      "description": "Comb filter, that like fix modulated flanger",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Freq",
+          "max": 49,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 20,
+          "default": 15,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200004",
+      "name": "AutoWah",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0201",
+      "description": "Wah accordance with picking intensity",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 17,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400004",
+      "name": "Resonance",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0202",
+      "description": "Resonance filter according to picking intensisty",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 14,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600004",
+      "name": "Cry",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0201",
+      "description": "Like the talking modulator",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Range",
+          "max": 9,
+          "default": 6,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 16,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000104",
+      "name": "SlowFLTR",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0203",
+      "description": "Filter changing by picking trigger",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 49,
+          "default": 20,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Curve",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Chara",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=2Pole, 1=4Pole",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRCTN",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Open, 1=Close",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200104",
+      "name": "M-Filter",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0211",
+      "description": "Evelope filter with Moog MF-101 like LPF",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Freq",
+          "max": 100,
+          "default": 56,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Type",
+          "max": 2,
+          "default": 2,
+          "explanation": "0=HPF, 1=BPF, 2=LPF",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Chara",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=2Pole, 1=4Pole",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "VLCTY",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Fast, 1=Slow",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400104",
+      "name": "Step",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0201",
+      "description": "Special effect for sound stepping",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Shape",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600104",
+      "name": "SeqFLTR",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0211",
+      "description": "Z.Vex Seek-Wah like sequence filter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Step",
+          "max": 6,
+          "default": 6,
+          "explanation": "画面の表示は 値+2",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PTTRN",
+          "max": 7,
+          "default": 6,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 77,
+          "default": 25,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Shape",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000104",
+      "name": "RndmFLTR",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0222",
+      "description": "Randomly changing filter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Speed",
+          "max": 77,
+          "default": 34,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Range",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Type",
+          "max": 2,
+          "default": 2,
+          "explanation": "0=HPF, 1=BPF, 2=LPF",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Chara",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=2Pole, 1=4Pole",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200104",
+      "name": "fCycle",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0222",
+      "description": "Cyclic changing filter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Rate",
+          "max": 77,
+          "default": 5,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Wave",
+          "max": 3,
+          "default": 3,
+          "explanation": "0=Sine, 1=Tri, 2=SawUp, 3=SawDn",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400104",
+      "name": "St Gt GEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0103",
+      "description": "6-bands Stereo Graphic equalizer for guitar",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "160Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "400Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "800Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "3.2kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "6.4kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "12kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0010000c",
+      "name": "Tremolo",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0211",
+      "description": "Volume varieing effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 33,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 130,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Wave",
+          "max": 29,
+          "default": 21,
+          "explanation": "0=UP 0, 1=UP 1, 2=UP 2, 3=UP 3, 4=UP 4, 5=UP 5, 6=UP 6, 7=UP 7, 8=UP 8, 9=UP 9, 10=DWN 0, 11=DWN 1, 12=DWN 2, 13=DWN 3, 14=DWN 4, 15=DWN 5, 16=DWN 6, 17=DWN 7, 18=DWN 8, 19=DWN 9, 20=TRI 0, 21=TRI 1, 22=TRI 2, 23=TRI 3, 24=TRI 4, 25=TRI 5, 26=TRI 6, 27=TRI 7, 28=TRI 8, 29=TRI 9",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0020000c",
+      "name": "DuoTrem",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "Combines two tremolos",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "RateA",
+          "max": 78,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RateB",
+          "max": 78,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DPT_A",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DPT_B",
+          "max": 100,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Link",
+          "max": 2,
+          "default": 0,
+          "explanation": "0=Seri, 1=Para, 2=STR",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "WaveA",
+          "max": 29,
+          "default": 19,
+          "explanation": "0=UP 0, 1=UP 1, 2=UP 2, 3=UP 3, 4=UP 4, 5=UP 5, 6=UP 6, 7=UP 7, 8=UP 8, 9=UP 9, 10=DWN 0, 11=DWN 1, 12=DWN 2, 13=DWN 3, 14=DWN 4, 15=DWN 5, 16=DWN 6, 17=DWN 7, 18=DWN 8, 19=DWN 9, 20=TRI 0, 21=TRI 1, 22=TRI 2, 23=TRI 3, 24=TRI 4, 25=TRI 5, 26=TRI 6, 27=TRI 7, 28=TRI 8, 29=TRI 9",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "WaveB",
+          "max": 29,
+          "default": 21,
+          "explanation": "0=UP 0, 1=UP 1, 2=UP 2, 3=UP 3, 4=UP 4, 5=UP 5, 6=UP 6, 7=UP 7, 8=UP 8, 9=UP 9, 10=DWN 0, 11=DWN 1, 12=DWN 2, 13=DWN 3, 14=DWN 4, 15=DWN 5, 16=DWN 6, 17=DWN 7, 18=DWN 8, 19=DWN 9, 20=TRI 0, 21=TRI 1, 22=TRI 2, 23=TRI 3, 24=TRI 4, 25=TRI 5, 26=TRI 6, 27=TRI 7, 28=TRI 8, 29=TRI 9",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0040000c",
+      "name": "Slicer",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0202",
+      "description": "Rhythmical sounds by slicing",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PTTRN",
+          "max": 19,
+          "default": 0,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 77,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "THRSH",
+          "max": 50,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 130,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0060000c",
+      "name": "Phaser",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0111",
+      "description": "Phase varieing effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Rate",
+          "max": 77,
+          "default": 11,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Color",
+          "max": 3,
+          "default": 3,
+          "explanation": "0=4 STG, 1=8 STG, 2=inv 4, 3=inv 8",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x006a000c",
+      "name": "DuoPhase",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0221",
+      "description": "Combines 2 phasers",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "RateA",
+          "max": 77,
+          "default": 46,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RateB",
+          "max": 51,
+          "default": 5,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ResoA",
+          "max": 10,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ResoB",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Link",
+          "max": 2,
+          "default": 0,
+          "explanation": "0=Seri, 1=Para, 2=STR",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DPT_A",
+          "max": 99,
+          "default": 36,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DPT_B",
+          "max": 99,
+          "default": 62,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0074000c",
+      "name": "WarpPhase",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0222",
+      "description": "Phaser with one way effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Speed",
+          "max": 77,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRCTN",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Go, 1=Back",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4000000c",
+      "name": "TheVibe",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0121",
+      "description": "Unique undulations vibe",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Speed",
+          "max": 50,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bias",
+          "max": 100,
+          "default": 48,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Wave",
+          "max": 100,
+          "default": 24,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=VIBRT, 1=CHORS",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4060000c",
+      "name": "Chorus",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0101",
+      "description": "Mixing shifted pitch effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0000010c",
+      "name": "Detune",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0101",
+      "description": "Chorus without modulation by slightly pitch-shifted mix",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Cent",
+          "max": 50,
+          "default": 35,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 52,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0020010c",
+      "name": "VintageCE",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0122",
+      "description": "BOSS CE-1 modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Comp",
+          "max": 9,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0040010c",
+      "name": "StereoCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0121",
+      "description": "Stereo chorus",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 29,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0060010c",
+      "name": "Ensemble",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0102",
+      "description": "Chorus with 3D movement",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 29,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4020010c",
+      "name": "SuperCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0121",
+      "description": "BOSS CH-1 SUPER CHORUS modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "E.LVL",
+          "max": 120,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "EQ",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4030010c",
+      "name": "VinFLNGR",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0222",
+      "description": "MXR M-117R like analog flanger",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 47,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 20,
+          "default": 18,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 65,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4040010c",
+      "name": "Flanger",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0101",
+      "description": "ADA flanger like jet sound",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 47,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 20,
+          "default": 18,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 65,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4060010c",
+      "name": "DynaFLNGR",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0222",
+      "description": "Flanger with effect changes according to input level",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 38,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 0,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 20,
+          "default": 15,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0000020c",
+      "name": "Vibrato",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0121",
+      "description": "Automatic vibrato",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 72,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 120,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0020020c",
+      "name": "Octave",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0201",
+      "description": "Adding one/two octave below sound",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Oct1",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Oct2",
+          "max": 100,
+          "default": 15,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Chara",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0040020c",
+      "name": "PitchSHFT",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0111",
+      "description": "Pitch shift up or down",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Shift",
+          "max": 25,
+          "default": 19,
+          "explanation": "0=-12, 1=-11, 2=-10, 3=-9, 4=-8, 5=-7, 6=-6, 7=-5, 8=-4, 9=-3, 10=-2, 11=-1, 12=0, 13=1, 14=2, 15=3, 16=4, 17=5, 18=6, 19=7, 20=8, 21=9, 22=10, 23=11, 24=12, 25=24",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Fine",
+          "max": 50,
+          "default": 25,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0060020c",
+      "name": "MonoPitch",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0201",
+      "description": "Sound variance pitch shifter for monophonic",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Shift",
+          "max": 25,
+          "default": 0,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Fine",
+          "max": 50,
+          "default": 25,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4000020c",
+      "name": "HPS",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0101",
+      "description": "Intelligent pitch shifter according to scale/key",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Scale",
+          "max": 9,
+          "default": 6,
+          "explanation": "0=-6, 1=-5, 2=-4, 3=-3, 4=-m, 5=m, 6=3, 7=4, 8=5, 9=6",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Key",
+          "max": 11,
+          "default": 0,
+          "explanation": "0=C, 1=C#, 2=D, 3=D#, 4=E, 5=F, 6=F#, 7=G, 8=G#, 9=A, 10=A#, 11=B",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4020020c",
+      "name": "BendCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0202",
+      "description": "Pitch bending each input note",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Time",
+          "max": 50,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Up, 1=Down",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4040020c",
+      "name": "MojoRolle",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0202",
+      "description": "Pitch modulation after picking",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 37,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 128,
+          "default": 57,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rise",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 2,
+          "default": 0,
+          "explanation": "0=Up-Dn, 1=Up, 2=Down",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4060020c",
+      "name": "RingMod",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0222",
+      "description": "Metallic ringing sound",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Freq",
+          "max": 49,
+          "default": 27,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 120,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0000030c",
+      "name": "CE-Cho5",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "BOSS CE-5 chorus modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "E.LVL",
+          "max": 120,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RATE",
+          "max": 100,
+          "default": 31,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 67,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LOW",
+          "max": 100,
+          "default": 43,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HIGH",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MODE",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0020030c",
+      "name": "CloneCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "Electro-Harmonix SmallClone chorus modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DEPTH",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=1, 1=2",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RATE",
+          "max": 100,
+          "default": 23,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0040030c",
+      "name": "StonePha",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0223",
+      "description": "Electro-Harmonix SmallStone phaser modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "COLOR",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=1, 1=2",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RATE",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0060030c",
+      "name": "BF FLG 2",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0223",
+      "description": "BOSS BF-2 Flanger modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "MNL",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RATE",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RES",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4000030c",
+      "name": "SilkyCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0103",
+      "description": "2 bands detune and chorus",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "LoMix",
+          "max": 100,
+          "default": 38,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiMix",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ChMix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoPit",
+          "max": 50,
+          "default": 31,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiPit",
+          "max": 50,
+          "default": 33,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 27,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4020030c",
+      "name": "MirageCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0103",
+      "description": "Chorus like mirage",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 100,
+          "default": 38,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 55,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 19,
+          "default": 10,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4040030c",
+      "name": "CoronaCho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "tc electronic CORONA CHORUS modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "SPEED",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FxLVL",
+          "max": 100,
+          "default": 65,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 75,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRY",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4060030c",
+      "name": "ANA234Cho",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "MXR M234 analog chorus modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "LEVEL",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RATE",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LOW",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HIGH",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0000040c",
+      "name": "CoronaTri",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0123",
+      "description": "tc electonic CORONA Tri-Chorus modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "SPEED",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FxLVL",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRY",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0020000e",
+      "name": "BitCrush",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0222",
+      "description": "Lo-Fi effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Bit",
+          "max": 12,
+          "default": 5,
+          "explanation": "画面の表示は 値+4",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SMPL",
+          "max": 50,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0040000e",
+      "name": "Bomber",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0222",
+      "description": "Explosive sound effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PTTRN",
+          "max": 3,
+          "default": 3,
+          "explanation": "0=HndGn, 1=Arm, 2=Bomb, 3=Thndr",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Deay",
+          "max": 99,
+          "default": 49,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 15,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "THRSH",
+          "max": 50,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Power",
+          "max": 30,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0060000e",
+      "name": "MonoSynth",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0202",
+      "description": "Monophonic guitar synth effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Synth",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Wave",
+          "max": 3,
+          "default": 2,
+          "explanation": "0=Sine, 1=Tri, 2=SawUp, 3=SawDn",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4000000e",
+      "name": "Z-Organ",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0222",
+      "description": "Organ sound effect",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Upper",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Lower",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HPF",
+          "max": 10,
+          "default": 3,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LPF",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4020000e",
+      "name": "AutoPan",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0122",
+      "description": "Cyclic panning position movement",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Width",
+          "max": 100,
+          "default": 100,
+          "explanation": "画面の表示は 値-50",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Clip",
+          "max": 10,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4040000e",
+      "name": "Rt Closet",
+      "group": 4,
+      "groupName": "SFX",
+      "version": "0x0122",
+      "description": "Rotary speaker simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Slow, 1=Fast",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Drive",
+          "max": 100,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00100010",
+      "name": "Delay",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0111",
+      "description": "Long delay upto 4000ms",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 4022,
+          "default": 559,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "P-P",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=P-P",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200010",
+      "name": "TapeEcho",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0121",
+      "description": "Tape echo simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 559,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 64,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 56,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400010",
+      "name": "ModDelay",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0121",
+      "description": "Delay effect with modulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 499,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 62,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 20,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600010",
+      "name": "AnalogDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0121",
+      "description": "Analog delay simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 4022,
+          "default": 359,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 28,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "P-P",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=P-P",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000010",
+      "name": "ReverseDL",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0121",
+      "description": "Reverse delay upto 2000ms",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2005,
+          "default": 990,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200010",
+      "name": "MultiTapD",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Several delay sounds with different delay times",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 3018,
+          "default": 2999,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PTTRN",
+          "max": 7,
+          "default": 1,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400010",
+      "name": "DynaDelay",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Delay with dynamics adjusting according to input level",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 359,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 5,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600010",
+      "name": "FilterDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Delay effect with filter",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 499,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 6,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000110",
+      "name": "PitchDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Delay effect with pitch-shifting",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 1999,
+          "default": 89,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Pitch",
+          "max": 30,
+          "default": 21,
+          "explanation": "0=-12, 1=-11, 2=-10, 3=-9, 4=-8, 5=-7, 6=-6, 7=-5, 8=-4, 9=-3, 10=-2, 11=-1, 12=-0.15, 13=-0.10, 14=-0.05, 15=0, 16=0.05, 17=0.10, 18=0.15, 19=1, 20=2, 21=3, 22=4, 23=5, 24=6, 25=7, 26=8, 27=9, 28=10, 29=11, 30=12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200110",
+      "name": "StereoDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Stereo delay with L/R separate delay times",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TimeL",
+          "max": 2014,
+          "default": 164,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TimeR",
+          "max": 2014,
+          "default": 504,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LchFB",
+          "max": 100,
+          "default": 55,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RchFB",
+          "max": 100,
+          "default": 37,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LchLv",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RchLv",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400110",
+      "name": "PhaseDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0122",
+      "description": "Delay effect with phaser",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 499,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 28,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 57,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 49,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Color",
+          "max": 3,
+          "default": 3,
+          "explanation": "0=4 STG, 1=8 STG, 2=inv 4, 3=inv 8",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600110",
+      "name": "TrgHldDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0102",
+      "description": "Delay effect with sample&hold by picking",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 990,
+          "default": 40,
+          "explanation": "画面の表示は 値+10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Duty",
+          "max": 75,
+          "default": 75,
+          "explanation": "画面の表示は 値+25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "THRSH",
+          "max": 30,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000110",
+      "name": "StompDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0111",
+      "description": "Stomp style Self-Oscillable delay",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "E.LVL",
+          "max": 120,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Time",
+          "max": 599,
+          "default": 359,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sync",
+          "max": 15,
+          "default": 0,
+          "explanation": "0=OFF, 1=1/16, 2=1/12, 3=3/32, 4=1/8, 5=1/6, 6=3/16, 7=1/4, 8=3/8, 9=1/2, 10=3/4, 11=4/4, 12=5/4, 13=6/4, 14=7/4, 15=8/4",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200110",
+      "name": "TapeEcho3",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "MAESTRO ECHOPLEX EP-3 tape echo modiling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TIME",
+          "max": 990,
+          "default": 350,
+          "explanation": "画面の表示は 値+10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "RecLv",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SYNC",
+          "max": 15,
+          "default": 0,
+          "explanation": "0=OFF, 1=1/16, 2=1/12, 3=3/32, 4=1/8, 5=1/6, 6=3/16, 7=1/4, 8=3/8, 9=1/2, 10=3/4, 11=4/4, 12=5/4, 13=6/4, 14=7/4, 15=8/4",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "P-Amp",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400110",
+      "name": "DualDigiD",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Eventide TimeFactor DigitalDelay like cobination of 2 delays",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TimeA",
+          "max": 2005,
+          "default": 500,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TimeB",
+          "max": 2005,
+          "default": 375,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FdbkA",
+          "max": 110,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FdbkB",
+          "max": 110,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 101,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 50,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FLTR",
+          "max": 200,
+          "default": 100,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DlyMx",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600110",
+      "name": "CarbonDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "MXR Carbon Copy analog delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DELAY",
+          "max": 562,
+          "default": 387,
+          "explanation": "画面の表示は 値+19",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "REGEN",
+          "max": 100,
+          "default": 47,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 69,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MID",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "WIDTH",
+          "max": 50,
+          "default": 31,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SPEED",
+          "max": 50,
+          "default": 28,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sync",
+          "max": 15,
+          "default": 0,
+          "explanation": "0=OFF, 1=1/16, 2=1/12, 3=3/32, 4=1/8, 5=1/6, 6=3/16, 7=1/4, 8=3/8, 9=1/2, 10=3/4, 11=4/4, 12=5/4, 13=6/4, 14=7/4, 15=8/4",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000210",
+      "name": "DriveEcho",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "LINE6 M9 TubeEcho modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DRIVE",
+          "max": 100,
+          "default": 39,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TIME",
+          "max": 1985,
+          "default": 355,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "WOW",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRV",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=DRIV, 1=THRU",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200210",
+      "name": "SlapBackD",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "tc electonic FLASHBACK set for SLAP delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 300,
+          "default": 98,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SubDv",
+          "max": 2,
+          "default": 0,
+          "explanation": "0=&#x1D15F;, 1=&#x1D160;., 2=P-P",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 29,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FxLVL",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRY",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400210",
+      "name": "SmoothDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "BOSS DD-20 smooth mode delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 3014,
+          "default": 322,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 39,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "E.LVL",
+          "max": 100,
+          "default": 49,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 83,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600210",
+      "name": "LO-FI Dly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Strymon TIMELINE LO-FI mode deley modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 1913,
+          "default": 248,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SMPL",
+          "max": 14,
+          "default": 5,
+          "explanation": "0=1/128, 1=1/64, 2=1/32, 3=1/24, 4=1/12, 5=1/10, 6=1/9, 7=1/8, 8=1/7, 9=1/6, 10=1/5, 11=1/4, 12=1/3, 13=1/2, 14=1/1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "BITS",
+          "max": 20,
+          "default": 10,
+          "explanation": "0=4, 1=4.5, 2=5, 3=5.5, 4=6, 5=6.5, 6=7, 7=7.5, 8=8, 9=9, 10=10, 11=11, 12=12, 13=13, 14=14, 15=15, 16=16, 17=18, 18=20, 19=24, 20=32",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "BLEND",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DAMP",
+          "max": 10,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FLT",
+          "max": 8,
+          "default": 2,
+          "explanation": "0=OFF, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7, 8=8",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "VINYL",
+          "max": 18,
+          "default": 0,
+          "explanation": "0=OFF, 1=D:1, 2=D:2, 3=D:3, 4=D:4, 5=D:5, 6=D:6, 7=D:7, 8=D:8, 9=D:9, 10=S:1, 11=S:2, 12=S:3, 13=S:4, 14=S:5, 15=S:6, 16=S:7, 17=S:8, 18=S:9",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000210",
+      "name": "SlwAtkDly",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "LINE6 M9 Auto-Volume Echo delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 1914,
+          "default": 489,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 71,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 64,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 77,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SWELL",
+          "max": 49,
+          "default": 24,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=MONO, 1=STR",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200210",
+      "name": "TremDelay",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Strymon TIMELINE trem mode delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 1855,
+          "default": 300,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LFO",
+          "max": 4,
+          "default": 0,
+          "explanation": "0=TRI, 1=SQR, 2=SIN, 3=RAMP, 4=SAW",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DEPTH",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SPEED",
+          "max": 34,
+          "default": 19,
+          "explanation": "0=1/32, 1=1/24, 2=1/18, 3=1/16, 4=1/12, 5=1/10, 6=1/9, 7=1/8, 8=1/7, 9=1/6, 10=1/5, 11=1/4, 12=1/3, 13=1/2, 14=2/3, 15=3/4, 16=1/1, 17=4/3, 18=3/2, 19=2/1, 20=5/2, 21=3/1, 22=7/2, 23=4/1, 24=5/1, 25=6/1, 26=7/1, 27=8/1, 28=9/1, 29=10/1, 30=12/1, 31=16/1, 32=18/1, 33=24/1, 34=32/1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DAMP",
+          "max": 10,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HPF",
+          "max": 20,
+          "default": 4,
+          "explanation": "0=OFF, 1=20, 2=40, 3=60, 4=80, 5=100, 6=120, 7=140, 8=160, 9=180, 10=200, 11=230, 12=260, 13=300, 14=350, 15=400, 16=500, 17=600, 18=700, 19=800, 20=900",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "GRIT",
+          "max": 10,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400210",
+      "name": "FLTR PPD",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Eventide TimeFactor FilterPong delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TimeA",
+          "max": 1915,
+          "default": 500,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TimeB",
+          "max": 1915,
+          "default": 250,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DlyMx",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Fdbk",
+          "max": 110,
+          "default": 75,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Slur",
+          "max": 10,
+          "default": 3,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FLTR",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 21,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Wave",
+          "max": 47,
+          "default": 35,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600210",
+      "name": "A-Pan DLY",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Combination of autopan and delay",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 222,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 87,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 53,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 52,
+          "default": 26,
+          "explanation": "画面の表示は 値-2",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Width",
+          "max": 100,
+          "default": 0,
+          "explanation": "画面の表示は 値-50",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Clip",
+          "max": 10,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Link",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=P-D, 1=D-P",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 200,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000310",
+      "name": "ICE Delay",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0123",
+      "description": "Strymon TIMELINE ICE mode pitch shifting delay modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "TIME",
+          "max": 1255,
+          "default": 440,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 64,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "INTVL",
+          "max": 30,
+          "default": 23,
+          "explanation": "0=-Oct, 1=-M7, 2=-m7, 3=-M6, 4=-m6, 5=-P5, 6=-Tri, 7=-P4, 8=-M3, 9=-m3, 10=-M2, 11=-m2, 12=-50c, 13=-25c, 14=Uni, 15=+25c, 16=+50c, 17=+m2, 18=+M2, 19=+m3, 20=+M3, 21=+P4, 22=+Tri, 23=+P5, 24=+m6, 25=+M6, 26=+m7, 27=+M7, 28=+Oct, 29=Oc+5, 30=2Oct",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SLICE",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=SHORT, 1=LONG",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "BLEND",
+          "max": 20,
+          "default": 12,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "SMEAR",
+          "max": 20,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DAMP",
+          "max": 10,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HPF",
+          "max": 20,
+          "default": 1,
+          "explanation": "0=OFF, 1=20, 2=40, 3=60, 4=80, 5=100, 6=120, 7=140, 8=160, 9=180, 10=200, 11=230, 12=260, 13=300, 14=350, 15=400, 16=500, 17=600, 18=700, 19=800, 20=900",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00100012",
+      "name": "HD Hall",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0111",
+      "description": "Dense hall reverb",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PreD",
+          "max": 199,
+          "default": 80,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 45,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 62,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoDMP",
+          "max": 100,
+          "default": 32,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00180012",
+      "name": "HD Reverb",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0122",
+      "description": "High definition reverb",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 199,
+          "default": 53,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HPF",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200012",
+      "name": "Hall",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0121",
+      "description": "Concert hall simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 48,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400012",
+      "name": "Room",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0111",
+      "description": "A room simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 4,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600012",
+      "name": "TiledRoom",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0122",
+      "description": "Tiled room simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 19,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000012",
+      "name": "Spring",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0121",
+      "description": "Spring reverb simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 19,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 0,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200012",
+      "name": "Arena",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0122",
+      "description": "Sports arena like large enclosure simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 14,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 56,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 89,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400012",
+      "name": "EarlyRef",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0122",
+      "description": "Only the early reflections of reverb",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 14,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Shape",
+          "max": 20,
+          "default": 20,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600012",
+      "name": "Air",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0122",
+      "description": "A room ambience with spatial depth",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Size",
+          "max": 99,
+          "default": 19,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Ref",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200112",
+      "name": "Plate",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0113",
+      "description": "Plate reverb simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PreD",
+          "max": 199,
+          "default": 8,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 52,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 44,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Color",
+          "max": 100,
+          "default": 58,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoDMP",
+          "max": 100,
+          "default": 97,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 100,
+          "default": 95,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400112",
+      "name": "ModReverb",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0113",
+      "description": "Fluctuating echoes",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 38,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 19,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 45,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 19,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 29,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600112",
+      "name": "SlapBack",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0113",
+      "description": "Reverb with repeating echo",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 1010,
+          "default": 379,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 29,
+          "default": 9,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 48,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 43,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DRBal",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000112",
+      "name": "Spring63",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Fender Reverb ('63) spring reverb modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DWELL",
+          "max": 100,
+          "default": 35,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIXER",
+          "max": 100,
+          "default": 51,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 58,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LEVEL",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200112",
+      "name": "Chamber",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Chamber room simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 73,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 48,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 200,
+          "default": 24,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400112",
+      "name": "LOFI Rev",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "tc electronic HALL OF FAME lofi setting modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DECAY",
+          "max": 100,
+          "default": 52,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 95,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "FxLVL",
+          "max": 100,
+          "default": 44,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=SHORT, 1=LONG",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600112",
+      "name": "Church",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Reverbrations of a church simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DECAY",
+          "max": 100,
+          "default": 49,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 200,
+          "default": 96,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 46,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 61,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 100,
+          "default": 83,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000212",
+      "name": "Cave",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Reverbrations of a cave simulation",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 52,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 54,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 200,
+          "default": 62,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200212",
+      "name": "Ambience",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Natural ambience reverb",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DECAY",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 200,
+          "default": 29,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400212",
+      "name": "GateRev",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "DigiTech RV-7(Lexicon) Gated setting modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Level",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 55,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 1,
+          "default": 1,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600212",
+      "name": "ReverseRv",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "DigiTech RV-7(Lexicon) Reverse setting modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Level",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000212",
+      "name": "Echo",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Gorgeous echoes",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DECAY",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TIME",
+          "max": 200,
+          "default": 125,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "TONE",
+          "max": 100,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40200212",
+      "name": "TremoloRv",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "EvenTide SPACE tremolo verb like reverb",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PDLY",
+          "max": 500,
+          "default": 70,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 45,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 346,
+          "default": 28,
+          "explanation": "画面の表示は 値+10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Shape",
+          "max": 5,
+          "default": 0,
+          "explanation": "0=SINE, 1=TRI, 2=PEAK, 3=RNDM, 4=RAMP, 5=SQR",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 200,
+          "default": 199,
+          "explanation": "画面の表示は 値+0",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Size",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Low",
+          "max": 200,
+          "default": 100,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "High",
+          "max": 200,
+          "default": 100,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40400212",
+      "name": "HolyFLERB",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "Electro-Harmonix Holy Grail FLERB reverb/flanger modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "RVRB",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40600212",
+      "name": "DynaRev",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0123",
+      "description": "tc electronic NOVA REVERB dynamics changing reverb modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 82,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Color",
+          "max": 100,
+          "default": 76,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 200,
+          "default": 172,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000312",
+      "name": "ShimmerRv",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0103",
+      "description": "Strymon blueSky shimmer mode pitch-shifting delay/reverb modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PreD",
+          "max": 99,
+          "default": 39,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DECAY",
+          "max": 100,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoDMP",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "HiDMP",
+          "max": 100,
+          "default": 74,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00200312",
+      "name": "ParticleR",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0103",
+      "description": "LINE6 M9 Particle Verb complex reverb modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "DWELL",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "GAIN",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MODE",
+          "max": 2,
+          "default": 0,
+          "explanation": "0=STBL, 1=CRTCL, 2=HZD",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MIX",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "MONO",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400312",
+      "name": "SpaceHole",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0103",
+      "description": "Eventide SPACE BlackHole delay/reverb modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Decay",
+          "max": 200,
+          "default": 50,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PDLY",
+          "max": 1000,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 45,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 58,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Speed",
+          "max": 100,
+          "default": 39,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Size",
+          "max": 100,
+          "default": 29,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Low",
+          "max": 200,
+          "default": 87,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "High",
+          "max": 200,
+          "default": 82,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00600312",
+      "name": "MangledSp",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0103",
+      "description": "Eventide SPACE MangledVerb like wild echoes",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PDLY",
+          "max": 500,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Clip",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 38,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Decay",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mod",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Size",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Low",
+          "max": 200,
+          "default": 97,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "High",
+          "max": 200,
+          "default": 101,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 200,
+          "default": 85,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40000312",
+      "name": "DualRev",
+      "group": 6,
+      "groupName": "REVERB",
+      "version": "0x0103",
+      "description": "Eventide SPACE DualVerb like Combination of two reverbs",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "PDlyA",
+          "max": 750,
+          "default": 350,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PDlyB",
+          "max": 750,
+          "default": 700,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ABMix",
+          "max": 18,
+          "default": 14,
+          "explanation": "0=A9B0, 1=A9B1, 2=A9B2, 3=A9B3, 4=A9B4, 5=A9B5, 6=A9B6, 7=A9B7, 8=A9B8, 9=A9B9, 10=A8B9, 11=A7B9, 12=A6B9, 13=A5B9, 14=A4B9, 15=A3B9, 16=A2B9, 17=A1B9, 18=A0B9",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DCY A",
+          "max": 100,
+          "default": 15,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "DCY B",
+          "max": 100,
+          "default": 30,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Size",
+          "max": 32,
+          "default": 21,
+          "explanation": "0=A1B1, 1=A2B1, 2=A3B1, 3=A4B1, 4=A5B1, 5=A6B1, 6=A7B1, 7=A8B1, 8=A9B1, 9=A9B2, 10=A9B3, 11=A9B4, 12=A9B5, 13=A9B6, 14=A9B7, 15=A9B8, 16=A9B9, 17=A8B9, 18=A7B9, 19=A6B9, 20=A5B9, 21=A4B9, 22=A3B9, 23=A2B9, 24=A1B9, 25=A1B8, 26=A1B7, 27=A1B6, 28=A1B5, 29=A1B4, 30=A1B3, 31=A1B2, 32=A1B1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ToneA",
+          "max": 200,
+          "default": 100,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "ToneB",
+          "max": 200,
+          "default": 70,
+          "explanation": "画面の表示は 値-100",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4070000c",
+      "name": "Ba Chorus",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0110",
+      "description": "Chorus effect for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 42,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 22,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 57,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoCut",
+          "max": 10,
+          "default": 2,
+          "explanation": "0=OFF, 1=60Hz, 2=120Hz, 3=180Hz, 4=200Hz, 5=280Hz, 6=340Hz, 7=400Hz, 8=500Hz, 9=630Hz, 10=800Hz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0010010c",
+      "name": "Ba Detune",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0110",
+      "description": "Mix a small amount of the pitch-shift",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Cent",
+          "max": 50,
+          "default": 35,
+          "explanation": "画面の表示は 値-50",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 0,
+          "explanation": "画面の表示は 値+0",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoCut",
+          "max": 10,
+          "default": 1,
+          "explanation": "0=OFF, 1=60Hz, 2=120Hz, 3=180Hz, 4=200Hz, 5=280Hz, 6=340Hz, 7=400Hz, 8=500Hz, 9=630Hz, 10=800Hz",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0070010c",
+      "name": "Ba Ensmbl",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0110",
+      "description": "Bass chorus with 3D movement",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 48,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 22,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 5,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x4050010c",
+      "name": "BaFlanger",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0110",
+      "description": "ADA Flanger modeling",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 76,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 78,
+          "default": 40,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 20,
+          "default": 15,
+          "explanation": "画面の表示は 値-10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "PreD",
+          "max": 50,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 95,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "LoCut",
+          "max": 10,
+          "default": 1,
+          "explanation": "0=OFF, 1=60Hz, 2=120Hz, 3=180Hz, 4=200Hz, 5=280Hz, 6=340Hz, 7=400Hz, 8=500Hz, 9=630Hz, 10=800Hz",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0030020c",
+      "name": "Ba Octave",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0210",
+      "description": "Adds sound one octave below",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Oct",
+          "max": 100,
+          "default": 80,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Low",
+          "max": 10,
+          "default": 3,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mid",
+          "max": 10,
+          "default": 4,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x0070020c",
+      "name": "Ba Pitch",
+      "group": 3,
+      "groupName": "MOD",
+      "version": "0x0110",
+      "description": "Pitch shifter for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Shift",
+          "max": 25,
+          "default": 0,
+          "explanation": "0=-12, 1=-11, 2=-10, 3=-9, 4=-8, 5=-7, 6=-6, 7=-5, 8=-4, 9=-3, 10=-2, 11=-1, 12=0, 13=1, 14=2, 15=3, 16=4, 17=5, 18=6, 19=7, 20=8, 21=9, 22=10, 23=11, 24=12, 25=24",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Fine",
+          "max": 50,
+          "default": 25,
+          "explanation": "画面の表示は 値-25",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 140,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00500010",
+      "name": "ModDelay2",
+      "group": 5,
+      "groupName": "DELAY",
+      "version": "0x0110",
+      "description": "Modulation delay with depth adjust",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Time",
+          "max": 2014,
+          "default": 529,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "F.B",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mix",
+          "max": 100,
+          "default": 45,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Rate",
+          "max": 49,
+          "default": 16,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Depth",
+          "max": 100,
+          "default": 50,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tail",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=OFF, 1=ON",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00000204",
+      "name": "St Bs GEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0120",
+      "description": "7 bands stereo GEQ for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "50Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "120Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "400Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "500Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "800Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "4.5kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "10kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x006a0002",
+      "name": "160 Comp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0210",
+      "description": "dbx 160A style comp",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 60,
+          "default": 38,
+          "explanation": "画面の表示は 値-60",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Ratio",
+          "max": 90,
+          "default": 30,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Gain",
+          "max": 20,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Knee",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Hard, 1=Soft",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00740002",
+      "name": "Limiter",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0210",
+      "description": "Limiter that suppresses signal peaks",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "THRSH",
+          "max": 50,
+          "default": 20,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Ratio",
+          "max": 9,
+          "default": 3,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 90,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "REL",
+          "max": 9,
+          "default": 2,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00400102",
+      "name": "DualComp",
+      "group": 1,
+      "groupName": "COMP",
+      "version": "0x0220",
+      "description": "Compressor with low/high separate frequency",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Hi",
+          "max": 50,
+          "default": 24,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Lo",
+          "max": 50,
+          "default": 15,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Freq",
+          "max": 9,
+          "default": 9,
+          "explanation": "0=300Hz, 1=400Hz, 2=500Hz, 3=600Hz, 4=700Hz, 5=800Hz, 6=900Hz, 7=1.0kHz, 8=1.2kHz, 9=1.5kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Tone",
+          "max": 10,
+          "default": 2,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00300004",
+      "name": "Ba GEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "7 bands GEQ for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "50Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "120Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "400Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "500Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "800Hz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "4.5kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "10kHz",
+          "max": 24,
+          "default": 12,
+          "explanation": "画面の表示は 値-12",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00480004",
+      "name": "Ba PEQ",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "2-band parametric equalizer for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Freq1",
+          "max": 37,
+          "default": 8,
+          "explanation": "0=20Hz, 1=25Hz, 2=32Hz, 3=40Hz, 4=50Hz, 5=63Hz, 6=70Hz, 7=80Hz, 8=100Hz, 9=120Hz, 10=140Hz, 11=150Hz, 12=160Hz, 13=180Hz, 14=200Hz, 15=250Hz, 16=300Hz, 17=350Hz, 18=400Hz, 19=450Hz, 20=500Hz, 21=630Hz, 22=800Hz, 23=1.0kHz, 24=1.2kHz, 25=1.6kHz, 26=2.0kHz, 27=2.5kHz, 28=3.0kHz, 29=3.6kHz, 30=4.0kHz, 31=4.5kHz, 32=6.3kHz, 33=8.0kHz, 34=10kHz, 35=12kHz, 36=16kHz, 37=20kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Q1",
+          "max": 5,
+          "default": 1,
+          "explanation": "0=0.5, 1=1, 2=2, 3=4, 4=8, 5=16",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Gain1",
+          "max": 40,
+          "default": 20,
+          "explanation": "画面の表示は 値-20",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Freq2",
+          "max": 37,
+          "default": 15,
+          "explanation": "0=20Hz, 1=25Hz, 2=32Hz, 3=40Hz, 4=50Hz, 5=63Hz, 6=70Hz, 7=80Hz, 8=100Hz, 9=120Hz, 10=140Hz, 11=150Hz, 12=160Hz, 13=180Hz, 14=200Hz, 15=250Hz, 16=300Hz, 17=350Hz, 18=400Hz, 19=450Hz, 20=500Hz, 21=630Hz, 22=800Hz, 23=1.0kHz, 24=1.2kHz, 25=1.6kHz, 26=2.0kHz, 27=2.5kHz, 28=3.0kHz, 29=3.6kHz, 30=4.0kHz, 31=4.5kHz, 32=6.3kHz, 33=8.0kHz, 34=10kHz, 35=12kHz, 36=16kHz, 37=20kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Q2",
+          "max": 5,
+          "default": 1,
+          "explanation": "0=0.5, 1=1, 2=2, 3=4, 4=8, 5=16",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Gain2",
+          "max": 40,
+          "default": 20,
+          "explanation": "画面の表示は 値-20",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00500004",
+      "name": "Splitter",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Divide into 2bands and mix with ratio",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Hi",
+          "max": 50,
+          "default": 19,
+          "explanation": "画面の表示は 値+0",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Lo",
+          "max": 50,
+          "default": 16,
+          "explanation": "画面の表示は 値+0",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Freq",
+          "max": 15,
+          "default": 2,
+          "explanation": "0=80Hz, 1=100Hz, 2=125Hz, 3=160Hz, 4=200hz, 5=250Hz, 6=315Hz, 7=400Hz, 8=500Hz, 9=630Hz, 10=800Hz, 11=1.0kHz, 12=1.3kHz, 13=1.6kHz, 14=2.0kHz, 15=2.5kHz",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 95,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00580004",
+      "name": "Bottom B",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Emphasizes low/high frequencies",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Bass",
+          "max": 10,
+          "default": 6,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Trebl",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 60,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x40300004",
+      "name": "BaAutoWah",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Auto wah for bass",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 11,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 0,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00100104",
+      "name": "Z Tron",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Envelope Filter like Q-Tron in LP mode",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 12,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 25,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 108,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x002a0104",
+      "name": "A-Filter",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Resonance filter with a sharp envelope",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Sense",
+          "max": 9,
+          "default": 7,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Peak",
+          "max": 10,
+          "default": 7,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Mode",
+          "max": 1,
+          "default": 0,
+          "explanation": "0=Up, 1=Down",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Dry",
+          "max": 100,
+          "default": 10,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    },
+    {
+      "id": "0x00340104",
+      "name": "Ba Cry",
+      "group": 2,
+      "groupName": "FILTER",
+      "version": "0x0210",
+      "description": "Bass frequency talking modulator",
+      "descriptionJa": "",
+      "params": [
+        {
+          "name": "Range",
+          "max": 9,
+          "default": 4,
+          "explanation": "画面の表示は 値+1",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Reso",
+          "max": 10,
+          "default": 8,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Sense",
+          "max": 19,
+          "default": 16,
+          "explanation": "0=-10, 1=-9, 2=-8, 3=-7, 4=-6, 5=-5, 6=-4, 7=-3, 8=-2, 9=-1, 10=1, 11=2, 12=3, 13=4, 14=5, 15=6, 16=7, 17=8, 18=9, 19=10",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Bal",
+          "max": 100,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        },
+        {
+          "name": "Level",
+          "max": 150,
+          "default": 100,
+          "explanation": "",
+          "explanationJa": "",
+          "hidden": false
+        }
+      ],
+      "file": ""
+    }
+  ]
+}

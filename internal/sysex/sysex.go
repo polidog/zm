@@ -66,8 +66,12 @@ func SetAutoSave(dev byte, on bool) []byte {
 
 // ---- 旧 MS（MS-50G など、デバイス ID 58）----
 
-// LegacyDeviceID は MS+ より前の MS シリーズ（MS-50G）の機種 ID。
-const LegacyDeviceID = 0x58
+// LegacyDeviceID は MS+ より前の MS シリーズの MS-50G の機種 ID。MS-70CDR は MS70CDRDeviceID。
+// メッセージはどちらも同じで、4 バイト目の機種 ID だけが違う（midimessage.md）。
+const (
+	LegacyDeviceID  = 0x58
+	MS70CDRDeviceID = 0x61
+)
 
 // 旧 MS のメッセージは g200kg/zoom-ms-utility の midimessage.md と、MS-50G (ファームウェア 3.10) の実機で確かめたもの。
 // 50 / 51（エディタモード）には応答がない。33 と 29 はエディタモード中しか答えない。

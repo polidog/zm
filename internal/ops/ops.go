@@ -22,10 +22,10 @@ var (
 	loaded *catalog.Catalog
 )
 
-// CatalogFor は機種 m のカタログ。G2 FOUR は catalog/g2four.json を読み（読めたら覚えておく）、MS-50G は埋め込みを使う。
+// CatalogFor は機種 m のカタログ。G2 FOUR は catalog/g2four.json を読み（読めたら覚えておく）、旧 MS は埋め込みを使う。
 func CatalogFor(m device.Model) (*catalog.Catalog, error) {
-	if m.Key == device.MS50G.Key {
-		return catalog.MS50G()
+	if m.Legacy {
+		return catalog.Legacy(m.Key)
 	}
 	catMu.Lock()
 	defer catMu.Unlock()

@@ -56,7 +56,13 @@ func TestSetEffect(t *testing.T) {
 // 実機の全パッチで、読んだ値をいったん 0 にしてから書き戻すと元のバイト列に戻るか
 // （ビット位置の表に重なりや抜けがないか）。
 func TestRoundtrip(t *testing.T) {
-	dir, files := testdata.LatestAllIn(t, "ms50g")
+	for _, sub := range []string{"ms50g", "ms70cdr"} {
+		t.Run(sub, func(t *testing.T) { testRoundtrip(t, sub) })
+	}
+}
+
+func testRoundtrip(t *testing.T, sub string) {
+	dir, files := testdata.LatestAllIn(t, sub)
 	t.Logf("%s: %d 件", filepath.Base(dir), len(files))
 	for _, file := range files {
 		t.Run(filepath.Base(file), func(t *testing.T) {

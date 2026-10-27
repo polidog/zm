@@ -1,10 +1,10 @@
-# 旧 MS-50G への対応
+# 旧 MS-50G / MS-70CDR への対応
 
-旧 MS-50G（MS+ より前の世代）を、G2 FOUR と同じ `zoom` から扱えるようにする。
-Go への書き直し（[go-rewrite.md](go-rewrite.md)）の G6 の後に、L0〜L5 まで実機で通した（2026-10-28）。
+旧 MS シリーズ（MS+ より前の世代）の MS-50G と MS-70CDR を、G2 FOUR と同じ `zoom` から扱えるようにする。
+Go への書き直し（[go-rewrite.md](go-rewrite.md)）の G6 の後に、どちらも L0〜L5 まで実機で通した（2026-10-28）。
 
 ```sh
-zoom --pedal ms50g list           # 機種名で選ぶ（g2four / ms50g）
+zoom --pedal ms50g list           # 機種名で選ぶ（g2four / ms50g / ms70cdr）
 zoom --pedal hw:5,0 show 3        # ポートで選ぶ
 ZOOM_PEDAL=ms50g zoom mcp         # 環境変数でもよい
 ```
@@ -13,17 +13,21 @@ ZOOM_PEDAL=ms50g zoom mcp         # 環境変数でもよい
 
 ## 実機で分かったこと
 
-手元の MS-50G（ファームウェア 3.10）で確かめた。メッセージは g200kg/zoom-ms-utility の midimessage.md と一致した。
+手元の MS-50G（ファームウェア 3.10）で確かめ、MS-70CDR（ファームウェア 2.10）でも同じだった。
+メッセージは g200kg/zoom-ms-utility の midimessage.md と一致した。両機種で違うのは 4 バイト目のデバイス ID だけ。
 
-- ALSA のポート名は `ZOOM MS Series MIDI 1`。G2 FOUR（`ZOOM G2/G2X FOUR MIDI 1`）と並べて挿せる
-- Identity Reply: `f0 7e 00 06 02 52 58 00 00 00 33 2e 31 30 f7`。デバイス ID は **`58`**（MS+ / FOUR は `6E`）
+- ALSA のポート名はどちらも `ZOOM MS Series MIDI 1`。G2 FOUR（`ZOOM G2/G2X FOUR MIDI 1`）と並べて挿せる
+- Identity Reply の デバイス ID は MS-50G が **`58`**、MS-70CDR が **`61`**（MS+ / FOUR は `6E`）
+  - MS-50G: `f0 7e 00 06 02 52 58 00 00 00 33 2e 31 30 f7`
+  - MS-70CDR: `f0 7e 00 06 02 52 61 00 00 00 32 2e 31 30 f7`
 
 **メッセージ**
 - エディタモード `50` / `51` には応答がない
-- `33`（現在のプログラム番号）と `29`（現在パッチ）は、エディタモード中しか答えない
+- `33`（現在のプログラム番号）と `29`（現在パッチ）は、MS-50G ではエディタモード中しか答えない（MS-70CDR の `33` は前から答える）。
+  どちらの機種でも、開くときにエディタモードにしてから使う
 - `33` には SysEx ではなく `b0 00 00 b0 20 00 c0 pp`（Bank Select + Program Change）で返る。`midi.Conn.SetTap` で生バイトから拾う
 - `29` の応答は `28` で始まる 146 バイト。MS+ のような長さ・CRC の枠はない。同じ形の `28` を送ると現在パッチがそれに置き換わる（保存しない）
-- **パッチメモリを番号で読むメッセージはない**。`c0 pp` で選んでから `29` で読む。選んだ直後に `29` を送ってよい（50 件で 6.5 秒）
+- **パッチメモリを番号で読むメッセージはない**。`c0 pp` で選んでから `29` で読む。選んだ直後に `29` を送ってよい（50 件で 7 秒ほど）
 - `31 slot param vL vM` でパラメータ・ON/OFF を変える（応答なし）。**効くのはスロット 1〜3 だけ**。
   4〜6 に送るとパラメータは変わらず、パッチ名など別の場所が書き換わる（スロット 5 の Time を 110 にしたら名前の 3 文字目が 0x6e になった。メモリには書かない）。
   4〜6 は最初から `28` でパッチ全体を送る。どちらも送った後に読み直し、変えた項目以外が変わっていないことを確かめる
@@ -52,8 +56,9 @@ ZOOM_PEDAL=ms50g zoom mcp         # 環境変数でもよい
 
 **カタログ**
 - ペダルからエフェクトの定義（ZDL）を取り出す方法は分かっていない。代わりに zoom-ms-utility（MIT）の js/effectslist.js から作り、
-  `internal/catalog/ms50g/ms50g.json` としてバイナリに埋め込む（作り方は同じ場所の `gen.mjs`）。172 エフェクト
-- MS-50G で使えるのは `ver` の下位 4bit が 1 以上のもの。G-AMP の CAB は飛び飛びの値（8, 16, …, 336、0 = OFF）なので、説明に値と名前を並べた
+  `internal/catalog/legacy/<機種>.json` としてバイナリに埋め込む（作り方は同じ場所の `gen.mjs`）。MS-50G は 172、MS-70CDR は 137 エフェクト
+- `ver` は 4bit ずつ下から MS-50G / MS-60B / MS-70CDR で使えるか（入ったファームウェアの主番号、0 は使えない）
+- MS-50G の G-AMP の CAB は飛び飛びの値（8, 16, …, 336、0 = OFF）なので、説明に値と名前を並べた。MS-70CDR にはアンプも歪みもない
 - 本体にインストールされていないエフェクトは、送ってもペダルが元に戻す。差し替えの後に読み直して確かめ、戻っていればエラーにする
 
 ## 構成
@@ -63,16 +68,17 @@ internal/
   device/
     device.go      Zoom と Model、機種の選び方（--pedal / $ZOOM_PEDAL）。機種ごとの処理は protocol に任せる
     four.go        6E: G2 FOUR（45/46、64 20、64 12）
-    legacy.go      58: 旧 MS（c0 + 29/28、31、32）
+    legacy.go      58 / 61: 旧 MS（c0 + 29/28、31、32）。Model.Legacy で選ぶ
   legacypatch/     旧 MS のパッチ形式（146 バイトの 28 ⇔ 名前・エフェクト）
-  catalog/         G2 FOUR は ZD2 から作った catalog/g2four.json、MS-50G は埋め込みの ms50g/ms50g.json
+  catalog/         G2 FOUR は ZD2 から作った catalog/g2four.json、旧 MS は埋め込みの legacy/<機種>.json
   ops/             機種によらない操作。カタログは CatalogFor(z.Model)
 ```
 
 - 計画では `device/four/`・`device/legacy/` のサブパッケージにするつもりだったが、どちらも `Zoom` を触るので循環する。同じパッケージのファイルで分けた
 - パッチは機種によらず `*patch.Patch`（Name・Effects）で上に渡す。旧 MS はバイト列への変換をしないので、PTCF 側の欄（Prm2 など）は空
 - パッチ数（300 / 50）・スロット数・カタログ・バックアップの置き場は `device.Model` が持つ。MCP の引数の範囲も、起動時に選んだ機種で決まる
-- バックアップは `backups/ms50g/all-<時刻>/`・`backups/ms50g/overwritten/`。G2 FOUR は今までどおり `backups/` の直下
+- バックアップは `backups/<機種>/all-<時刻>/`・`backups/<機種>/overwritten/`（ms50g / ms70cdr）。G2 FOUR は今までどおり `backups/` の直下
+- `Model.ReadOnly` を立てると `Open(true)` を断る。癖を実機で確かめていない機種を足すときは、まずこれで読み出しだけにする
 
 ## 進め方と結果
 
@@ -85,11 +91,19 @@ internal/
 | L4 | 保存と restore | 空きパッチ 49 に保存 → 読み直しで一致 → 編集していた 50 は保存されていない → restore → 50 件が最初のバックアップとバイト一致 |
 | L5 | MCP / TUI | 2 台つないだまま `--pedal` で切り替えられる。MCP の `get_patch` の範囲は MS-50G で 1〜50 になる。TUI も起動する |
 
+表は MS-50G での結果。MS-70CDR でも同じ手順を通した。
+
+- L0〜L2: 全 50 件のデコードが apatch.js と全項目一致し、ラウンドトリップもバイト一致。実機のエフェクトがすべてカタログにある
+- 癖の確認（空きパッチ 50）: `31` はスロット 1 なら効き、スロット 5 に送ると名前が「Emnty」に化ける。`51` → `50` で編集が保存されずに消える。
+  編集中に切り替えると保存される（AUTO SAVE が ON）。どれも MS-50G と同じだった
+- L3〜L4: 50 で編集 → 別のパッチを読んでも編集が残る → 49 に保存 → 50 は空のまま → restore → 50 件が最初の退避とバイト一致
+- L5: `zoom --pedal ms70cdr mcp` の identify と list_effects が MS-70CDR で答える
+
 ## 決めていないこと
 
 - 2 台を同時につないだとき、`--pedal` を省いたらどちらを選ぶか（今は最初に見つかった ZOOM で、手元では G2 FOUR）
 - TUI で、ペダルのフットスイッチでパッチを切り替えたとき（`c0 pp` が届く）に画面を読み直すか。今は `r` で読み直す
 - 上の「保存より前に 34 に入っていた」の原因
-- パッチ名の変更（`zoom rename`）は MS-50G だけ。G2 FOUR は名前の書き方を確かめていない
+- パッチ名の変更（`zoom rename`）は旧 MS だけ。G2 FOUR は名前の書き方を確かめていない
 - 本体の AUTO SAVE を SysEx で切り替えられるか。分かれば KeepCurrent の `51` → `50` が要らなくなる
-- MS-60B / MS-70CDR まで広げるか。パッチ形式とカタログの元（apatch.js / effectslist.js）は対応しているが、手元に実機がない
+- MS-60B まで広げるか。パッチは 105 バイト・エフェクト 4 個で形式が違う（apatch.js は対応している）。手元に実機がない

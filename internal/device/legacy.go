@@ -14,7 +14,7 @@ import (
 	"github.com/polidog/zoom-ai/internal/sysex"
 )
 
-// legacy は旧 MS-50G（デバイス ID 58）。
+// legacy は旧 MS（MS-50G はデバイス ID 58、MS-70CDR は 61）。下の癖は MS-50G で確かめたもの。
 //
 // パッチメモリを番号で読む SysEx が無い。Program Change で選んでから 29 で現在パッチを読む。
 //
@@ -351,13 +351,13 @@ func (l legacy) setEffect(z *Zoom, slot int, id uint32) (*patch.Patch, error) {
 	if slot < 0 || slot >= legacypatch.Slots {
 		return nil, fmt.Errorf("スロットは 0..%d", legacypatch.Slots-1)
 	}
-	cat, err := catalog.MS50G()
+	cat, err := catalog.Legacy(z.Model.Key)
 	if err != nil {
 		return nil, err
 	}
 	e := cat.Find(id)
 	if e == nil {
-		return nil, fmt.Errorf("エフェクト %s が MS-50G のカタログにない", catalog.FormatID(id))
+		return nil, fmt.Errorf("エフェクト %s が %s のカタログにない", catalog.FormatID(id), z.Model.Name)
 	}
 	var params [legacypatch.MaxParams]int
 	for i, p := range e.Params {

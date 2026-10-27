@@ -125,26 +125,29 @@ func TestBuildMatchesCatalog(t *testing.T) {
 	}
 }
 
-// 埋め込みの MS-50G のカタログ（ms50g/ms50g.json）。
-func TestMS50G(t *testing.T) {
-	c, err := catalog.MS50G()
+// 埋め込みの旧 MS のカタログ（legacy/<機種>.json）。
+func TestLegacy(t *testing.T) {
+	for _, m := range []device.Model{device.MS50G, device.MS70CDR} {
+		t.Run(m.Key, func(t *testing.T) { testLegacy(t, m) })
+	}
+}
+
+func testLegacy(t *testing.T, m device.Model) {
+	c, err := catalog.Legacy(m.Key)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(c.Effects) == 0 {
-		t.Fatal("エフェクトがない")
+	if len(c.Effects) == 0 || c.Device != m.Name {
+		t.Fatalf("%s: %d エフェクト", c.Device, len(c.Effects))
 	}
 	for _, e := range c.Effects {
 		if len(e.Params) > 9 {
 			t.Errorf("%s: パラメータが %d 個（旧 MS は 9 個まで）", e.Name, len(e.Params))
 		}
 	}
-	if e, err := c.Resolve("fd combo"); err != nil || e.ID != "0x00100008" {
-		t.Errorf("FD COMBO: %v %v", e, err)
-	}
 
-	// 実機の全パッチのエフェクトがカタログにあり、値が範囲に収まるか（backups/ms50g が無ければスキップ）
-	_, files := testdata.LatestAllIn(t, device.MS50G.BackupDir)
+	// 実機の全パッチのエフェクトがカタログにあり、値が範囲に収まるか（backups/<機種> が無ければスキップ）
+	_, files := testdata.LatestAllIn(t, m.BackupDir)
 	for _, f := range files {
 		raw, _ := os.ReadFile(f)
 		p, err := device.DecodeSysex(raw)
@@ -166,5 +169,15 @@ func TestMS50G(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestLegacyFD(t *testing.T) {
+	c, _ := catalog.Legacy(device.MS50G.Key)
+	if e, err := c.Resolve("fd combo"); err != nil || e.ID != "0x00100008" {
+		t.Errorf("FD COMBO: %v %v", e, err)
+	}
+	if _, err := catalog.Legacy("ms60b"); err == nil {
+		t.Error("ms60b のカタログは無いはず")
 	}
 }
