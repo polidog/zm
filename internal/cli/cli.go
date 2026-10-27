@@ -20,6 +20,7 @@ const usage = `usage: zoom <command> [args]
   restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
   catalog [--refresh]             ペダルの ZD2 からカタログを作る
+  tui                             TUI
   mcp                             MCP サーバー (stdio)
   probe                           P0 の疎通確認（開発用）
 
@@ -47,6 +48,7 @@ func commands() map[string]command {
 		"restore":    RestoreCmd,
 		"backup":     Backup,
 		"catalog":    CatalogCmd,
+		"tui":        TUI,
 		"mcp":        MCP,
 		"probe":      Probe,
 	}
