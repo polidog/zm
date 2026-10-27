@@ -1,0 +1,442 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Zoom MCP 計画</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: a service-manual sheet. One column of running text, a signal-chain strip on top, phase cards like a parts list. */
+  :root {
+    --bg: #f3f2ee;
+    --paper: #fbfaf7;
+    --fg: #1d1f24;
+    --muted: #5f636c;
+    --line: #d4d2cb;
+    --accent: #d8641a;      /* pedal-enclosure orange */
+    --accent-ink: #ffffff;
+    --mono-bg: #e9e7e0;
+    --done: #2f7a4f;
+    --warn: #b9412a;
+    --f-display: "Chakra Petch", "Zen Kaku Gothic New", sans-serif;
+    --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15171b; --paper: #1d2025; --fg: #e8e6df; --muted: #9b9fa8; --line: #33373f;
+      --accent: #ef7a2a; --accent-ink: #15171b; --mono-bg: #0f1115; --done: #5fbf85; --warn: #ef6f55;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171b; --paper: #1d2025; --fg: #e8e6df; --muted: #9b9fa8; --line: #33373f;
+    --accent: #ef7a2a; --accent-ink: #15171b; --mono-bg: #0f1115; --done: #5fbf85; --warn: #ef6f55;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.75; }
+  .wrap {
+    max-width: 880px; margin: 0 auto;
+    padding-block: 40px 72px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid; gap: 48px;
+  }
+  h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+  h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: 20px; font-weight: 700; }
+  h3 { font-size: 16px; font-weight: 600; }
+  p { margin: 0; max-width: 64ch; }
+  .eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  code, .mono { font-family: var(--f-mono); font-size: 0.88em; }
+  code { background: var(--mono-bg); padding: 1px 6px; border-radius: 3px; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  header { display: grid; gap: 14px; }
+  .goal { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 4px; }
+  .goal p { font-size: 17px; font-weight: 500; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+  section { display: grid; gap: 18px; }
+  .section-head { display: grid; gap: 4px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+
+  /* signal chain */
+  .chain { overflow-x: auto; padding-bottom: 6px; }
+  .chain svg { display: block; min-width: 820px; width: 100%; height: auto; }
+  .chain .box { fill: var(--paper); stroke: var(--line); stroke-width: 1; }
+  .chain .box.hot { stroke: var(--accent); stroke-width: 2; }
+  .chain .lbl { font-family: var(--f-display); font-weight: 600; font-size: 14px; fill: var(--fg); }
+  .chain .sub { font-family: var(--f-mono); font-size: 10.5px; fill: var(--muted); }
+  .chain .wire { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+  .chain .arrow { fill: var(--muted); }
+  .chain .tag { font-family: var(--f-mono); font-size: 10px; fill: var(--accent); font-weight: 600; }
+
+  /* layers list */
+  .layers { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--paper); }
+  .layer { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 16px 18px; border-top: 1px solid var(--line); }
+  .layer:first-child { border-top: 0; }
+  .layer .id { font-family: var(--f-display); font-weight: 700; font-size: 18px; color: var(--accent); line-height: 1.2; }
+  .layer .body { display: grid; gap: 4px; min-width: 0; }
+  .layer .body p { font-size: 14px; color: var(--muted); max-width: 70ch; }
+  .layer.key { background: color-mix(in srgb, var(--accent) 7%, var(--paper)); }
+  .pill { display: inline-block; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); margin-left: 8px; vertical-align: middle; }
+
+  /* assets */
+  .assets { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .asset { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; display: grid; gap: 6px; min-width: 0; }
+  .asset h3 { font-family: var(--f-mono); font-size: 13px; font-weight: 600; word-break: break-all; }
+  .asset p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  .asset .fills { font-family: var(--f-mono); font-size: 11px; color: var(--accent); }
+
+  /* phases */
+  .phases { display: grid; gap: 14px; }
+  .phase { display: grid; grid-template-columns: 92px 1fr; gap: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; }
+  .phase .num { display: grid; gap: 2px; align-content: start; }
+  .phase .num b { font-family: var(--f-display); font-size: 26px; font-weight: 700; line-height: 1; color: var(--accent); }
+  .phase .num span { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+  .phase .body { display: grid; gap: 10px; min-width: 0; }
+  .phase ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
+  .phase li::marker { color: var(--muted); }
+  .risk { font-family: var(--f-mono); font-size: 11.5px; padding: 6px 10px; border-radius: 4px; background: var(--mono-bg); color: var(--muted); display: inline-flex; gap: 8px; align-items: center; width: fit-content; max-width: 100%; }
+  .risk::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--done); flex: none; }
+  .risk.warn::before { background: var(--warn); }
+  .risk.out::before { background: var(--muted); }
+
+  /* tools table */
+  .tools { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  thead th { border-top: 0; font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  td.mono { white-space: nowrap; }
+  td .stage { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+
+  /* sysex sheet */
+  .sheet { background: var(--mono-bg); border-radius: 6px; padding: 16px 18px; font-family: var(--f-mono); font-size: 12.5px; line-height: 1.9; overflow-x: auto; }
+  .sheet .row { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(180px, 1.2fr); gap: 16px; white-space: nowrap; }
+  .sheet .hex { color: var(--fg); }
+  .sheet .hex b { color: var(--accent); font-weight: 600; }
+  .sheet .what { color: var(--muted); }
+  .sheet .hd { color: var(--muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--line); padding-bottom: 4px; margin-bottom: 6px; }
+
+  /* questions */
+  .qs { display: grid; gap: 10px; counter-reset: q; }
+  .q { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 12px 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; }
+  .q::before { counter-increment: q; content: counter(q); font-family: var(--f-display); font-weight: 700; color: var(--accent); font-size: 18px; line-height: 1.2; }
+  .q .body { display: grid; gap: 2px; min-width: 0; }
+  .q .body p { font-size: 14px; color: var(--muted); }
+
+  .sources { font-size: 13px; display: grid; gap: 4px; }
+  .sources a { color: var(--muted); }
+
+  @media (max-width: 560px) {
+    .layer { grid-template-columns: 44px 1fr; }
+    .phase { grid-template-columns: 1fr; gap: 10px; }
+    .phase .num { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 10px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .phase, .asset { transition: border-color .15s ease; }
+    .phase:hover, .asset:hover { border-color: var(--accent); }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Project plan · 2026-10-27</div>
+    <h1>Zoom ペダルを MCP で鳴らす</h1>
+    <div class="goal">
+      <div class="eyebrow">Goal</div>
+      <p>G2 FOUR / MultiStomp の音作りを、Claude から MCP ツール経由で操作できるようにする。実行環境は Omarchy（Arch Linux + Hyprland）。</p>
+    </div>
+    <div class="meta">
+      <span>TARGET: ZOOM G2 FOUR（第一候補）</span>
+      <span>TRANSPORT: USB class-compliant MIDI / SysEx</span>
+      <span>CORE: Python + Construct</span>
+    </div>
+  </header>
+
+  <!-- ===== Architecture ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">01 · Architecture</div>
+      <h2>信号の流れ</h2>
+    </div>
+    <p>作るものは 4 層。難しさのほとんどは真ん中の 2 層（コーデックとエフェクトカタログ）に集まる。</p>
+
+    <div class="chain">
+      <svg viewBox="0 0 860 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude から MCP サーバー、パッチモデル、SysEx コーデック、ALSA MIDI を経てペダルへ至る流れ。カタログがパッチモデルに接続する">
+        <!-- boxes row y=60 -->
+        <g>
+          <rect class="box" x="10" y="60" width="110" height="56" rx="4"/>
+          <text class="lbl" x="65" y="84" text-anchor="middle">Claude</text>
+          <text class="sub" x="65" y="102" text-anchor="middle">自然言語</text>
+        </g>
+        <g>
+          <rect class="box hot" x="160" y="60" width="130" height="56" rx="4"/>
+          <text class="lbl" x="225" y="84" text-anchor="middle">zoom-mcp</text>
+          <text class="sub" x="225" y="102" text-anchor="middle">L4 · tools / resources</text>
+        </g>
+        <g>
+          <rect class="box hot" x="330" y="60" width="140" height="56" rx="4"/>
+          <text class="lbl" x="400" y="84" text-anchor="middle">Patch model</text>
+          <text class="sub" x="400" y="102" text-anchor="middle">JSON · slot / effect / param</text>
+        </g>
+        <g>
+          <rect class="box hot" x="510" y="60" width="130" height="56" rx="4"/>
+          <text class="lbl" x="575" y="84" text-anchor="middle">SysEx codec</text>
+          <text class="sub" x="575" y="102" text-anchor="middle">L2 · 7bit pack / CRC</text>
+        </g>
+        <g>
+          <rect class="box" x="680" y="60" width="90" height="56" rx="4"/>
+          <text class="lbl" x="725" y="84" text-anchor="middle">ALSA</text>
+          <text class="sub" x="725" y="102" text-anchor="middle">L1 · rawmidi</text>
+        </g>
+        <g>
+          <rect class="box" x="800" y="52" width="50" height="72" rx="6"/>
+          <circle cx="825" cy="74" r="7" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          <circle cx="825" cy="74" r="3" fill="var(--accent)"/>
+          <rect x="812" y="94" width="26" height="14" rx="2" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          <text class="sub" x="825" y="140" text-anchor="middle">G2 FOUR</text>
+        </g>
+        <!-- wires -->
+        <g class="wire">
+          <path d="M120 88 H152"/><path d="M290 88 H322"/><path d="M470 88 H502"/><path d="M640 88 H672"/><path d="M770 88 H792"/>
+        </g>
+        <g class="arrow">
+          <path d="M152 83 l8 5 l-8 5z"/><path d="M322 83 l8 5 l-8 5z"/><path d="M502 83 l8 5 l-8 5z"/><path d="M672 83 l8 5 l-8 5z"/><path d="M792 83 l8 5 l-8 5z"/>
+        </g>
+        <text class="tag" x="205" y="52">MCP</text>
+        <text class="tag" x="486" y="52">bytes</text>
+        <!-- catalog below -->
+        <g>
+          <rect class="box hot" x="330" y="146" width="140" height="36" rx="4"/>
+          <text class="lbl" x="400" y="169" text-anchor="middle" style="font-size:13px">Effect catalog</text>
+        </g>
+        <path class="wire" d="M400 146 V124" stroke-dasharray="3 3"/>
+        <path class="arrow" d="M395 124 l5 -8 l5 8z"/>
+        <text class="sub" x="478" y="169">L3 · id → 名前 / param / range</text>
+      </svg>
+    </div>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="id">L1</div>
+        <div class="body"><h3>トランスポート</h3><p>ALSA rawmidi または <code>mido</code> で SysEx を送受信する。Linux はクラスコンプライアントなので、ドライバ問題はまず起きない。一番楽な層。</p></div>
+      </div>
+      <div class="layer key">
+        <div class="id">L2</div>
+        <div class="body"><h3>コーデック<span class="pill">核心</span></h3><p>SysEx の 7bit パック解除と CRC、パッチ構造（スロット数・エフェクト ID・パラメータ値・パッチ名）の双方向変換。ラウンドトリップでバイト一致させる。</p></div>
+      </div>
+      <div class="layer key">
+        <div class="id">L3</div>
+        <div class="body"><h3>エフェクトカタログ<span class="pill">核心</span></h3><p>「ID 0x0123 = MS Drive、param[0] = Gain 0–100」という辞書。ここが人間の言葉で揃っていないと、MCP で「音作り」は成立しない。</p></div>
+      </div>
+      <div class="layer">
+        <div class="id">L4</div>
+        <div class="body"><h3>MCP サーバー</h3><p>プリミティブなツール群とカタログリソースを公開する。曖昧な指示（「80 年代っぽいクリーンに」）の解釈は Claude 側に任せ、サーバーは素直に保つ。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Assets ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">02 · Existing work</div>
+      <h2>流用できる解析資産</h2>
+    </div>
+    <p>Zoom は SysEx 仕様を公開していないが、コミュニティの解析は厚い。各資産がどの層を埋めるかで整理する。</p>
+    <div class="assets">
+      <div class="asset">
+        <h3>thammer/zoom-explorer</h3>
+        <div class="fills">fills: L1 · L2 (protocol)</div>
+        <p>MS＋シリーズ向けに一番整理された MIDI 仕様表。Identity Request、パッチダンプ、現在パッチ送信、スロット選択、テンポ、スロット移動まで。ブラウザで動く解析ツール付き。</p>
+      </div>
+      <div class="asset">
+        <h3>mungewell/zoom-zt2</h3>
+        <div class="fills">fills: L2 · L3 (patch / ZD2)</div>
+        <p>Four シリーズ解析の本家。Python Construct でパッチと ZD2 を定義。B2 FOUR が G1/B1 FOUR とほぼ同プロトコルと判明しており、同世代の G2 FOUR も乗る見込み。</p>
+      </div>
+      <div class="asset">
+        <h3>zoom_fx_AllZDL7/master.txt + ZD2</h3>
+        <div class="fills">fills: L3 (catalog source)</div>
+        <p>エフェクト名・パラメータ名の元ネタ。ペダルから取り出した ZD2 自体にも入っているので、カタログを全部手書きする必要はない。</p>
+      </div>
+      <div class="asset">
+        <h3>PedalPi/PluginsManager-Zoom</h3>
+        <div class="fills">fills: L4 (API design ref)</div>
+        <p>connect → load_data → パラメータ変更 → 機器側の変更も受信、という API 設計の先行例。対象は G3 だが、MCP ツールの粒度を決める参考になる。</p>
+      </div>
+      <div class="asset">
+        <h3>g200kg/zoom-ms-utility</h3>
+        <div class="fills">fills: 旧 MS シリーズ (別系統)</div>
+        <p>旧 MS-50G/60B/70CDR 用の Web エディタと midimessage.md。旧世代は別プロトコルなので、対応するならこちらを参照する。</p>
+      </div>
+      <div class="asset">
+        <h3>shooking/ZoomPedalFun</h3>
+        <div class="fills">fills: 解析ノウハウ</div>
+        <p>Linux + Python + Wireshark でのキャプチャ手順と周辺プロジェクトのリンク集。G2 FOUR で空白が見つかったときの作業手引き。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SysEx sheet ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">03 · Protocol cheat sheet</div>
+      <h2>Phase 0 で投げるバイト列</h2>
+    </div>
+    <p>MS＋/Four 系で確認されているメッセージ。デバイス ID <code>6E</code> は MS-50G+ と G1 FOUR で共通。G2 FOUR で同じ応答が返るかが最初の分岐点になる。</p>
+    <div class="sheet">
+      <div class="row hd"><span>sysex</span><span>what</span></div>
+      <div class="row"><span class="hex">F0 7E 7F 06 01 F7</span><span class="what">Identity Request → 機種 ID と OS バージョン</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 33 F7</span><span class="what">現在のバンク / プログラム番号を取得</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 46 00 00 bL bM pL pM F7</span><span class="what">指定バンク / プログラムのパッチをダウンロード</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 64 13 F7</span><span class="what">現在パッチのダンプを要求（応答は 64 12）</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 28 F7</span><span class="what">現在パッチをペダルへ送る（保存しない）</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 64 20 00 64 01 slot 00 00 00 00 F7</span><span class="what">エフェクトスロットを選択</span></div>
+      <div class="row"><span class="hex">F0 52 00 <b>6E</b> 64 20 00 64 02 bL bM 00 00 00 F7</span><span class="what">テンポ (BPM) の取得 / 設定</span></div>
+    </div>
+  </section>
+
+  <!-- ===== Phases ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">04 · Phases</div>
+      <h2>進め方</h2>
+    </div>
+    <div class="phases">
+
+      <div class="phase">
+        <div class="num"><b>P0</b><span>疎通確認 · 1 日</span></div>
+        <div class="body">
+          <h3>G2 FOUR が既知のプロトコルに乗っているか確かめる</h3>
+          <ul>
+            <li><code>amidi -l</code> でポートを確認し、Identity Request を投げて機種 ID と OS バージョンが返るか見る</li>
+            <li>zoom-explorer を Chromium で開き、パッチダンプが取れるか試す</li>
+            <li>この時点で全パッチのフルバックアップを取り、以降の実験の保険にする</li>
+          </ul>
+          <div class="risk warn">乗っていなければ Wireshark でのキャプチャ作業が先</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="num"><b>P1</b><span>読み出し専用コア</span></div>
+        <div class="body">
+          <h3>dump_patch(n) → JSON</h3>
+          <ul>
+            <li>zoom-zt2 の Construct 定義をベースに、パッチを JSON へ変換する</li>
+            <li>実機パッチをダンプ → JSON → 再エンコードでバイト一致するか、ラウンドトリップテストを自動化</li>
+            <li>読むだけなのでペダルを壊すリスクがほぼない</li>
+          </ul>
+          <div class="risk">read-only · 安全</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="num"><b>P2</b><span>エフェクトカタログ</span></div>
+        <div class="body">
+          <h3>ID → 名前 / パラメータ / レンジ の辞書を作る</h3>
+          <ul>
+            <li>ペダルから ZD2 一覧を取得し、エフェクト名・パラメータ名・レンジを抽出して YAML / JSON 化</li>
+            <li>各パラメータに人間向けの説明文を足す（ここは Claude に手伝わせる）</li>
+            <li>このカタログが MCP のリソースになる</li>
+          </ul>
+          <div class="risk">read-only · 安全</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="num"><b>P3</b><span>書き込み</span></div>
+        <div class="body">
+          <h3>送るだけ → 保存 の順で段階的に</h3>
+          <ul>
+            <li>まず「現在パッチをペダルに送る」から。保存しないので電源を落とせば戻る、という安全弁付き</li>
+            <li>次にパッチ保存。ラウンドトリップが通っているバイト列しか書かない</li>
+            <li>エフェクトファイルの追加・削除（フラッシュ操作）は当面スコープ外</li>
+          </ul>
+          <div class="risk warn">flash write · 慎重に</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="num"><b>P4</b><span>MCP サーバー</span></div>
+        <div class="body">
+          <h3>プリミティブなツール群として公開</h3>
+          <ul>
+            <li>Python の <code>mcp</code> パッケージで、下表のツールとリソースを実装</li>
+            <li>サーバーは素直な操作に留め、曖昧な指示の解釈は Claude 側に任せる</li>
+            <li>Claude Code / Claude Desktop に登録して、会話から音作りする</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="num"><b>P5</b><span>任意</span></div>
+        <div class="body">
+          <h3>Omarchy 向け TUI</h3>
+          <ul>
+            <li>ratatui など、同じコアライブラリの上に TUI を乗せる</li>
+            <li>MCP と TUI がコアを共有する構成にし、Hyprland のタイル表示に馴染ませる</li>
+          </ul>
+          <div class="risk out">プロトコルが固まってから</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== Tools ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">05 · MCP surface</div>
+      <h2>ツールとリソースの案</h2>
+    </div>
+    <div class="tools">
+      <table>
+        <thead><tr><th>tool</th><th>what</th><th>phase</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">identify</td><td>機種 ID / OS バージョン / 接続状態を返す</td><td><span class="stage">P1</span></td></tr>
+          <tr><td class="mono">list_patches</td><td>全パッチの番号と名前の一覧</td><td><span class="stage">P1</span></td></tr>
+          <tr><td class="mono">get_patch(n)</td><td>パッチをスロット・エフェクト・パラメータの JSON で返す</td><td><span class="stage">P1</span></td></tr>
+          <tr><td class="mono">backup_all</td><td>全パッチをファイルに退避</td><td><span class="stage">P1</span></td></tr>
+          <tr><td class="mono">set_effect(slot, id)</td><td>スロットのエフェクトを差し替える</td><td><span class="stage">P3</span></td></tr>
+          <tr><td class="mono">set_param(slot, name, value)</td><td>パラメータを名前で変更する（カタログでレンジ検証）</td><td><span class="stage">P3</span></td></tr>
+          <tr><td class="mono">toggle_effect(slot)</td><td>エフェクトの ON / OFF</td><td><span class="stage">P3</span></td></tr>
+          <tr><td class="mono">send_to_pedal</td><td>編集中パッチをペダルへ送る（保存しない）</td><td><span class="stage">P3</span></td></tr>
+          <tr><td class="mono">save_patch(n)</td><td>ペダルのパッチメモリへ保存</td><td><span class="stage">P3</span></td></tr>
+          <tr><td class="mono">resource: catalog</td><td>エフェクトカタログ全体（Claude が音作りの根拠にする）</td><td><span class="stage">P2</span></td></tr>
+          <tr><td class="mono">resource: current_patch</td><td>いま編集中のパッチ</td><td><span class="stage">P1</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== Questions ===== -->
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">06 · Open questions</div>
+      <h2>先に決めたいこと</h2>
+    </div>
+    <div class="qs">
+      <div class="q"><div class="body"><h3>手元の実機は何か</h3><p>G2 FOUR だけか、MS-50G+ や旧 MS-50G もあるか。旧 MS は別プロトコルなので、対応範囲で工数が変わる。</p></div></div>
+      <div class="q"><div class="body"><h3>最初のターゲット機種</h3><p>G2 FOUR 一本で始めるのを推奨。解析の空白が一番大きく、埋めれば価値も大きい。</p></div></div>
+      <div class="q"><div class="body"><h3>言語</h3><p>解析資産が Python (Construct) に集中しているのでコアは Python、MCP も <code>mcp</code> パッケージで揃えるのが最短。Rust / Go はプロトコルが固まってから。</p></div></div>
+      <div class="q"><div class="body"><h3>安全策</h3><p>P0 で全パッチをバックアップ。書き込みは「送るだけ」から始め、フラッシュ操作は当面触らない。</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><div class="eyebrow">Sources</div></div>
+    <div class="sources">
+      <a href="https://github.com/thammer/zoom-explorer">thammer/zoom-explorer</a>
+      <a href="https://github.com/mungewell/zoom-zt2/issues/64">mungewell/zoom-zt2 · Issue #64 (G2 / B2 FOUR)</a>
+      <a href="https://github.com/mungewell/zoom-zt2/issues/70">mungewell/zoom-zt2 · Issue #70 (MS-50G+)</a>
+      <a href="https://github.com/PedalPi/PluginsManager-Zoom">PedalPi/PluginsManager-Zoom</a>
+      <a href="https://github.com/multistomp/zoom-ms-utility">multistomp/zoom-ms-utility</a>
+      <a href="https://github.com/shooking/ZoomPedalFun">shooking/ZoomPedalFun</a>
+      <a href="https://zoomcorp.com/ja/jp/software-product-page/software-sub-cat/icon_handyguitarlabforg2four/">ZOOM · Handy Guitar Lab for G2 FOUR</a>
+    </div>
+  </section>
+
+</div>
+
+</body></html>
