@@ -14,7 +14,10 @@ import { findZoomPort, RawMidi } from "./transport";
 export const PATCHES_PER_BANK = 10;
 export const PATCH_COUNT = 300;
 
-export class Zoom implements Disposable {
+/** 5 バイト目以降（F0 52 00 dev の後ろ）が prefix で始まるか。 */
+const zoomReply = (prefix: number[]) => (msg: Uint8Array) => prefix.every((b, i) => msg[4 + i] === b);
+
+export class Zoom implements Disposable, AsyncDisposable {
   private constructor(
     private midi: RawMidi,
     readonly identity: sx.Identity,
@@ -25,22 +28,19 @@ export class Zoom implements Disposable {
     const port = findZoomPort();
     if (!port) throw new Error("ZOOM のポートが見つからない");
     const midi = new RawMidi(port);
-    const reply = await midi.request(sx.IDENTITY_REQUEST);
-    if (!reply) {
-      midi.close();
-      throw new Error("Identity Request に応答がない");
-    }
-    const zoom = new Zoom(midi, sx.parseIdentityReply(reply), edit);
-    if (edit) {
-      try {
+    try {
+      const reply = await midi.request(sx.IDENTITY_REQUEST, 2000, (m) => m[1] === 0x7e && m[4] === 0x02);
+      if (!reply) throw new Error("Identity Request に応答がない");
+      const zoom = new Zoom(midi, sx.parseIdentityReply(reply), edit);
+      if (edit) {
         await zoom.expect(sx.editorModeOn(zoom.deviceId), [0x00, 0x00]);
         await zoom.expect(sx.setAutoSave(zoom.deviceId, false), [0x64, 0x20, 0x01]);
-      } catch (e) {
-        midi.close();
-        throw e;
       }
+      return zoom;
+    } catch (e) {
+      midi.close();
+      throw e;
     }
-    return zoom;
   }
 
   /**
@@ -48,15 +48,9 @@ export class Zoom implements Disposable {
    * 編集するとペダルは 64 12 00 (現在パッチの通知) を自分から送ってくるので、それ以外の応答は読み飛ばす。
    */
   private async expect(msg: Uint8Array, prefix: number[], timeoutMs = 2000): Promise<Uint8Array> {
-    const deadline = Date.now() + timeoutMs;
-    const skipped: string[] = [];
-    let reply = await this.midi.request(msg, timeoutMs);
-    while (reply) {
-      if (prefix.every((b, i) => reply![4 + i] === b)) return reply;
-      skipped.push(sx.toHex(reply.subarray(0, 8)));
-      reply = await this.midi.recvSysex(Math.max(0, deadline - Date.now()));
-    }
-    throw new Error(`${sx.toHex(msg.subarray(0, 12))}… が受理されない (読み飛ばした応答: ${skipped.join(" / ") || "なし"})`);
+    const reply = await this.midi.request(msg, timeoutMs, zoomReply(prefix));
+    if (!reply) throw new Error(`${sx.toHex(msg.subarray(0, 12))}… が受理されない`);
+    return reply;
   }
 
   private assertEditable() {
@@ -71,8 +65,12 @@ export class Zoom implements Disposable {
   async getPatchSysex(n: number): Promise<Uint8Array> {
     if (!Number.isInteger(n) || n < 0 || n >= PATCH_COUNT) throw new Error(`パッチ番号は 0..${PATCH_COUNT - 1}`);
     const bank = Math.floor(n / PATCHES_PER_BANK);
-    const reply = await this.midi.request(sx.requestPatch(this.deviceId, bank, n % PATCHES_PER_BANK), 3000);
-    if (!reply || reply[4] !== 0x45) throw new Error(`パッチ ${n} を読めない: ${reply ? sx.toHex(reply) : "応答なし"}`);
+    const reply = await this.midi.request(
+      sx.requestPatch(this.deviceId, bank, n % PATCHES_PER_BANK),
+      3000,
+      zoomReply([0x45]),
+    );
+    if (!reply) throw new Error(`パッチ ${n} を読めない`);
     return reply;
   }
 
@@ -81,7 +79,8 @@ export class Zoom implements Disposable {
   }
 
   async getCurrentPatch(): Promise<Patch> {
-    const reply = await this.midi.request(sx.requestCurrentPatch(this.deviceId), 4000);
+    // 64 12 00 は編集時の通知。要求への応答は 64 12 01
+    const reply = await this.midi.request(sx.requestCurrentPatch(this.deviceId), 4000, zoomReply([0x64, 0x12, 0x01]));
     if (!reply) throw new Error("現在パッチのダンプに応答がない");
     return decodePatch(decodePatchSysex(reply).buffer);
   }
@@ -126,15 +125,22 @@ export class Zoom implements Disposable {
     return decodePatch(decodePatchSysex(reply).buffer);
   }
 
+  /** 編集用に開いたときは、エディタモード OFF の応答まで待ってから閉じる（残った応答が次の接続に混ざらないように）。 */
+  async closeAsync() {
+    if (this.editable) await this.expect(sx.editorModeOff(this.deviceId), [0x00, 0x00]).catch(() => {});
+    this.midi.close();
+  }
+
   close() {
-    if (this.editable) {
-      // 応答は待たない。閉じる前に送るだけ
-      void this.midi.send(sx.editorModeOff(this.deviceId));
-    }
+    if (this.editable) void this.midi.send(sx.editorModeOff(this.deviceId));
     this.midi.close();
   }
 
   [Symbol.dispose]() {
     this.close();
+  }
+
+  [Symbol.asyncDispose]() {
+    return this.closeAsync();
   }
 }

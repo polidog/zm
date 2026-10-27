@@ -106,9 +106,17 @@ export class RawMidi {
     }
   }
 
-  async request(data: Uint8Array, timeoutMs = 2000) {
+  /**
+   * 送って、match に合う SysEx を待つ。合わないもの（前の接続の応答の残りや、
+   * ペダルが自分から送ってくる通知）は読み捨てる。
+   */
+  async request(data: Uint8Array, timeoutMs = 2000, match: (msg: Uint8Array) => boolean = () => true) {
     this.drain();
     await this.send(data);
-    return this.recvSysex(timeoutMs);
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+      const msg = await this.recvSysex(Math.max(0, deadline - Date.now()));
+      if (!msg || match(msg)) return msg;
+    }
   }
 }
