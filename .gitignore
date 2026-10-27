@@ -3,3 +3,5 @@ node_modules/
 backups/
 # ペダルから取り出した ZD2 と、そこから作るカタログ。ZOOM の著作物なので入れない
 catalog/
+# go build ./cmd/zoom の出力
+/zoom
