@@ -236,12 +236,12 @@ type SlotView struct {
 
 func (s SlotView) MarshalJSON() ([]byte, error) {
 	if s.empty {
-		return jsonMarshal(struct {
+		return CompactJSON(struct {
 			Slot   int    `json:"slot"`
 			Effect string `json:"effect"`
 		}{s.Slot, s.Effect})
 	}
-	return jsonMarshal(s.NamedSlot)
+	return CompactJSON(s.NamedSlot)
 }
 
 func slotView(z *device.Zoom, slot int) (SlotView, error) {

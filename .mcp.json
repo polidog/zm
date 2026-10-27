@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "zoom": {
-      "command": "bun",
-      "args": ["run", "src/server.ts"]
+      "command": "go",
+      "args": ["run", "./cmd/zoom", "mcp"]
     }
   }
 }

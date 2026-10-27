@@ -17,7 +17,8 @@ func JSON(v any) ([]byte, error) {
 	return bytes.TrimRight(buf.Bytes(), "\n"), nil
 }
 
-func jsonMarshal(v any) ([]byte, error) {
+// CompactJSON は 1 行の JSON（<> & をエスケープしない）。
+func CompactJSON(v any) ([]byte, error) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	enc.SetEscapeHTML(false)

@@ -20,6 +20,7 @@ const usage = `usage: zoom <command> [args]
   restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
   catalog [--refresh]             ペダルの ZD2 からカタログを作る
+  mcp                             MCP サーバー (stdio)
   probe                           P0 の疎通確認（開発用）
 
 読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300、スロット 1〜6）。
@@ -46,6 +47,7 @@ func commands() map[string]command {
 		"restore":    RestoreCmd,
 		"backup":     Backup,
 		"catalog":    CatalogCmd,
+		"mcp":        MCP,
 		"probe":      Probe,
 	}
 }
