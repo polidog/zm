@@ -129,7 +129,7 @@ export type Patch = {
   misc: string;
   /** ヘッダ内の 10 バイトの名前欄。 */
   shortName: string;
-  /** ヘッダの ids 欄。通常は effects[].id と同じ。 */
+  /** ヘッダの ids 欄。実機では常に effects[].id と同じで、encode は effects から作る。 */
   ids: number[];
   /** TXJ1 の Shift-JIS を読んだもの（表示用）。書き戻しは txj1 から。 */
   descriptionJa: string;
@@ -242,7 +242,7 @@ export function encodePatch(p: Patch): Uint8Array {
     u32(p.target),
     unhex(p.misc),
     fit(encodeAscii(p.shortName), 10),
-    ...p.ids.map(u32),
+    ...p.effects.map((e) => u32(e.id)),
     chunk("TXJ1", unhex(p.txj1)),
     chunk("TXE1", pad4(encodeAscii(p.descriptionEn))),
     chunk("EDTB", Buffer.concat(p.effects.map(encodeEffect))),
@@ -251,9 +251,10 @@ export function encodePatch(p: Patch): Uint8Array {
   ];
   const size = 8 + body.reduce((n, b) => n + b.length, 0);
   const ptcf = Buffer.concat([encodeAscii("PTCF"), u32(size), ...body]);
-  const trailer = unhex(p.trailer);
-  if (ptcf.length + trailer.length !== PATCH_BUFFER_BYTES) {
-    throw new Error(`バッファが ${PATCH_BUFFER_BYTES} バイトにならない: ${ptcf.length} + ${trailer.length}`);
-  }
+  const rest = PATCH_BUFFER_BYTES - ptcf.length;
+  if (rest < 0) throw new Error(`PTCF が ${PATCH_BUFFER_BYTES} バイトを超える: ${ptcf.length}`);
+  // 残骸はそのまま戻す（ラウンドトリップ用）。PTCF の長さが変わって合わなければ 0 で埋める
+  let trailer = unhex(p.trailer);
+  if (trailer.length !== rest) trailer = new Uint8Array(rest);
   return Uint8Array.from(Buffer.concat([ptcf, trailer]));
 }
