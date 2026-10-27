@@ -2,7 +2,8 @@
  * L4: MCP サーバー (stdio)。
  *
  * 番号はペダルの画面に合わせる: パッチは 1〜300、スロットは 1〜6。
- * 編集はすべて「いま鳴っているパッチ」への変更で、保存はしない（パッチを選び直せば元に戻る）。
+ * set_effect などの編集は「いま鳴っているパッチ」への変更で、保存しない（パッチを選び直せば元に戻る）。
+ * 保存は save_patch だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
  * 曖昧な指示（「80 年代っぽいクリーンに」）の解釈は Claude 側に任せ、ここは素直な操作だけを出す。
  *
  *   bun run src/server.ts
@@ -10,15 +11,13 @@
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 import { z } from "zod";
+import { backupAll, backupBeforeOverwrite, latestOverwritten } from "./backups";
 import { type Catalog, type CatalogEffect, describePatch, findEffect, formatId, loadCatalog } from "./catalog";
 import { PATCH_COUNT, Zoom } from "./device";
 
 /** ユーザーが使えるスロット数（7, 8 番目は Output VP とシステム用）。 */
 const USER_SLOTS = 6;
-const BACKUP_DIR = join(import.meta.dir, "..", "backups");
 
 let catalog: Catalog | undefined;
 const getCatalog = () => (catalog ??= loadCatalog());
@@ -110,19 +109,7 @@ server.registerTool(
   },
   async () =>
     json(
-      await withZoom(false, async (zoom) => {
-        const d = new Date();
-        const p2 = (n: number) => String(n).padStart(2, "0");
-        const dir = join(
-          BACKUP_DIR,
-          `all-${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}-${p2(d.getHours())}${p2(d.getMinutes())}${p2(d.getSeconds())}`,
-        );
-        mkdirSync(dir, { recursive: true });
-        for (let n = 0; n < PATCH_COUNT; n++) {
-          writeFileSync(join(dir, `${String(n).padStart(3, "0")}.syx`), await zoom.getPatchSysex(n));
-        }
-        return { saved: PATCH_COUNT, dir };
-      }),
+      await withZoom(false, async (zoom) => ({ saved: PATCH_COUNT, dir: await backupAll(zoom) })),
     ),
 );
 
@@ -246,6 +233,53 @@ server.registerTool(
         return { ...(await slotView(zoom, slot)), slot };
       }),
     ),
+);
+
+// ---- 保存（フラッシュに書く） ----
+
+const numberSchema = z.number().int().min(1).max(PATCH_COUNT).describe("パッチ番号 1〜300（ペダルの画面と同じ）");
+
+server.registerTool(
+  "save_patch",
+  {
+    description:
+      "いま鳴っている（編集中の）パッチを、パッチメモリ number に保存する。ペダルのフラッシュに書き込むので、必ずユーザーに番号を確かめてから呼ぶ。上書きされる中身は backups/overwritten/ に退避され、restore_patch で戻せる。",
+    inputSchema: { number: numberSchema },
+    annotations: { destructiveHint: true },
+  },
+  async ({ number }) =>
+    json(
+      await withZoom(true, async (zoom) => {
+        const n = number - 1;
+        const before = (await zoom.getPatch(n)).name;
+        const backup = await backupBeforeOverwrite(zoom, n);
+        const patch = await zoom.getCurrentPatch();
+        await zoom.savePatch(n, patch);
+        return { number, saved: patch.name, overwritten: before, backup };
+      }),
+    ),
+);
+
+server.registerTool(
+  "restore_patch",
+  {
+    description:
+      "save_patch で上書きしたパッチ number を、上書き直前の中身に戻す（いちばん新しい退避を使う。フラッシュに書き込む）。",
+    inputSchema: { number: numberSchema },
+    annotations: { destructiveHint: true },
+  },
+  async ({ number }) => {
+    const n = number - 1;
+    const latest = latestOverwritten(n);
+    if (!latest) throw new Error(`パッチ ${number} の退避がない`);
+    return json(
+      await withZoom(true, async (zoom) => {
+        const replaced = (await zoom.getPatch(n)).name;
+        await zoom.writePatchSysex(n, latest.data);
+        return { number, restored: (await zoom.getPatch(n)).name, replaced, from: latest.path };
+      }),
+    );
+  },
 );
 
 // ---- リソース ----

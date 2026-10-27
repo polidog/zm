@@ -1,12 +1,13 @@
 /**
  * ペダル 1 台分の操作をまとめる。MCP サーバーはこの上に乗る。
  *
- * 書き込みは 64 20 による現在パッチの個別編集（保存しない）だけ。open({ edit: true }) で
- * エディタモードを ON にし、AUTO SAVE を OFF にしてから使う（ON のままだと編集がそのまま保存される）。
+ * 書き込みは 2 種類。どちらも open({ edit: true }) でエディタモードを ON、AUTO SAVE を OFF にしてから使う。
+ * - 64 20 による現在パッチの個別編集（保存しない。パッチを選び直せば戻る）
+ * - 45 によるパッチメモリへの保存（フラッシュに書く）
  */
 
-import { decodePatchSysex } from "./codec";
-import { decodePatch, type Patch } from "./patch";
+import { decodePatchSysex, encodePatchSysex } from "./codec";
+import { decodePatch, encodePatch, type Patch } from "./patch";
 import * as sx from "./sysex";
 import { findZoomPort, RawMidi } from "./transport";
 
@@ -16,6 +17,12 @@ export const PATCH_COUNT = 300;
 
 /** 5 バイト目以降（F0 52 00 dev の後ろ）が prefix で始まるか。 */
 const zoomReply = (prefix: number[]) => (msg: Uint8Array) => prefix.every((b, i) => msg[4 + i] === b);
+
+/** 0 始まりの通し番号 → バンク / プログラム。 */
+function location(n: number) {
+  if (!Number.isInteger(n) || n < 0 || n >= PATCH_COUNT) throw new Error(`パッチ番号は 0..${PATCH_COUNT - 1}`);
+  return { bank: Math.floor(n / PATCHES_PER_BANK), program: n % PATCHES_PER_BANK };
+}
 
 export class Zoom implements Disposable, AsyncDisposable {
   private constructor(
@@ -63,10 +70,9 @@ export class Zoom implements Disposable, AsyncDisposable {
 
   /** 生の SysEx（45 応答）を返す。バックアップ用。 */
   async getPatchSysex(n: number): Promise<Uint8Array> {
-    if (!Number.isInteger(n) || n < 0 || n >= PATCH_COUNT) throw new Error(`パッチ番号は 0..${PATCH_COUNT - 1}`);
-    const bank = Math.floor(n / PATCHES_PER_BANK);
+    const { bank, program } = location(n);
     const reply = await this.midi.request(
-      sx.requestPatch(this.deviceId, bank, n % PATCHES_PER_BANK),
+      sx.requestPatch(this.deviceId, bank, program),
       3000,
       zoomReply([0x45]),
     );
@@ -129,6 +135,29 @@ export class Zoom implements Disposable, AsyncDisposable {
   async closeAsync() {
     if (this.editable) await this.expect(sx.editorModeOff(this.deviceId), [0x00, 0x00]).catch(() => {});
     this.midi.close();
+  }
+
+  /**
+   * パッチメモリ n に保存する（フラッシュに書く）。送った後に読み直し、中身が一致しなければ例外。
+   * 呼ぶ側で、上書きされる中身を getPatchSysex で退避しておくこと。
+   */
+  async savePatch(n: number, patch: Patch) {
+    this.assertEditable();
+    await this.writePatchSysex(n, encodePatchSysex(this.deviceId, { kind: "program", ...location(n) }, encodePatch(patch)));
+    const back = await this.getPatch(n);
+    const body = (p: Patch) => JSON.stringify({ ...p, trailer: "" });
+    if (body(back) !== body(patch)) throw new Error(`パッチ ${n} に保存した中身が読み直しと一致しない`);
+  }
+
+  /** getPatchSysex で取った 45 をそのまま書き戻す（バックアップからの復元用）。 */
+  async writePatchSysex(n: number, msg: Uint8Array) {
+    this.assertEditable();
+    const { bank, program } = location(n);
+    const at = decodePatchSysex(msg).location;
+    if (at.kind !== "program" || at.bank !== bank || at.program !== program) {
+      throw new Error(`パッチ ${n} 宛ての SysEx ではない`);
+    }
+    await this.expect(msg, [0x00, 0x00], 5000);
   }
 
   close() {

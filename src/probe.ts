@@ -10,6 +10,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
+import { timestamp } from "./backups";
 import * as sx from "./sysex";
 import { findZoomPort, listPorts, portPath, RawMidi, type MidiPort } from "./transport";
 
@@ -22,12 +23,6 @@ const hexdump = (data: Uint8Array, width = 16) => {
 const parsePort = (spec: string): MidiPort => {
   const [card, device = "0"] = spec.replace(/^hw:/, "").split(",");
   return { card: Number(card), device: Number(device), name: spec };
-};
-
-const timestamp = () => {
-  const d = new Date();
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
 };
 
 async function main(): Promise<number> {
