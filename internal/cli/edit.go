@@ -1,0 +1,210 @@
+package cli
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/polidog/zoom-ai/internal/device"
+	"github.com/polidog/zoom-ai/internal/ops"
+)
+
+func printSlot(v ops.SlotView, asJSON bool) error {
+	if asJSON {
+		return printJSON(v)
+	}
+	mark := "○"
+	if v.Enabled {
+		mark = "●"
+	}
+	var ps []string
+	for _, p := range v.Params {
+		if !p.Hidden {
+			ps = append(ps, fmt.Sprintf("%s %d", p.Name, p.Value))
+		}
+	}
+	fmt.Printf("%d %s %s  %s\n", v.Slot, mark, v.Effect, strings.Join(ps, "  "))
+	fmt.Println("（保存していない。残すなら zoom save <n>）")
+	return nil
+}
+
+func slotArg(s string) (int, error) {
+	n, err := atoi("スロット番号", s)
+	if err != nil {
+		return 0, err
+	}
+	if _, err := ops.SlotIndex(n); err != nil {
+		return 0, err
+	}
+	return n, nil
+}
+
+func SetEffectCmd(args []string) error {
+	const usage = "set-effect <slot> <effect> [--json]"
+	fs := newFlags("set-effect", usage)
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if len(pos) < 2 {
+		return fmt.Errorf("usage: zoom %s", usage)
+	}
+	slot, err := slotArg(pos[0])
+	if err != nil {
+		return err
+	}
+	v, err := ops.WithZoom(true, func(z *device.Zoom) (ops.SlotView, error) {
+		return ops.SetEffect(z, slot, strings.Join(pos[1:], " "))
+	})
+	if err != nil {
+		return err
+	}
+	return printSlot(v, *asJSON)
+}
+
+func SetCmd(args []string) error {
+	const usage = "set <slot> <param> <value> [--json]"
+	fs := newFlags("set", usage)
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if len(pos) < 3 {
+		return fmt.Errorf("usage: zoom %s", usage)
+	}
+	slot, err := slotArg(pos[0])
+	if err != nil {
+		return err
+	}
+	value, err := atoi("値", pos[len(pos)-1])
+	if err != nil {
+		return err
+	}
+	param := strings.Join(pos[1:len(pos)-1], " ")
+	v, err := ops.WithZoom(true, func(z *device.Zoom) (ops.SlotView, error) {
+		return ops.SetParam(z, slot, param, value)
+	})
+	if err != nil {
+		return err
+	}
+	return printSlot(v, *asJSON)
+}
+
+func toggleCmd(name string, enabled *bool) command {
+	return func(args []string) error {
+		usage := name + " <slot> [--json]"
+		fs := newFlags(name, usage)
+		asJSON := fs.Bool("json", false, "JSON で出す")
+		pos := parse(fs, args)
+		if err := want(pos, 1, 1, usage); err != nil {
+			return err
+		}
+		slot, err := slotArg(pos[0])
+		if err != nil {
+			return err
+		}
+		v, err := ops.WithZoom(true, func(z *device.Zoom) (ops.SlotView, error) { return ops.Toggle(z, slot, enabled) })
+		if err != nil {
+			return err
+		}
+		return printSlot(v, *asJSON)
+	}
+}
+
+// confirm は端末で y を打たせる。端末でなければ断る（--yes を付けさせる）。
+func confirm(question string) error {
+	if st, err := os.Stdin.Stat(); err != nil || st.Mode()&os.ModeCharDevice == 0 {
+		return fmt.Errorf("%s\n端末から実行するか、--yes を付ける", question)
+	}
+	fmt.Fprintf(os.Stderr, "%s [y/N] ", question)
+	line, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+	if a := strings.ToLower(strings.TrimSpace(line)); a != "y" && a != "yes" {
+		return fmt.Errorf("やめた")
+	}
+	return nil
+}
+
+func numberArg(s string) (int, error) {
+	n, err := atoi("パッチ番号", s)
+	if err != nil {
+		return 0, err
+	}
+	if _, err := ops.PatchIndex(n); err != nil {
+		return 0, err
+	}
+	return n, nil
+}
+
+func SaveCmd(args []string) error {
+	const usage = "save <n> [--yes] [--json]"
+	fs := newFlags("save", usage)
+	yes := fs.Bool("yes", false, "確認しない")
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if err := want(pos, 1, 1, usage); err != nil {
+		return err
+	}
+	number, err := numberArg(pos[0])
+	if err != nil {
+		return err
+	}
+	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.SaveResult, error) {
+		if !*yes {
+			target, err := z.Patch(number - 1)
+			if err != nil {
+				return ops.SaveResult{}, err
+			}
+			current, err := z.CurrentPatch()
+			if err != nil {
+				return ops.SaveResult{}, err
+			}
+			q := fmt.Sprintf("いま鳴っている %q を、パッチ %d（いまは %q）に保存する。上書き前の中身は backups/overwritten/ に退避する。", current.Name, number, target.Name)
+			if err := confirm(q); err != nil {
+				return ops.SaveResult{}, err
+			}
+		}
+		return ops.Save(z, number)
+	})
+	if err != nil {
+		return err
+	}
+	if *asJSON {
+		return printJSON(r)
+	}
+	fmt.Printf("%d に %q を保存した（上書きした %q は %s）\n", r.Number, r.Saved, r.Overwritten, r.Backup)
+	return nil
+}
+
+func RestoreCmd(args []string) error {
+	const usage = "restore <n> [--yes] [--json]"
+	fs := newFlags("restore", usage)
+	yes := fs.Bool("yes", false, "確認しない")
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if err := want(pos, 1, 1, usage); err != nil {
+		return err
+	}
+	number, err := numberArg(pos[0])
+	if err != nil {
+		return err
+	}
+	path, data, err := ops.LatestBackup(number)
+	if err != nil {
+		return err
+	}
+	if !*yes {
+		p, err := device.DecodeSysex(data)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		if err := confirm(fmt.Sprintf("パッチ %d を %s の %q に戻す。", number, path, p.Name)); err != nil {
+			return err
+		}
+	}
+	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.RestoreResult, error) { return ops.Restore(z, number) })
+	if err != nil {
+		return err
+	}
+	if *asJSON {
+		return printJSON(r)
+	}
+	fmt.Printf("%d を %q に戻した（%q を置き換え、%s から）\n", r.Number, r.Restored, r.Replaced, r.From)
+	return nil
+}

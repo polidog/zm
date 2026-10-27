@@ -13,6 +13,11 @@ const usage = `usage: zoom <command> [args]
   show [n]                        パッチの中身（省略で、いま鳴っているパッチ）
   effects [group]                 エフェクト一覧
   effect <name>                   エフェクトの説明とパラメータ
+  set-effect <slot> <effect>      エフェクト差し替え（保存しない）
+  set <slot> <param> <value>      パラメータ変更（保存しない）
+  on|off|toggle <slot>            ON / OFF（保存しない）
+  save <n> [--yes]                いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
+  restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
   catalog [--refresh]             ペダルの ZD2 からカタログを作る
   probe                           P0 の疎通確認（開発用）
@@ -23,16 +28,25 @@ backups/ と catalog/ は $ZOOM_DIR（無ければカレントディレクトリ
 
 type command func(args []string) error
 
+var on, off = true, false
+
 func commands() map[string]command {
 	return map[string]command{
-		"info":    Info,
-		"list":    List,
-		"show":    Show,
-		"effects": Effects,
-		"effect":  EffectCmd,
-		"backup":  Backup,
-		"catalog": CatalogCmd,
-		"probe":   Probe,
+		"info":       Info,
+		"list":       List,
+		"show":       Show,
+		"effects":    Effects,
+		"effect":     EffectCmd,
+		"set-effect": SetEffectCmd,
+		"set":        SetCmd,
+		"on":         toggleCmd("on", &on),
+		"off":        toggleCmd("off", &off),
+		"toggle":     toggleCmd("toggle", nil),
+		"save":       SaveCmd,
+		"restore":    RestoreCmd,
+		"backup":     Backup,
+		"catalog":    CatalogCmd,
+		"probe":      Probe,
 	}
 }
 
