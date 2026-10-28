@@ -85,10 +85,18 @@ var zoomMu sync.Mutex
 // WithZoom はペダルを開いて fn を呼び、必ず閉じる。ペダルとのやりとりは 1 本の列に並べる。
 // 呼び出しごとに開いて閉じるので、抜き差ししても動く。
 func WithZoom[T any](edit bool, fn func(*device.Zoom) (T, error)) (T, error) {
+	return WithPedal(device.Target, edit, fn)
+}
+
+// WithPedal は WithZoom のペダルを選ぶ版。target は --pedal と同じ書き方（機種名か hw:C,D）で、空なら device.Target。
+func WithPedal[T any](target string, edit bool, fn func(*device.Zoom) (T, error)) (T, error) {
+	if target == "" {
+		target = device.Target
+	}
 	zoomMu.Lock()
 	defer zoomMu.Unlock()
 	var zero T
-	z, err := device.Open(edit)
+	z, err := device.OpenTarget(target, edit)
 	if err != nil {
 		return zero, err
 	}
@@ -138,6 +146,8 @@ func ListPatches(z *device.Zoom) ([]PatchName, error) {
 type PatchView struct {
 	// Number は 1〜300 か "current"。
 	Number any `json:"number"`
+	// Selected は Number が "current" のとき、いま選んでいるパッチの番号（1〜300）。分からなければ出さない。
+	Selected int `json:"selected,omitempty"`
 	catalog.NamedPatch
 }
 
@@ -152,7 +162,12 @@ func GetPatch(z *device.Zoom, number int) (PatchView, error) {
 		if err != nil {
 			return PatchView{}, err
 		}
-		return PatchView{Number: "current", NamedPatch: cat.Describe(p)}, nil
+		v := PatchView{Number: "current", NamedPatch: cat.Describe(p)}
+		// 番号はおまけなので、33 に答えなくても中身は返す
+		if n, err := z.Program(); err == nil {
+			v.Selected = n + 1
+		}
+		return v, nil
 	}
 	n, err := PatchIndex(z.Model, number)
 	if err != nil {
@@ -422,6 +437,19 @@ func SetTempo(z *device.Zoom, bpm int) (TempoResult, error) {
 		return TempoResult{}, err
 	}
 	return TempoResult{Name: p.Name, Tempo: p.Prm2.Tempo}, nil
+}
+
+// Select はパッチ number（画面の番号）に切り替え、切り替えた後のパッチを返す（get_patch の current と同じ形）。
+// いま鳴っているパッチの未保存の編集は捨てる。
+func Select(z *device.Zoom, number int) (PatchView, error) {
+	n, err := PatchIndex(z.Model, number)
+	if err != nil {
+		return PatchView{}, err
+	}
+	if err := z.SelectPatch(n); err != nil {
+		return PatchView{}, err
+	}
+	return GetPatch(z, 0)
 }
 
 // ---- 保存（フラッシュに書く） ----

@@ -119,13 +119,16 @@ type protocol interface {
 	open(z *Zoom, edit bool) error
 	close(z *Zoom)
 	patchSysex(z *Zoom, n int) ([]byte, error)
+	currentSysex(z *Zoom) ([]byte, error)
 	currentPatch(z *Zoom) (*patch.Patch, error)
+	loadPatch(z *Zoom, msg []byte) error
 	keepCurrent(z *Zoom, fn func() error) error
 	setParam(z *Zoom, slot, index, value int) error
 	setEnabled(z *Zoom, slot int, on bool) error
 	setEffect(z *Zoom, slot int, id uint32) (*patch.Patch, error)
 	setName(z *Zoom, name string) error
 	setTempo(z *Zoom, bpm int) error
+	selectPatch(z *Zoom, n int) error
 	savePatch(z *Zoom, n int, p *patch.Patch) error
 	writePatchSysex(z *Zoom, n int, msg []byte) error
 	notice(z *Zoom, msg []byte) (*patch.Patch, bool)
@@ -151,6 +154,8 @@ type Zoom struct {
 	Editable bool
 
 	proto protocol
+	// programs は 33 への応答とペダルの操作で届いたパッチの番号（program.go）。
+	programs *programTap
 	// legacy は旧 MS の接続ごとの状態（legacy.go）。
 	legacy *legacyState
 }
@@ -161,19 +166,23 @@ var Target string
 
 // Open は Target のペダルを開く。edit なら書き込めるようにする（G2 FOUR はエディタモード ON と AUTO SAVE OFF）。
 // 使い終わったら必ず Close する（開いたまま抜けると以降のオープンが EBUSY になる）。
-func Open(edit bool) (*Zoom, error) {
-	if strings.HasPrefix(Target, "hw:") {
-		p, err := midi.ParsePort(Target)
+func Open(edit bool) (*Zoom, error) { return OpenTarget(Target, edit) }
+
+// OpenTarget は target（Target と同じ書き方。空なら最初に見つかったペダル）のペダルを開く。
+// ボードのように何台も繋いでいるときに、1 台ずつ選んで開く。
+func OpenTarget(target string, edit bool) (*Zoom, error) {
+	if strings.HasPrefix(target, "hw:") {
+		p, err := midi.ParsePort(target)
 		if err != nil {
 			return nil, err
 		}
 		return OpenPort(p, edit)
 	}
 	var want *Model
-	if Target != "" {
-		m, ok := ModelByKey(Target)
+	if target != "" {
+		m, ok := ModelByKey(target)
 		if !ok {
-			return nil, fmt.Errorf("--pedal %q は hw:C,D か機種名（%s）", Target, modelKeys())
+			return nil, fmt.Errorf("--pedal %q は hw:C,D か機種名（%s）", target, modelKeys())
 		}
 		want = &m
 	}
@@ -252,7 +261,8 @@ func open(conn *midi.Conn, edit bool, want *Model) (*Zoom, error) {
 	if edit && model.ReadOnly {
 		return nil, fmt.Errorf("%s の編集と保存は、実機で確かめるまで止めてある（読み出しはできる）", model.Name)
 	}
-	z := &Zoom{Conn: conn, Identity: ident, Model: model, proto: model.protocol()}
+	z := &Zoom{Conn: conn, Identity: ident, Model: model, proto: model.protocol(), programs: newProgramTap(model.PatchesPerBank)}
+	conn.SetTap(z.programs.feed)
 	if err := z.proto.open(z, edit); err != nil {
 		return nil, err
 	}
@@ -336,6 +346,7 @@ func (z *Zoom) assertEditable() error {
 // （残った応答が次の接続に混ざらないように）。
 func (z *Zoom) Close() error {
 	z.proto.close(z)
+	z.Conn.SetTap(nil)
 	z.Editable = false
 	return z.Conn.Close()
 }
@@ -376,6 +387,10 @@ func (z *Zoom) Patch(n int) (*patch.Patch, error) {
 }
 
 func (z *Zoom) CurrentPatch() (*patch.Patch, error) { return z.proto.currentPatch(z) }
+
+// CurrentSysex はいま鳴っている（編集中の）パッチを生の SysEx で返す（G2 FOUR は 64 12 01、旧 MS は 28）。
+// LoadPatch で同じ機種の現在パッチに流し込める。
+func (z *Zoom) CurrentSysex() ([]byte, error) { return z.proto.currentSysex(z) }
 
 // Notice はペダルが自分から送ってきたメッセージが現在パッチの変化なら、変化後のパッチを返す。
 // ペダルとはやりとりしない（受信の途中で呼ばれるので）。
@@ -457,6 +472,19 @@ func (z *Zoom) SetTempo(bpm int) error {
 		return fmt.Errorf("テンポは %d〜%d", MinTempo, MaxTempo)
 	}
 	return z.proto.setTempo(z, bpm)
+}
+
+// LoadPatch は CurrentSysex で取った中身を、いま鳴っているパッチに流し込む（保存しない）。
+// 旧 MS は 28 で丸ごと送る。G2 FOUR / MS-80IR+ は丸ごと送る方法を確かめていないので、
+// 64 20 でエフェクト・パラメータ・ON / OFF・テンポを違うところだけ変える（名前は変えられない）。
+func (z *Zoom) LoadPatch(msg []byte) error {
+	if err := z.assertEditable(); err != nil {
+		return err
+	}
+	if len(msg) < 4 || msg[3] != z.DeviceID() {
+		return fmt.Errorf("%s のパッチではない", z.Model.Name)
+	}
+	return z.proto.loadPatch(z, msg)
 }
 
 // ---- 保存（フラッシュに書く） ----

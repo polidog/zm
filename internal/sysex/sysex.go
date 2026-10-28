@@ -95,6 +95,11 @@ func LegacyStore(dev byte, n int) []byte {
 // ProgramChange はパッチを選ぶ（チャンネル 1）。旧 MS の 33 にもこの形で返ってくる（前に CC0 / CC32 が付く）。
 func ProgramChange(n int) []byte { return []byte{0xc0, byte(n & 0x7f)} }
 
+// SelectPatch は Bank Select (CC0 / CC32) + Program Change でパッチを選ぶ（チャンネル 1）。33 の応答と同じ形。
+func SelectPatch(bank, program int) []byte {
+	return []byte{0xb0, 0x00, byte(bank >> 7 & 0x7f), 0xb0, 0x20, byte(bank & 0x7f), 0xc0, byte(program & 0x7f)}
+}
+
 // RequestPatchInfo の応答 43: パッチ数・パッチ長・バンク数など。
 func RequestPatchInfo(dev byte) []byte { return Zoom(dev, 0x44) }
 

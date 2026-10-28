@@ -29,8 +29,6 @@ import (
 type legacy struct{}
 
 type legacyState struct {
-	// programs は 33 への応答とペダルの操作で届いた Program Change の番号。
-	programs chan int
 	// keeping は KeepCurrent の入れ子の深さ。
 	keeping int
 	// last は最後に読んだ現在パッチ。31 の通知をここに当てて、変化後のパッチを作る。
@@ -39,26 +37,7 @@ type legacyState struct {
 }
 
 func (legacy) open(z *Zoom, edit bool) error {
-	st := &legacyState{programs: make(chan int, 16)}
-	z.legacy = st
-	// Program Change は SysEx ではないので、Conn の生バイトから拾う
-	running := false
-	z.Conn.SetTap(func(b []byte) {
-		for _, c := range b {
-			switch {
-			case c == 0xc0:
-				running = true
-			case c >= 0x80:
-				running = false
-			case running:
-				running = false
-				select {
-				case st.programs <- int(c):
-				default:
-				}
-			}
-		}
-	})
+	z.legacy = &legacyState{}
 	if err := z.Conn.Send(sysex.EditorModeOn(z.DeviceID())); err != nil {
 		return err
 	}
@@ -70,29 +49,16 @@ func (legacy) open(z *Zoom, edit bool) error {
 
 // close はエディタモードを OFF (51) にしない。旧 MS は 51 で未保存の編集を捨て、パッチを読み込み直す
 // （実機で確かめた）。zoom-ms-utility も 51 は送らない。エディタモードは電源を切るまで残る。
-func (legacy) close(z *Zoom) {
-	z.Conn.SetTap(nil)
-}
-
-// program は 33 でいま選んでいるパッチ番号（0 始まり）を聞く。
-func (legacy) program(z *Zoom) (int, error) {
-	st := z.legacy
-	for len(st.programs) > 0 {
-		<-st.programs
-	}
-	if err := z.Conn.Send(sysex.GetCurrentProgram(z.DeviceID())); err != nil {
-		return 0, err
-	}
-	select {
-	case n := <-st.programs:
-		return n, nil
-	case <-time.After(2 * time.Second):
-		return 0, errors.New("33（現在のパッチ番号）に応答がない")
-	}
-}
+func (legacy) close(*Zoom) {}
 
 func (legacy) selectProgram(z *Zoom, n int) error {
 	return z.Conn.Send(sysex.ProgramChange(n))
+}
+
+// selectPatch はまだ止めてある。51 → 50 → Program Change の直後に 33 を送ったら、MS-70CDR（2.10）が
+// Identity Request にも答えなくなった（電源の入れ直しが要る）。原因を確かめるまで断る。
+func (legacy) selectPatch(z *Zoom, _ int) error {
+	return fmt.Errorf("%s のパッチの切り替えは、実機で確かめるまで止めてある", z.Model.Name)
 }
 
 // discard は現在パッチの未保存の編集を、保存せずに捨てる（51 → 50）。どちらにも応答はない。
@@ -163,7 +129,7 @@ func (l legacy) keepCurrent(z *Zoom, fn func() error) error {
 	if st.keeping > 0 {
 		return fn()
 	}
-	program, err := l.program(z)
+	program, err := z.Program()
 	if err != nil {
 		return err
 	}
@@ -246,6 +212,23 @@ func sameEffects(a, b *patch.Patch) bool {
 		}
 	}
 	return true
+}
+
+func (l legacy) currentSysex(z *Zoom) ([]byte, error) { return l.current(z) }
+
+// loadPatch は 28 で現在パッチを丸ごと msg にする。
+func (l legacy) loadPatch(z *Zoom, msg []byte) error {
+	if err := legacypatch.Check(msg); err != nil {
+		return err
+	}
+	back, err := l.put(z, msg)
+	if err != nil {
+		return err
+	}
+	if !samePatch(back, msg) {
+		return errors.New("流し込んだ中身をペダルが受け付けない")
+	}
+	return nil
 }
 
 func (l legacy) currentPatch(z *Zoom) (*patch.Patch, error) {
@@ -476,7 +459,7 @@ func (l legacy) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	if !sameEffects(now, p) {
 		return errors.New("保存しようとしたパッチが、いま鳴っているパッチと違う")
 	}
-	program, err := l.program(z)
+	program, err := z.Program()
 	if err != nil {
 		return err
 	}
@@ -508,7 +491,7 @@ func (l legacy) writePatchSysex(z *Zoom, n int, msg []byte) error {
 	if msg[3] != z.DeviceID() {
 		return fmt.Errorf("デバイス ID %02X の SysEx は書き戻せない", msg[3])
 	}
-	program, err := l.program(z)
+	program, err := z.Program()
 	if err != nil {
 		return err
 	}

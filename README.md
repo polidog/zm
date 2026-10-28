@@ -37,6 +37,7 @@ Requires Go 1.27 or later. To build from a checkout: `go build -o zm ./cmd/zm`.
 zm info                           model, firmware, number of patches
 zm list                           number and name of every patch
 zm show [n]                       contents of a patch (omit n for the patch currently playing)
+zm select <n>                     switch to patch n (discards unsaved edits; not yet on legacy MS)
 zm effects [group]                list effects
 zm effect <name>                  an effect's description and parameters
 zm set-effect <slot> <effect>     replace an effect (not saved)

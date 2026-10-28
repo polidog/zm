@@ -136,7 +136,11 @@ func Show(args []string) error {
 }
 
 func printPatch(v ops.PatchView) {
-	fmt.Printf("%v  %s    vol %d  tempo %d\n", v.Number, v.Name, v.Volume, v.Tempo)
+	number := fmt.Sprint(v.Number)
+	if v.Selected != 0 {
+		number = fmt.Sprintf("%s %d", number, v.Selected)
+	}
+	fmt.Printf("%s  %s    vol %d  tempo %d\n", number, v.Name, v.Volume, v.Tempo)
 	if v.Description != "" {
 		fmt.Printf("  %s\n", strings.ReplaceAll(strings.TrimSpace(v.Description), "\n", "\n  "))
 	}

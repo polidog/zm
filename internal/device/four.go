@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/polidog/zm/internal/codec"
@@ -59,7 +60,7 @@ func (four) patchSysex(z *Zoom, n int) ([]byte, error) {
 
 func (four) keepCurrent(_ *Zoom, fn func() error) error { return fn() }
 
-func (four) currentPatch(z *Zoom) (*patch.Patch, error) {
+func (four) currentSysex(z *Zoom) ([]byte, error) {
 	// 64 12 00 は編集時の通知。要求への応答は 64 12 01
 	reply, err := z.Conn.Request(sysex.RequestCurrentPatch(z.DeviceID()), 4*time.Second, zoomReply(0x64, 0x12, 0x01))
 	if err != nil {
@@ -68,7 +69,66 @@ func (four) currentPatch(z *Zoom) (*patch.Patch, error) {
 	if reply == nil {
 		return nil, errors.New("現在パッチのダンプに応答がない")
 	}
-	return DecodeSysex(reply)
+	return reply, nil
+}
+
+func (f four) currentPatch(z *Zoom) (*patch.Patch, error) {
+	msg, err := f.currentSysex(z)
+	if err != nil {
+		return nil, err
+	}
+	return DecodeSysex(msg)
+}
+
+// loadPatch はユーザーのスロットとテンポを、違うところだけ 64 20 で want に合わせる。
+// エフェクトを差し替えるとパラメータが既定値（か前回の値）になるので、差し替えてから読み直してパラメータを合わせる。
+func (f four) loadPatch(z *Zoom, msg []byte) error {
+	want, err := DecodeSysex(msg)
+	if err != nil {
+		return err
+	}
+	now, err := f.currentPatch(z)
+	if err != nil {
+		return err
+	}
+	slots := min(z.Model.UserSlots, len(want.Effects), len(now.Effects))
+	for s := range slots {
+		w := want.Effects[s]
+		if now.Effects[s].ID != w.ID {
+			if now, err = f.setEffect(z, s, w.ID); err != nil {
+				return fmt.Errorf("スロット %d: %w", s+1, err)
+			}
+		}
+		cur := now.Effects[s]
+		for i, v := range w.Params {
+			if i < len(cur.Params) && cur.Params[i] != v {
+				if err := f.setParam(z, s, i, v); err != nil {
+					return fmt.Errorf("スロット %d のパラメータ %d: %w", s+1, i+1, err)
+				}
+			}
+		}
+		if cur.Enabled != w.Enabled {
+			if err := f.setEnabled(z, s, w.Enabled); err != nil {
+				return fmt.Errorf("スロット %d の ON / OFF: %w", s+1, err)
+			}
+		}
+	}
+	if now.Prm2.Tempo != want.Prm2.Tempo {
+		if err := f.setTempo(z, want.Prm2.Tempo); err != nil {
+			return fmt.Errorf("テンポ: %w", err)
+		}
+	}
+	back, err := f.currentPatch(z)
+	if err != nil {
+		return err
+	}
+	for s := range slots {
+		x, y := back.Effects[s], want.Effects[s]
+		if x.ID != y.ID || x.Enabled != y.Enabled || !slices.Equal(x.Params, y.Params) {
+			return fmt.Errorf("スロット %d が流し込んだ中身と一致しない", s+1)
+		}
+	}
+	return nil
 }
 
 func (four) notice(_ *Zoom, msg []byte) (*patch.Patch, bool) {
@@ -132,6 +192,49 @@ func (f four) setTempo(z *Zoom, bpm int) error {
 	return f.edit(z, 0x64, 0x02, uint32(bpm), func(p *patch.Patch) bool { return p.Prm2.Tempo == bpm })
 }
 
+// selectPatch は Bank Select (CC0 / CC32) + Program Change。エディタモード中でも切り替わり、
+// AUTO SAVE が OFF なので未保存の編集は捨てられる（MS-80IR+ のファームウェア 1.10 で確かめた）。
+// 切り替えてから 100ms ほどは、64 13 で読むと前のパッチの中身が返る（先に届く 64 26 の後でも）。
+// そこで先にパッチメモリの n を読んでおき、現在パッチがそれと同じになるまで待つ。
+func (f four) selectPatch(z *Zoom, n int) error {
+	loc, err := z.Model.Location(n)
+	if err != nil {
+		return err
+	}
+	want, err := z.Patch(n)
+	if err != nil {
+		return err
+	}
+	if err := z.Conn.Send(sysex.SelectPatch(loc.Bank, loc.Program)); err != nil {
+		return err
+	}
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		p, err := f.currentPatch(z)
+		if err != nil {
+			return err
+		}
+		if samePatchBody(p, want) {
+			return nil
+		}
+		if time.Now().After(deadline) {
+			return fmt.Errorf("パッチ %d に切り替えたが、中身が読み込まれない", n+1)
+		}
+		time.Sleep(30 * time.Millisecond)
+	}
+}
+
+// samePatchBody は 45 の後ろの残骸（Trailer）を除いて同じパッチか。
+func samePatchBody(a, b *patch.Patch) bool {
+	body := func(p *patch.Patch) string {
+		c := p.Clone()
+		c.Trailer = ""
+		b, _ := json.Marshal(c)
+		return string(b)
+	}
+	return body(a) == body(b)
+}
+
 func (f four) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	loc, err := z.Model.Location(n)
 	if err != nil {
@@ -148,13 +251,7 @@ func (f four) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	if err != nil {
 		return err
 	}
-	body := func(p *patch.Patch) string {
-		c := p.Clone()
-		c.Trailer = ""
-		b, _ := json.Marshal(c)
-		return string(b)
-	}
-	if body(back) != body(p) {
+	if !samePatchBody(back, p) {
 		return fmt.Errorf("パッチ %d に保存した中身が読み直しと一致しない", n)
 	}
 	return nil
