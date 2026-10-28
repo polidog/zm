@@ -423,6 +423,27 @@ func (l legacy) setName(z *Zoom, name string) error {
 	return nil
 }
 
+// setTempo はテンポを変えたパッチ全体を 28 で送る。
+func (l legacy) setTempo(z *Zoom, bpm int) error {
+	msg, err := l.current(z)
+	if err != nil {
+		return err
+	}
+	lp, err := legacypatch.Parse(msg)
+	if err != nil {
+		return err
+	}
+	lp.SetTempo(bpm)
+	back, err := l.put(z, lp.Raw)
+	if err != nil {
+		return err
+	}
+	if !samePatch(back, lp.Raw) {
+		return errors.New("テンポの変更をペダルが受け付けない")
+	}
+	return nil
+}
+
 // store は現在パッチを n に保存し、n を選び直して（パッチメモリから読み込み直して）want と同じか確かめる。
 func (l legacy) store(z *Zoom, n int, want []byte) error {
 	if _, err := z.expect(sysex.LegacyStore(z.DeviceID(), n), 5*time.Second, 0x00); err != nil {

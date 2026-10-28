@@ -121,6 +121,29 @@ func toggleCmd(name string, enabled *bool) command {
 	}
 }
 
+func TempoCmd(args []string) error {
+	const usage = "tempo <bpm> [--json]"
+	fs := newFlags("tempo", usage)
+	asJSON := fs.Bool("json", false, "JSON で出す")
+	pos := parse(fs, args)
+	if err := want(pos, 1, 1, usage); err != nil {
+		return err
+	}
+	bpm, err := atoi("テンポ", pos[0])
+	if err != nil {
+		return err
+	}
+	r, err := ops.WithZoom(true, func(z *device.Zoom) (ops.TempoResult, error) { return ops.SetTempo(z, bpm) })
+	if err != nil {
+		return err
+	}
+	if *asJSON {
+		return printJSON(r)
+	}
+	fmt.Printf("%q のテンポを %d にした\n（保存していない。残すなら zm save <n>）\n", r.Name, r.Tempo)
+	return nil
+}
+
 // confirm は端末で y を打たせる。端末でなければ断る（--yes を付けさせる）。
 func confirm(question string) error {
 	if st, err := os.Stdin.Stat(); err != nil || st.Mode()&os.ModeCharDevice == 0 {

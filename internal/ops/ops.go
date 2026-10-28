@@ -406,6 +406,24 @@ func Rename(z *device.Zoom, name string) (RenameResult, error) {
 	return RenameResult{Name: p.Name}, nil
 }
 
+// TempoResult はテンポを変えた後の現在パッチ。
+type TempoResult struct {
+	Name  string `json:"name"`
+	Tempo int    `json:"tempo"`
+}
+
+// SetTempo はいま鳴っているパッチのテンポ（BPM）を変える（保存しない）。
+func SetTempo(z *device.Zoom, bpm int) (TempoResult, error) {
+	if err := z.SetTempo(bpm); err != nil {
+		return TempoResult{}, err
+	}
+	p, err := z.CurrentPatch()
+	if err != nil {
+		return TempoResult{}, err
+	}
+	return TempoResult{Name: p.Name, Tempo: p.Prm2.Tempo}, nil
+}
+
 // ---- 保存（フラッシュに書く） ----
 
 type SaveResult struct {
