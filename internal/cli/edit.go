@@ -121,6 +121,29 @@ func toggleCmd(name string, enabled *bool) command {
 	}
 }
 
+func SelectCmd(args []string) error {
+	const usage = "select <n> [--json]"
+	fs := newFlags("select", usage)
+	asJSON := fs.Bool("json", false, "JSON で出す（show --json と同じ形）")
+	pos := parse(fs, args)
+	if err := want(pos, 1, 1, usage); err != nil {
+		return err
+	}
+	number, err := atoi("パッチ番号", pos[0])
+	if err != nil {
+		return err
+	}
+	v, err := ops.WithZoom(true, func(z *device.Zoom) (ops.PatchView, error) { return ops.Select(z, number) })
+	if err != nil {
+		return err
+	}
+	if *asJSON {
+		return printJSON(v)
+	}
+	printPatch(v)
+	return nil
+}
+
 func TempoCmd(args []string) error {
 	const usage = "tempo <bpm> [--json]"
 	fs := newFlags("tempo", usage)

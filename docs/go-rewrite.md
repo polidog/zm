@@ -92,7 +92,8 @@ internal/
 - デバイス ID は `6E`（Identity Reply の family 下位）。パッチは 300 件 = バンク 30 × 10
 - 46 で読むと 45 で返る。`45 00 00 bL bM pL pM | lenL lenM | 7bit データ | CRC 5 バイト`
 - 7bit パックは先頭バイトの bit6 が 1 つ目のデータに対応。CRC は ~CRC32 を下位から 7bit × 5
-- `33`（現在のプログラム番号）は G2 FOUR では応答がない
+- `33`（現在のプログラム番号）には SysEx ではなく `b0 00 mm b0 20 ll c0 pp`（Bank Select + Program Change）で返る。エディタモードでなくても答える（MS-80IR+ 1.10）
+- パッチの切り替えも同じ形（Bank Select + Program Change）を送る。切り替えてから 100ms ほどは `64 13` に前のパッチの中身が返る（先に届く `64 26` の後でも）
 - 編集にはエディタモード（`50`）が要る。開くたびに AUTO SAVE OFF（`64 20 00 64 0F 0…`）も送る
 - `64 20 00 <slot> <paramNo> <値 7bit×5>`。paramNo 0 = ON/OFF、1 = エフェクト ID、2〜 = param1〜
   - ON/OFF とパラメータの受理は `64 20 01`。**値が変わらないときは何も返らない**ので、読み直して確かめる

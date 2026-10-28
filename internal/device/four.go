@@ -192,6 +192,49 @@ func (f four) setTempo(z *Zoom, bpm int) error {
 	return f.edit(z, 0x64, 0x02, uint32(bpm), func(p *patch.Patch) bool { return p.Prm2.Tempo == bpm })
 }
 
+// selectPatch は Bank Select (CC0 / CC32) + Program Change。エディタモード中でも切り替わり、
+// AUTO SAVE が OFF なので未保存の編集は捨てられる（MS-80IR+ のファームウェア 1.10 で確かめた）。
+// 切り替えてから 100ms ほどは、64 13 で読むと前のパッチの中身が返る（先に届く 64 26 の後でも）。
+// そこで先にパッチメモリの n を読んでおき、現在パッチがそれと同じになるまで待つ。
+func (f four) selectPatch(z *Zoom, n int) error {
+	loc, err := z.Model.Location(n)
+	if err != nil {
+		return err
+	}
+	want, err := z.Patch(n)
+	if err != nil {
+		return err
+	}
+	if err := z.Conn.Send(sysex.SelectPatch(loc.Bank, loc.Program)); err != nil {
+		return err
+	}
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		p, err := f.currentPatch(z)
+		if err != nil {
+			return err
+		}
+		if samePatchBody(p, want) {
+			return nil
+		}
+		if time.Now().After(deadline) {
+			return fmt.Errorf("パッチ %d に切り替えたが、中身が読み込まれない", n+1)
+		}
+		time.Sleep(30 * time.Millisecond)
+	}
+}
+
+// samePatchBody は 45 の後ろの残骸（Trailer）を除いて同じパッチか。
+func samePatchBody(a, b *patch.Patch) bool {
+	body := func(p *patch.Patch) string {
+		c := p.Clone()
+		c.Trailer = ""
+		b, _ := json.Marshal(c)
+		return string(b)
+	}
+	return body(a) == body(b)
+}
+
 func (f four) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	loc, err := z.Model.Location(n)
 	if err != nil {
@@ -208,13 +251,7 @@ func (f four) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	if err != nil {
 		return err
 	}
-	body := func(p *patch.Patch) string {
-		c := p.Clone()
-		c.Trailer = ""
-		b, _ := json.Marshal(c)
-		return string(b)
-	}
-	if body(back) != body(p) {
+	if !samePatchBody(back, p) {
 		return fmt.Errorf("パッチ %d に保存した中身が読み直しと一致しない", n)
 	}
 	return nil

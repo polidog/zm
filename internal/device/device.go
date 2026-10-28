@@ -128,6 +128,7 @@ type protocol interface {
 	setEffect(z *Zoom, slot int, id uint32) (*patch.Patch, error)
 	setName(z *Zoom, name string) error
 	setTempo(z *Zoom, bpm int) error
+	selectPatch(z *Zoom, n int) error
 	savePatch(z *Zoom, n int, p *patch.Patch) error
 	writePatchSysex(z *Zoom, n int, msg []byte) error
 	notice(z *Zoom, msg []byte) (*patch.Patch, bool)
@@ -153,6 +154,8 @@ type Zoom struct {
 	Editable bool
 
 	proto protocol
+	// programs は 33 への応答とペダルの操作で届いたパッチの番号（program.go）。
+	programs *programTap
 	// legacy は旧 MS の接続ごとの状態（legacy.go）。
 	legacy *legacyState
 }
@@ -258,7 +261,8 @@ func open(conn *midi.Conn, edit bool, want *Model) (*Zoom, error) {
 	if edit && model.ReadOnly {
 		return nil, fmt.Errorf("%s の編集と保存は、実機で確かめるまで止めてある（読み出しはできる）", model.Name)
 	}
-	z := &Zoom{Conn: conn, Identity: ident, Model: model, proto: model.protocol()}
+	z := &Zoom{Conn: conn, Identity: ident, Model: model, proto: model.protocol(), programs: newProgramTap(model.PatchesPerBank)}
+	conn.SetTap(z.programs.feed)
 	if err := z.proto.open(z, edit); err != nil {
 		return nil, err
 	}
@@ -342,6 +346,7 @@ func (z *Zoom) assertEditable() error {
 // （残った応答が次の接続に混ざらないように）。
 func (z *Zoom) Close() error {
 	z.proto.close(z)
+	z.Conn.SetTap(nil)
 	z.Editable = false
 	return z.Conn.Close()
 }

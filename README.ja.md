@@ -38,6 +38,7 @@ Go 1.27 以降が要る。リポジトリから作るなら `go build -o zm ./cm
 zm info                           機種・ファームウェア・パッチ数
 zm list                           全パッチの番号と名前
 zm show [n]                       パッチの中身（省略で、いま鳴っているパッチ）
+zm select <n>                     パッチ n に切り替える（未保存の編集は捨てる）
 zm effects [group]                エフェクト一覧
 zm effect <name>                  エフェクトの説明とパラメータ
 zm set-effect <slot> <effect>     エフェクト差し替え（保存しない）

@@ -1,7 +1,7 @@
 // Package mcpserver は MCP サーバー (L4, stdio)。
 //
 // 番号はペダルの画面に合わせる: パッチは 1〜パッチ数（G2 FOUR は 300、旧 MS は 50）、スロットは 1〜6。
-// set_effect などの編集は「いま鳴っているパッチ」への変更で、保存しない（パッチを選び直せば元に戻る）。
+// set_effect などの編集は「いま鳴っているパッチ」への変更で、保存しない（select_patch でパッチを選び直せば元に戻る）。
 // 保存は save_patch だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
 // 曖昧な指示（「80 年代っぽいクリーンに」）の解釈は Claude 側に任せ、ここは素直な操作だけを出す。
 //
@@ -253,6 +253,14 @@ func New(version string) *mcp.Server {
 		}),
 	}, handle(func(a toggleArgs) (ops.SlotView, error) {
 		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SlotView, error) { return ops.Toggle(z, a.Slot, a.Enabled) })
+	}))
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "select_patch",
+		Description: "パッチ number に切り替え、切り替えた後のパッチを get_patch の current と同じ形で返す。いま鳴っているパッチの未保存の編集は捨てるので、編集中ならユーザーに確かめてから呼ぶ。",
+		InputSchema: schema[requiredNumberArg](numberRange),
+	}, handle(func(a requiredNumberArg) (ops.PatchView, error) {
+		return withZoom(true, func(z *device.Zoom) (ops.PatchView, error) { return ops.Select(z, a.Number) })
 	}))
 
 	// ---- 保存（フラッシュに書く） ----
