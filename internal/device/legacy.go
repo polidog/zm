@@ -55,10 +55,24 @@ func (legacy) selectProgram(z *Zoom, n int) error {
 	return z.Conn.Send(sysex.ProgramChange(n))
 }
 
-// selectPatch はまだ止めてある。51 → 50 → Program Change の直後に 33 を送ったら、MS-70CDR（2.10）が
-// Identity Request にも答えなくなった（電源の入れ直しが要る）。原因を確かめるまで断る。
-func (legacy) selectPatch(z *Zoom, _ int) error {
-	return fmt.Errorf("%s のパッチの切り替えは、実機で確かめるまで止めてある", z.Model.Name)
+// selectPatch は未保存の編集を捨ててから n を選び（AUTO SAVE が ON でも、編集が今のパッチに保存されないように）、
+// 29 で読み込みを待つ。捨てる前に 33 と 29 でやりとりしておく（KeepCurrent と同じ順）。
+// 開いてすぐ 51 → 50 → Program Change を送ったら、MS-70CDR（2.10）が固まった。
+func (l legacy) selectPatch(z *Zoom, n int) error {
+	if _, err := z.Program(); err != nil {
+		return err
+	}
+	if _, err := l.current(z); err != nil {
+		return err
+	}
+	if err := l.discard(z); err != nil {
+		return err
+	}
+	if err := l.selectProgram(z, n); err != nil {
+		return err
+	}
+	_, err := l.current(z)
+	return err
 }
 
 // discard は現在パッチの未保存の編集を、保存せずに捨てる（51 → 50）。どちらにも応答はない。

@@ -15,7 +15,7 @@ const usage = `usage: zm [--pedal hw:C,D|g2four|ms80irplus|ms50g|ms70cdr] [--dir
   info                            機種・ファームウェア・パッチ数
   list                            全パッチの番号と名前
   show [n]                        パッチの中身（省略で、いま鳴っているパッチ）
-  select <n>                      パッチ n に切り替える（未保存の編集は捨てる。旧 MS はまだ）
+  select <n>                      パッチ n に切り替える（未保存の編集は捨てる）
   effects [group]                 エフェクト一覧
   effect <name>                   エフェクトの説明とパラメータ
   set-effect <slot> <effect>      エフェクト差し替え（保存しない）
