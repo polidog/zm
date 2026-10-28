@@ -119,7 +119,9 @@ type protocol interface {
 	open(z *Zoom, edit bool) error
 	close(z *Zoom)
 	patchSysex(z *Zoom, n int) ([]byte, error)
+	currentSysex(z *Zoom) ([]byte, error)
 	currentPatch(z *Zoom) (*patch.Patch, error)
+	loadPatch(z *Zoom, msg []byte) error
 	keepCurrent(z *Zoom, fn func() error) error
 	setParam(z *Zoom, slot, index, value int) error
 	setEnabled(z *Zoom, slot int, on bool) error
@@ -161,19 +163,23 @@ var Target string
 
 // Open は Target のペダルを開く。edit なら書き込めるようにする（G2 FOUR はエディタモード ON と AUTO SAVE OFF）。
 // 使い終わったら必ず Close する（開いたまま抜けると以降のオープンが EBUSY になる）。
-func Open(edit bool) (*Zoom, error) {
-	if strings.HasPrefix(Target, "hw:") {
-		p, err := midi.ParsePort(Target)
+func Open(edit bool) (*Zoom, error) { return OpenTarget(Target, edit) }
+
+// OpenTarget は target（Target と同じ書き方。空なら最初に見つかったペダル）のペダルを開く。
+// ボードのように何台も繋いでいるときに、1 台ずつ選んで開く。
+func OpenTarget(target string, edit bool) (*Zoom, error) {
+	if strings.HasPrefix(target, "hw:") {
+		p, err := midi.ParsePort(target)
 		if err != nil {
 			return nil, err
 		}
 		return OpenPort(p, edit)
 	}
 	var want *Model
-	if Target != "" {
-		m, ok := ModelByKey(Target)
+	if target != "" {
+		m, ok := ModelByKey(target)
 		if !ok {
-			return nil, fmt.Errorf("--pedal %q は hw:C,D か機種名（%s）", Target, modelKeys())
+			return nil, fmt.Errorf("--pedal %q は hw:C,D か機種名（%s）", target, modelKeys())
 		}
 		want = &m
 	}
@@ -377,6 +383,10 @@ func (z *Zoom) Patch(n int) (*patch.Patch, error) {
 
 func (z *Zoom) CurrentPatch() (*patch.Patch, error) { return z.proto.currentPatch(z) }
 
+// CurrentSysex はいま鳴っている（編集中の）パッチを生の SysEx で返す（G2 FOUR は 64 12 01、旧 MS は 28）。
+// LoadPatch で同じ機種の現在パッチに流し込める。
+func (z *Zoom) CurrentSysex() ([]byte, error) { return z.proto.currentSysex(z) }
+
 // Notice はペダルが自分から送ってきたメッセージが現在パッチの変化なら、変化後のパッチを返す。
 // ペダルとはやりとりしない（受信の途中で呼ばれるので）。
 func (z *Zoom) Notice(msg []byte) (*patch.Patch, bool) { return z.proto.notice(z, msg) }
@@ -457,6 +467,19 @@ func (z *Zoom) SetTempo(bpm int) error {
 		return fmt.Errorf("テンポは %d〜%d", MinTempo, MaxTempo)
 	}
 	return z.proto.setTempo(z, bpm)
+}
+
+// LoadPatch は CurrentSysex で取った中身を、いま鳴っているパッチに流し込む（保存しない）。
+// 旧 MS は 28 で丸ごと送る。G2 FOUR / MS-80IR+ は丸ごと送る方法を確かめていないので、
+// 64 20 でエフェクト・パラメータ・ON / OFF・テンポを違うところだけ変える（名前は変えられない）。
+func (z *Zoom) LoadPatch(msg []byte) error {
+	if err := z.assertEditable(); err != nil {
+		return err
+	}
+	if len(msg) < 4 || msg[3] != z.DeviceID() {
+		return fmt.Errorf("%s のパッチではない", z.Model.Name)
+	}
+	return z.proto.loadPatch(z, msg)
 }
 
 // ---- 保存（フラッシュに書く） ----
