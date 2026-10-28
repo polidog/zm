@@ -48,6 +48,7 @@ zm save <n> [--yes]               save the current patch to n (asks first, backs
 zm restore <n> [--yes]            undo a save to n
 zm backup                         back up every patch to backups/
 zm catalog [--refresh]            build the effect catalog from the pedal's ZD2 files
+zm board ...                      the board and its scenes (see Boards below)
 zm tui                            TUI
 zm mcp                            MCP server (stdio)
 zm probe                          connectivity check (for development)
@@ -73,6 +74,36 @@ Both contain ZOOM's copyrighted material, so keep them out of git.
 The legacy MS (MS-50G / MS-70CDR) catalogs are built from the effect list in g200kg/zoom-ms-utility (MIT) and embedded in the binary, so they need no `zm catalog`.
 Legacy MS backups go to `backups/ms50g/` and `backups/ms70cdr/`. Legacy-specific caveats (AUTO SAVE, editor mode) are in [docs/legacy-ms.md](docs/legacy-ms.md) (Japanese).
 
+### Boards (several pedals together)
+
+With several pedals connected, list them in `~/.config/zm/board.json` from the guitar side.
+Pedals zm can reach take the model key in `pedal`; pedals without MIDI take a `name` and their knob positions (`knobs`).
+Claude reads each `note` when shaping the tone across the whole board.
+
+```json
+{
+  "chain": [
+    { "pedal": "ms50g", "note": "before the drive: comp, boost, EQ" },
+    { "name": "BOSS DS-1W", "note": "main drive", "knobs": { "Tone": "12:00", "Level": "12:00", "Dist": "10:00", "Mode": "Standard" } },
+    { "pedal": "ms70cdr", "note": "after the drive: chorus, delay, reverb" },
+    { "pedal": "ms80irplus", "note": "amp and cab (IR)" }
+  ]
+}
+```
+
+```sh
+zm board                          the chain and each pedal's current patch
+zm board knob "BOSS DS-1W" Dist=12:00   record an analog pedal's knob positions (sends nothing)
+zm board save lead --note "solo"  keep every pedal's current sound as a scene (not written to the pedals)
+zm board load lead                load a scene into each pedal's current patch (not saved)
+zm board scenes                   list scenes
+```
+
+- A scene lives in `~/.config/zm/scenes/<name>.json` and holds each pedal's current-patch SysEx and the analog knob positions. Pedal patch memory is not used
+- Legacy MS pedals get the whole patch with `28`; G2 FOUR / MS-80IR+ get only the differences with `64 20` (the patch name is not changed)
+- zm cannot turn analog knobs. Set them by hand to what `load` prints
+- Single-pedal commands take `--pedal` (`zm --pedal ms70cdr show`). MCP tools take a `pedal` argument, and `get_board` / `save_scene` / `load_scene` / `set_analog` work on the whole board
+
 ### Use from Claude Code
 
 With `zm` on your PATH, register it as an MCP server:
@@ -94,6 +125,7 @@ internal/
   patch/           PTCF <-> structs
   legacypatch/     legacy MS-50G / MS-70CDR patches (the 146-byte 28 SysEx)
   zd2/             ZD2 parsing (PRME / PRMJ and the ELF parameter tables)
+  board/           board.json (the chain) and scene files
   catalog/         catalog I/O, named patch display (legacy MS catalogs are embedded)
   pedalfs/         listing and reading files on the pedal (read-only)
   device/          per-model values and selection; read / edit / save for G2 FOUR / MS-80IR+ (four.go) and legacy MS-50G / MS-70CDR (legacy.go)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/polidog/zm/internal/codec"
@@ -59,7 +60,7 @@ func (four) patchSysex(z *Zoom, n int) ([]byte, error) {
 
 func (four) keepCurrent(_ *Zoom, fn func() error) error { return fn() }
 
-func (four) currentPatch(z *Zoom) (*patch.Patch, error) {
+func (four) currentSysex(z *Zoom) ([]byte, error) {
 	// 64 12 00 は編集時の通知。要求への応答は 64 12 01
 	reply, err := z.Conn.Request(sysex.RequestCurrentPatch(z.DeviceID()), 4*time.Second, zoomReply(0x64, 0x12, 0x01))
 	if err != nil {
@@ -68,7 +69,66 @@ func (four) currentPatch(z *Zoom) (*patch.Patch, error) {
 	if reply == nil {
 		return nil, errors.New("現在パッチのダンプに応答がない")
 	}
-	return DecodeSysex(reply)
+	return reply, nil
+}
+
+func (f four) currentPatch(z *Zoom) (*patch.Patch, error) {
+	msg, err := f.currentSysex(z)
+	if err != nil {
+		return nil, err
+	}
+	return DecodeSysex(msg)
+}
+
+// loadPatch はユーザーのスロットとテンポを、違うところだけ 64 20 で want に合わせる。
+// エフェクトを差し替えるとパラメータが既定値（か前回の値）になるので、差し替えてから読み直してパラメータを合わせる。
+func (f four) loadPatch(z *Zoom, msg []byte) error {
+	want, err := DecodeSysex(msg)
+	if err != nil {
+		return err
+	}
+	now, err := f.currentPatch(z)
+	if err != nil {
+		return err
+	}
+	slots := min(z.Model.UserSlots, len(want.Effects), len(now.Effects))
+	for s := range slots {
+		w := want.Effects[s]
+		if now.Effects[s].ID != w.ID {
+			if now, err = f.setEffect(z, s, w.ID); err != nil {
+				return fmt.Errorf("スロット %d: %w", s+1, err)
+			}
+		}
+		cur := now.Effects[s]
+		for i, v := range w.Params {
+			if i < len(cur.Params) && cur.Params[i] != v {
+				if err := f.setParam(z, s, i, v); err != nil {
+					return fmt.Errorf("スロット %d のパラメータ %d: %w", s+1, i+1, err)
+				}
+			}
+		}
+		if cur.Enabled != w.Enabled {
+			if err := f.setEnabled(z, s, w.Enabled); err != nil {
+				return fmt.Errorf("スロット %d の ON / OFF: %w", s+1, err)
+			}
+		}
+	}
+	if now.Prm2.Tempo != want.Prm2.Tempo {
+		if err := f.setTempo(z, want.Prm2.Tempo); err != nil {
+			return fmt.Errorf("テンポ: %w", err)
+		}
+	}
+	back, err := f.currentPatch(z)
+	if err != nil {
+		return err
+	}
+	for s := range slots {
+		x, y := back.Effects[s], want.Effects[s]
+		if x.ID != y.ID || x.Enabled != y.Enabled || !slices.Equal(x.Params, y.Params) {
+			return fmt.Errorf("スロット %d が流し込んだ中身と一致しない", s+1)
+		}
+	}
+	return nil
 }
 
 func (four) notice(_ *Zoom, msg []byte) (*patch.Patch, bool) {

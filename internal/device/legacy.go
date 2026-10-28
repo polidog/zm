@@ -248,6 +248,23 @@ func sameEffects(a, b *patch.Patch) bool {
 	return true
 }
 
+func (l legacy) currentSysex(z *Zoom) ([]byte, error) { return l.current(z) }
+
+// loadPatch は 28 で現在パッチを丸ごと msg にする。
+func (l legacy) loadPatch(z *Zoom, msg []byte) error {
+	if err := legacypatch.Check(msg); err != nil {
+		return err
+	}
+	back, err := l.put(z, msg)
+	if err != nil {
+		return err
+	}
+	if !samePatch(back, msg) {
+		return errors.New("流し込んだ中身をペダルが受け付けない")
+	}
+	return nil
+}
+
 func (l legacy) currentPatch(z *Zoom) (*patch.Patch, error) {
 	msg, err := l.current(z)
 	if err != nil {

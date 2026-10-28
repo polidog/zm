@@ -49,6 +49,7 @@ zm save <n> [--yes]               いま鳴っているパッチを n に保存�
 zm restore <n> [--yes]            save で上書きした n を戻す
 zm backup                         全パッチを backups/ に退避
 zm catalog [--refresh]            ペダルの ZD2 からカタログを作る
+zm board ...                      ボードの並びとシーン（下の「ボード」）
 zm tui                            TUI
 zm mcp                            MCP サーバー (stdio)
 zm probe                          疎通確認（開発用）
@@ -74,6 +75,37 @@ zm catalog      # ペダルの ZD2 を読み出してエフェクトカタログ
 旧 MS（MS-50G / MS-70CDR）のカタログは g200kg/zoom-ms-utility（MIT）のエフェクト一覧から作ってバイナリに埋め込んであるので、`zm catalog` は要らない。
 旧 MS のバックアップは `backups/ms50g/`・`backups/ms70cdr/` に置く。旧 MS 固有の注意（AUTO SAVE、エディタモード）は [docs/legacy-ms.md](docs/legacy-ms.md)。
 
+### ボード（何台かのペダルを組み合わせる）
+
+ペダルを何台も繋いでいるときは、`~/.config/zm/board.json` にギター側から順に並べる。
+zm で触れるペダルは `pedal` に機種名を、MIDI の無いペダルは `name` とつまみの位置 (`knobs`) を書く。
+`note` には役目や音のくせを書いておくと、Claude がボード全体で音を作るときに読む。
+
+```json
+{
+  "note": "ギターは SSH のストラト。最後はオーディオインターフェースへ",
+  "chain": [
+    { "pedal": "ms50g", "note": "歪みの前。コンプ・ブースト・EQ" },
+    { "name": "BOSS DS-1W", "note": "メインの歪み", "knobs": { "Tone": "12時", "Level": "12時", "Dist": "10時", "Mode": "Standard" } },
+    { "pedal": "ms70cdr", "note": "歪みの後。コーラス・ディレイ・リバーブ" },
+    { "pedal": "ms80irplus", "note": "アンプとキャビネット (IR)" }
+  ]
+}
+```
+
+```sh
+zm board                          並びと、各ペダルのいま鳴っているパッチ
+zm board knob "BOSS DS-1W" Dist=12時 Mode=Custom   アナログのつまみの位置を書く（ペダルには何も送らない）
+zm board save lead --note "ソロ"   各ペダルのいまの音をシーンとして残す（ペダルには書かない）
+zm board load lead                シーンを各ペダルのいま鳴っているパッチに流し込む（保存しない）
+zm board scenes                   シーンの一覧
+```
+
+- シーンは `~/.config/zm/scenes/<名前>.json` に、各ペダルの現在パッチの SysEx とアナログのつまみを持つ。ペダルのパッチメモリは使わない
+- 流し込みは、旧 MS は `28` で丸ごと、G2 FOUR / MS-80IR+ は `64 20` で違うところだけ変える（パッチ名は変わらない）
+- アナログのつまみは zm から回せない。`load` が言う位置に手で回す
+- 単体のコマンドも `--pedal` で 1 台を選べる（`zm --pedal ms70cdr show`）。MCP のツールは `pedal` 引数で選び、`get_board` / `save_scene` / `load_scene` / `set_analog` などでボード全体を扱う
+
 ### Claude Code から使う
 
 `zm` を PATH に入れたら、MCP サーバーとして登録する。
@@ -95,6 +127,7 @@ internal/
   patch/           PTCF ⇔ 構造体
   legacypatch/     旧 MS-50G / MS-70CDR のパッチ（146 バイトの 28 SysEx）
   zd2/             ZD2 の解析（PRME / PRMJ と ELF のパラメータ表）
+  board/           board.json（ボードの並び）とシーンのファイル
   catalog/         カタログの読み書き、パッチの名前つき表示（旧 MS のカタログは埋め込み）
   pedalfs/         ペダル内ファイルの一覧と読み出し（読み出しのみ）
   device/          機種ごとの値と選び方。G2 FOUR / MS-80IR+（four.go）と旧 MS-50G / MS-70CDR（legacy.go）の読み出し・編集・保存

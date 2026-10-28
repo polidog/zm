@@ -26,6 +26,7 @@ const usage = `usage: zm [--pedal hw:C,D|g2four|ms80irplus|ms50g|ms70cdr] [--dir
   restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
   catalog [--refresh]             ペダルの ZD2 からカタログを作る
+  board ...                       ボード（board.json の並び）とシーン（ボード全体の音色）
   tui                             TUI
   mcp                             MCP サーバー (stdio)
   probe                           P0 の疎通確認（開発用）
@@ -58,6 +59,7 @@ func commands() map[string]command {
 		"restore":    RestoreCmd,
 		"backup":     Backup,
 		"catalog":    CatalogCmd,
+		"board":      BoardCmd,
 		"tui":        TUI,
 		"mcp":        MCP,
 		"probe":      Probe,

@@ -5,6 +5,9 @@
 // 保存は save_patch だけで、上書きされる中身を backups/overwritten/ に退避してから書く。
 // 曖昧な指示（「80 年代っぽいクリーンに」）の解釈は Claude 側に任せ、ここは素直な操作だけを出す。
 //
+// ペダルを何台も繋いでいるときは、ペダルを触るツールの pedal（機種名）で 1 台を選ぶ。
+// board.json があれば、ボード全体を見る get_board と、ボード全体の音色（シーン）を扱うツールが使える。
+//
 // ツール名・引数・返す JSON は TypeScript 版の src/server.ts と同じ。
 package mcpserver
 
@@ -15,14 +18,29 @@ import (
 	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"github.com/polidog/zm/internal/board"
 	"github.com/polidog/zm/internal/catalog"
 	"github.com/polidog/zm/internal/device"
 	"github.com/polidog/zm/internal/ops"
 )
 
-// model は引数の範囲（パッチ数・スロット数）とカタログを決める機種。New で、--pedal か繋がっているペダルから決める。
-// 範囲は ops でも繋いだ機種で確かめ直す。
+// model は pedal を省いたときのカタログを決める機種。New で、--pedal か繋がっているペダルから決める。
 var model = device.G2Four
+
+// limits は引数の範囲（パッチ数・スロット数）。ボードがあればボードのペダルのうち大きいほう。
+// 範囲は ops でも繋いだ機種で確かめ直す。
+var limits = device.G2Four
+
+// pedals はボードにある zm で触れるペダルの機種名。pedal の候補にする。
+var pedals []string
+
+// modelOf は pedal（機種名）の機種。空か hw:C,D なら model。
+func modelOf(pedal string) device.Model {
+	if m, ok := device.ModelByKey(pedal); ok {
+		return m
+	}
+	return model
+}
 
 func text(v any) (*mcp.CallToolResult, any, error) {
 	b, err := ops.JSON(v)
@@ -55,6 +73,11 @@ func schema[In any](edit func(props map[string]*jsonschema.Schema)) *jsonschema.
 	if err != nil {
 		panic(err)
 	}
+	if p, ok := s.Properties["pedal"]; ok && len(pedals) > 0 {
+		for _, k := range pedals {
+			p.Enum = append(p.Enum, k)
+		}
+	}
 	if edit != nil {
 		edit(s.Properties)
 	}
@@ -72,46 +95,65 @@ func intRange(s *jsonschema.Schema, lo, hi int) {
 
 type noArgs struct{}
 
+type pedalArg struct {
+	Pedal string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
+}
+
 type numberArg struct {
-	Number *int `json:"number,omitempty" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
+	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
+	Number *int   `json:"number,omitempty" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
 }
 
 type requiredNumberArg struct {
-	Number int `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
+	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
+	Number int    `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
 }
 
 type groupArg struct {
+	Pedal string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
 	Group string `json:"group,omitempty" jsonschema:"DYNAMICS / FILTER / DRIVE / AMP / MODULATION / SFX / DELAY / REVERB / PEDAL で絞る"`
 }
 
 type effectArg struct {
+	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
 	Effect string `json:"effect" jsonschema:"エフェクト名（例: TS Drive）または ID（例: 0x03000030）"`
 }
 
 type setEffectArgs struct {
+	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
 	Slot   int    `json:"slot" jsonschema:"スロット番号 1〜6（信号の流れの順）"`
 	Effect string `json:"effect" jsonschema:"エフェクト名（例: TS Drive）または ID"`
 }
 
 type setParamArgs struct {
+	Pedal string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
 	Slot  int    `json:"slot" jsonschema:"スロット番号 1〜6（信号の流れの順）"`
 	Param string `json:"param" jsonschema:"パラメータ名（get_patch / describe_effect に出るもの。大文字小文字は問わない）"`
 	Value int    `json:"value"`
 }
 
 type toggleArgs struct {
-	Slot    int   `json:"slot" jsonschema:"スロット番号 1〜6（信号の流れの順）"`
-	Enabled *bool `json:"enabled,omitempty"`
+	Pedal   string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
+	Slot    int    `json:"slot" jsonschema:"スロット番号 1〜6（信号の流れの順）"`
+	Enabled *bool  `json:"enabled,omitempty"`
 }
 
-func slotRange(p map[string]*jsonschema.Schema) { intRange(p["slot"], 1, model.UserSlots) }
+func slotRange(p map[string]*jsonschema.Schema) { intRange(p["slot"], 1, limits.UserSlots) }
 func numberRange(p map[string]*jsonschema.Schema) {
-	intRange(p["number"], 1, model.Patches)
+	intRange(p["number"], 1, limits.Patches)
 }
 
 func New(version string) *mcp.Server {
 	model = ops.Model()
-	s := mcp.NewServer(&mcp.Implementation{Name: "zm", Version: version}, nil)
+	limits, pedals = model, nil
+	if bd, err := board.Load(); err == nil {
+		for _, m := range bd.Models() {
+			pedals = append(pedals, m.Key)
+			limits.Patches = max(limits.Patches, m.Patches)
+			limits.UserSlots = max(limits.UserSlots, m.UserSlots)
+		}
+	}
+	s := mcp.NewServer(&mcp.Implementation{Name: "zm", Version: version}, &mcp.ServerOptions{Instructions: instructions})
 	readOnly := &mcp.ToolAnnotations{ReadOnlyHint: true}
 	destructive := &mcp.ToolAnnotations{DestructiveHint: ptr(true)}
 
@@ -120,16 +162,18 @@ func New(version string) *mcp.Server {
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "identify",
 		Description: "接続中の ZOOM ペダルの機種 ID・ファームウェア版・パッチ数を返す。",
+		InputSchema: schema[pedalArg](nil),
 		Annotations: readOnly,
-	}, handle(func(noArgs) (ops.Identity, error) {
-		return withZoom(false, func(z *device.Zoom) (ops.Identity, error) { return ops.Identify(z), nil })
+	}, handle(func(a pedalArg) (ops.Identity, error) {
+		return ops.WithPedal(a.Pedal, false, func(z *device.Zoom) (ops.Identity, error) { return ops.Identify(z), nil })
 	}))
 
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "list_patches",
 		Description: "全パッチの番号（ペダルの画面と同じ 1〜300）と名前の一覧。5 秒ほどかかる。",
+		InputSchema: schema[pedalArg](nil),
 		Annotations: readOnly,
-	}, handle(func(noArgs) ([]ops.PatchName, error) { return withZoom(false, ops.ListPatches) }))
+	}, handle(func(a pedalArg) ([]ops.PatchName, error) { return ops.WithPedal(a.Pedal, false, ops.ListPatches) }))
 
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "get_patch",
@@ -137,7 +181,7 @@ func New(version string) *mcp.Server {
 		InputSchema: schema[numberArg](numberRange),
 		Annotations: readOnly,
 	}, handle(func(a numberArg) (ops.PatchView, error) {
-		return withZoom(false, func(z *device.Zoom) (ops.PatchView, error) {
+		return ops.WithPedal(a.Pedal, false, func(z *device.Zoom) (ops.PatchView, error) {
 			n := 0
 			if a.Number != nil {
 				n = *a.Number
@@ -149,9 +193,10 @@ func New(version string) *mcp.Server {
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "backup_all",
 		Description: "全 300 パッチをこのマシンの backups/ に .syx で退避する。ペダルには書き込まない。",
+		InputSchema: schema[pedalArg](nil),
 		Annotations: readOnly,
-	}, handle(func(noArgs) (ops.BackupResult, error) {
-		return withZoom(false, func(z *device.Zoom) (ops.BackupResult, error) { return ops.BackupAll(z, nil) })
+	}, handle(func(a pedalArg) (ops.BackupResult, error) {
+		return ops.WithPedal(a.Pedal, false, func(z *device.Zoom) (ops.BackupResult, error) { return ops.BackupAll(z, nil) })
 	}))
 
 	// ---- カタログ ----
@@ -159,14 +204,16 @@ func New(version string) *mcp.Server {
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "list_effects",
 		Description: "ペダルに入っているエフェクトの一覧（名前・グループ・パラメータと範囲）。音作りの候補を選ぶのに使う。詳しい説明は describe_effect。",
+		InputSchema: schema[groupArg](nil),
 		Annotations: readOnly,
-	}, handle(func(a groupArg) ([]ops.EffectSummary, error) { return ops.ListEffects(a.Group) }))
+	}, handle(func(a groupArg) ([]ops.EffectSummary, error) { return ops.ListEffectsFor(modelOf(a.Pedal), a.Group) }))
 
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "describe_effect",
 		Description: "エフェクト 1 つの説明（モデルになった機材など）と、各パラメータの意味・範囲・既定値。",
+		InputSchema: schema[effectArg](nil),
 		Annotations: readOnly,
-	}, handle(func(a effectArg) (ops.EffectDetail, error) { return ops.DescribeEffect(a.Effect) }))
+	}, handle(func(a effectArg) (ops.EffectDetail, error) { return ops.DescribeEffectFor(modelOf(a.Pedal), a.Effect) }))
 
 	// ---- 編集（いま鳴っているパッチ。保存しない） ----
 
@@ -176,14 +223,14 @@ func New(version string) *mcp.Server {
 		InputSchema: schema[setEffectArgs](slotRange),
 	}, handle(func(a setEffectArgs) (ops.SlotView, error) {
 		// カタログにないエフェクトはペダルを開く前に断る
-		cat, err := ops.Catalog()
+		cat, err := ops.CatalogFor(modelOf(a.Pedal))
 		if err != nil {
 			return ops.SlotView{}, err
 		}
 		if _, err := cat.Resolve(a.Effect); err != nil {
 			return ops.SlotView{}, err
 		}
-		return withZoom(true, func(z *device.Zoom) (ops.SlotView, error) { return ops.SetEffect(z, a.Slot, a.Effect) })
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SlotView, error) { return ops.SetEffect(z, a.Slot, a.Effect) })
 	}))
 
 	mcp.AddTool(s, &mcp.Tool{
@@ -194,7 +241,7 @@ func New(version string) *mcp.Server {
 			intRange(p["value"], 0, 0)
 		}),
 	}, handle(func(a setParamArgs) (ops.SlotView, error) {
-		return withZoom(true, func(z *device.Zoom) (ops.SlotView, error) { return ops.SetParam(z, a.Slot, a.Param, a.Value) })
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SlotView, error) { return ops.SetParam(z, a.Slot, a.Param, a.Value) })
 	}))
 
 	mcp.AddTool(s, &mcp.Tool{
@@ -205,7 +252,7 @@ func New(version string) *mcp.Server {
 			p["enabled"].Types, p["enabled"].Type = nil, "boolean"
 		}),
 	}, handle(func(a toggleArgs) (ops.SlotView, error) {
-		return withZoom(true, func(z *device.Zoom) (ops.SlotView, error) { return ops.Toggle(z, a.Slot, a.Enabled) })
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SlotView, error) { return ops.Toggle(z, a.Slot, a.Enabled) })
 	}))
 
 	// ---- 保存（フラッシュに書く） ----
@@ -216,7 +263,7 @@ func New(version string) *mcp.Server {
 		InputSchema: schema[requiredNumberArg](numberRange),
 		Annotations: destructive,
 	}, handle(func(a requiredNumberArg) (ops.SaveResult, error) {
-		return withZoom(true, func(z *device.Zoom) (ops.SaveResult, error) { return ops.Save(z, a.Number) })
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SaveResult, error) { return ops.Save(z, a.Number) })
 	}))
 
 	mcp.AddTool(s, &mcp.Tool{
@@ -226,11 +273,13 @@ func New(version string) *mcp.Server {
 		Annotations: destructive,
 	}, handle(func(a requiredNumberArg) (ops.RestoreResult, error) {
 		// 退避が無ければペダルを開く前に断る
-		if _, _, err := ops.LatestBackup(model, a.Number); err != nil {
+		if _, _, err := ops.LatestBackup(modelOf(a.Pedal), a.Number); err != nil {
 			return ops.RestoreResult{}, err
 		}
-		return withZoom(true, func(z *device.Zoom) (ops.RestoreResult, error) { return ops.Restore(z, a.Number) })
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.RestoreResult, error) { return ops.Restore(z, a.Number) })
 	}))
+
+	addBoardTools(s, readOnly)
 
 	// ---- リソース ----
 

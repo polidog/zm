@@ -85,10 +85,18 @@ var zoomMu sync.Mutex
 // WithZoom はペダルを開いて fn を呼び、必ず閉じる。ペダルとのやりとりは 1 本の列に並べる。
 // 呼び出しごとに開いて閉じるので、抜き差ししても動く。
 func WithZoom[T any](edit bool, fn func(*device.Zoom) (T, error)) (T, error) {
+	return WithPedal(device.Target, edit, fn)
+}
+
+// WithPedal は WithZoom のペダルを選ぶ版。target は --pedal と同じ書き方（機種名か hw:C,D）で、空なら device.Target。
+func WithPedal[T any](target string, edit bool, fn func(*device.Zoom) (T, error)) (T, error) {
+	if target == "" {
+		target = device.Target
+	}
 	zoomMu.Lock()
 	defer zoomMu.Unlock()
 	var zero T
-	z, err := device.Open(edit)
+	z, err := device.OpenTarget(target, edit)
 	if err != nil {
 		return zero, err
 	}
