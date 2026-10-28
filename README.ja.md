@@ -25,6 +25,15 @@ MS-80IR+ の IR 系のエフェクトは ZD2 を持たないので `(unknown)` �
 
 ## 入れ方
 
+Linux（amd64 / arm64 / armv7）のバイナリを [Releases](https://github.com/polidog/zm/releases) に置いている。
+
+```sh
+curl -sL https://github.com/polidog/zm/releases/latest/download/zm_linux_amd64.tar.gz | tar xz zm
+sudo install zm /usr/local/bin/
+```
+
+Go で入れるなら
+
 ```sh
 go install github.com/polidog/zm/cmd/zm@latest
 ```
@@ -54,6 +63,7 @@ zm board ...                      ボードの並びとシーン（下の「ボ�
 zm tui                            TUI
 zm mcp                            MCP サーバー (stdio)
 zm probe                          疎通確認（開発用）
+zm version                        zm の版
 ```
 
 - 番号はペダルの画面に合わせる（パッチは 1〜300 / 旧 MS は 1〜50、スロットは 1〜6）

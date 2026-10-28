@@ -6,3 +6,5 @@
 /zm
 # TypeScript 版の名残。消してよい
 node_modules/
+# GoReleaser の出力
+/dist/
