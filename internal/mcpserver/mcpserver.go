@@ -104,6 +104,12 @@ type numberArg struct {
 	Number *int   `json:"number,omitempty" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
 }
 
+type saveArgs struct {
+	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
+	Number int    `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
+	Name   string `json:"name,omitempty" jsonschema:"保存するパッチの名前（ASCII。旧 MS は 10 文字、G2 FOUR は 14 文字、MS-80IR+ は 28 文字まで）。省くと今の名前"`
+}
+
 type requiredNumberArg struct {
 	Pedal  string `json:"pedal,omitempty" jsonschema:"どのペダルか（機種名: ms50g / ms70cdr / ms80irplus / g2four）。ペダルを何台も繋いでいるときは必ず書く。省くと --pedal か最初に見つかったペダル"`
 	Number int    `json:"number" jsonschema:"パッチ番号 1〜パッチ数（G2 FOUR は 300、旧 MS は 50。ペダルの画面と同じ）"`
@@ -267,11 +273,11 @@ func New(version string) *mcp.Server {
 
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "save_patch",
-		Description: "いま鳴っている（編集中の）パッチを、パッチメモリ number に保存する。ペダルのフラッシュに書き込むので、必ずユーザーに番号を確かめてから呼ぶ。上書きされる中身は backups/overwritten/ に退避され、restore_patch で戻せる。",
-		InputSchema: schema[requiredNumberArg](numberRange),
+		Description: "いま鳴っている（編集中の）パッチを、パッチメモリ number に保存する。ペダルのフラッシュに書き込むので、必ずユーザーに番号を確かめてから呼ぶ。上書きされる中身は backups/overwritten/ に退避され、restore_patch で戻せる。name で名前を付けられる。",
+		InputSchema: schema[saveArgs](numberRange),
 		Annotations: destructive,
-	}, handle(func(a requiredNumberArg) (ops.SaveResult, error) {
-		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SaveResult, error) { return ops.Save(z, a.Number) })
+	}, handle(func(a saveArgs) (ops.SaveResult, error) {
+		return ops.WithPedal(a.Pedal, true, func(z *device.Zoom) (ops.SaveResult, error) { return ops.SaveAs(z, a.Number, a.Name) })
 	}))
 
 	mcp.AddTool(s, &mcp.Tool{

@@ -183,9 +183,10 @@ func confirm(question string) error {
 func numberArg(s string) (int, error) { return atoi("パッチ番号", s) }
 
 func SaveCmd(args []string) error {
-	const usage = "save <n> [--yes] [--json]"
+	const usage = "save <n> [--name 名前] [--yes] [--json]"
 	fs := newFlags("save", usage)
 	yes := fs.Bool("yes", false, "確認しない")
+	name := fs.String("name", "", "保存するパッチの名前（省略で今の名前）")
 	asJSON := fs.Bool("json", false, "JSON で出す")
 	pos := parse(fs, args)
 	if err := want(pos, 1, 1, usage); err != nil {
@@ -214,7 +215,7 @@ func SaveCmd(args []string) error {
 				return ops.SaveResult{}, err
 			}
 		}
-		return ops.Save(z, number)
+		return ops.SaveAs(z, number, *name)
 	})
 	if err != nil {
 		return err

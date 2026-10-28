@@ -463,10 +463,20 @@ type SaveResult struct {
 
 // Save はいま鳴っているパッチをパッチメモリ number に保存する。上書きされる中身は先に退避する。
 // 旧 MS は保存の後、number を選んだ状態になる。
-func Save(z *device.Zoom, number int) (SaveResult, error) {
+func Save(z *device.Zoom, number int) (SaveResult, error) { return SaveAs(z, number, "") }
+
+// SaveAs は Save の、保存するパッチに名前 name を付ける版（空なら今の名前のまま）。
+// 旧 MS は現在パッチの名前を変えてから保存する。G2 FOUR / MS-80IR+ は現在パッチの名前を変えられないので、
+// 保存する中身の NAME だけを変える（現在パッチの名前は元のまま）。
+func SaveAs(z *device.Zoom, number int, name string) (SaveResult, error) {
 	n, err := PatchIndex(z.Model, number)
 	if err != nil {
 		return SaveResult{}, err
+	}
+	if name != "" && z.Model.Legacy {
+		if err := z.SetName(name); err != nil {
+			return SaveResult{}, err
+		}
 	}
 	before, err := z.Patch(n)
 	if err != nil {
@@ -479,6 +489,11 @@ func Save(z *device.Zoom, number int) (SaveResult, error) {
 	p, err := z.CurrentPatch()
 	if err != nil {
 		return SaveResult{}, err
+	}
+	if name != "" && !z.Model.Legacy {
+		if err := p.SetName(name); err != nil {
+			return SaveResult{}, err
+		}
 	}
 	if err := z.SavePatch(n, p); err != nil {
 		return SaveResult{}, err

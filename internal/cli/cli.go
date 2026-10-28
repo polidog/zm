@@ -23,7 +23,7 @@ const usage = `usage: zm [--pedal hw:C,D|g2four|ms80irplus|ms50g|ms70cdr] [--dir
   on|off|toggle <slot>            ON / OFF（保存しない）
   rename <name>                   パッチ名の変更（保存しない。いまは旧 MS だけ）
   tempo <bpm>                     テンポの変更（保存しない。40〜250）
-  save <n> [--yes]                いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
+  save <n> [--name 名前] [--yes]  いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
   restore <n> [--yes]             save で上書きした n を戻す
   backup                          全パッチを backups/ に退避
   catalog [--refresh]             ペダルの ZD2 からカタログを作る

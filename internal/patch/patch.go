@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
@@ -327,6 +328,32 @@ const (
 	// BufferBytes は G2 FOUR の PTCF を入れるバッファの大きさ。ほかの機種は Patch.Size。
 	BufferBytes = 832
 )
+
+// SetName は NAME とヘッダの名前欄（ShortName、先頭 10 文字を空白で埋めたもの）を name にする。
+// 使えるのは印字できる ASCII で、NAME の幅（G2 FOUR は 14、MS-80IR+ は 28）まで。
+// MS-80IR+ の画面は 14 文字ずつ 2 行で、2 行目に送るには 1 行目を空白で 14 文字に埋める（「I Shot The    Sheriff」）。
+func (p *Patch) SetName(name string) error {
+	width := NameChars
+	if p.NameBytes > 0 {
+		width = p.NameWidth
+	}
+	name = strings.TrimRight(name, " ")
+	if name == "" {
+		return errors.New("名前が空")
+	}
+	if len(name) > width {
+		return fmt.Errorf("名前は %d 文字まで（%q は %d 文字）", width, name, len(name))
+	}
+	for _, c := range name {
+		if c < 0x20 || c > 0x7e {
+			return fmt.Errorf("名前に使えるのは ASCII だけ: %q", name)
+		}
+	}
+	p.Name = name
+	// 実機のパッチは ShortName を空白で 10 文字に埋めている（NUL で送ると空白にされ、読み直しと合わない）
+	p.ShortName = fmt.Sprintf("%-10s", name[:min(len(name), 10)])
+	return nil
+}
 
 func u32(v uint32) []byte { return binary.LittleEndian.AppendUint32(nil, v) }
 
