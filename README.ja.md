@@ -46,7 +46,7 @@ zm set <slot> <param> <value>     パラメータ変更（保存しない）
 zm on|off|toggle <slot>           ON / OFF（保存しない）
 zm rename <name>                  パッチ名の変更（保存しない。いまは旧 MS だけ）
 zm tempo <bpm>                    テンポの変更（保存しない。40〜250）
-zm save <n> [--yes]               いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
+zm save <n> [--name x] [--yes]    いま鳴っているパッチを n に保存（名前も付けられる。確認つき、上書き前を退避）
 zm restore <n> [--yes]            save で上書きした n を戻す
 zm backup                         全パッチを backups/ に退避
 zm catalog [--refresh]            ペダルの ZD2 からカタログを作る
