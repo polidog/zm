@@ -126,6 +126,12 @@ func (four) setName(*Zoom, string) error {
 	return errors.New("G2 FOUR のパッチ名の変更はまだできない")
 }
 
+// setTempo は 64 20 00 64 02。スロットの代わりの 64 はパッチ全体の項目で、AUTO SAVE (64 0F) と同じ並び
+// （G2 FOUR のファームウェア 1.00、MS-80IR+ の 1.10 で確かめた）。
+func (f four) setTempo(z *Zoom, bpm int) error {
+	return f.edit(z, 0x64, 0x02, uint32(bpm), func(p *patch.Patch) bool { return p.Prm2.Tempo == bpm })
+}
+
 func (f four) savePatch(z *Zoom, n int, p *patch.Patch) error {
 	loc, err := z.Model.Location(n)
 	if err != nil {

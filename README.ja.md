@@ -44,6 +44,7 @@ zm set-effect <slot> <effect>     エフェクト差し替え（保存しない�
 zm set <slot> <param> <value>     パラメータ変更（保存しない）
 zm on|off|toggle <slot>           ON / OFF（保存しない）
 zm rename <name>                  パッチ名の変更（保存しない。いまは旧 MS だけ）
+zm tempo <bpm>                    テンポの変更（保存しない。40〜250）
 zm save <n> [--yes]               いま鳴っているパッチを n に保存（確認つき、上書き前を退避）
 zm restore <n> [--yes]            save で上書きした n を戻す
 zm backup                         全パッチを backups/ に退避

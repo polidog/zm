@@ -53,6 +53,16 @@ func TestSetEffect(t *testing.T) {
 	}
 }
 
+func TestSetTempo(t *testing.T) {
+	for _, bpm := range []int{40, 121, 250} {
+		p, _ := Parse(empty)
+		p.SetTempo(bpm)
+		if p.Tempo() != bpm || p.Name() != "Empty" || p.EditSlot() != 0 || p.UsedSlots() != 1 {
+			t.Errorf("%d: tempo %d name %q edit %d used %d", bpm, p.Tempo(), p.Name(), p.EditSlot(), p.UsedSlots())
+		}
+	}
+}
+
 // 実機の全パッチで、読んだ値をいったん 0 にしてから書き戻すと元のバイト列に戻るか
 // （ビット位置の表に重なりや抜けがないか）。
 func TestRoundtrip(t *testing.T) {

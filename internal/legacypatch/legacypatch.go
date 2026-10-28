@@ -285,8 +285,10 @@ func (p *Patch) EditSlot() int {
 	return 5 - (int(d[130]&1)<<2 + int(d[125]&8)>>2 + int(d[129]&0x40)>>6)
 }
 
+// tempoBits はタップテンポ（BPM）のビット。
+var tempoBits = []field{f(125, 0x04, -2), f(130, 0x60, -4), f(131, 0x1f, 3)}
+
 // Tempo はタップテンポ（BPM）。
-func (p *Patch) Tempo() int {
-	d := p.Raw
-	return int(d[125]>>2&1) | int(d[130]>>5&3)<<1 | int(d[131]&0x1f)<<3
-}
+func (p *Patch) Tempo() int { return get(p.Raw, tempoBits) }
+
+func (p *Patch) SetTempo(bpm int) { set(p.Raw, tempoBits, bpm) }

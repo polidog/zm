@@ -43,6 +43,7 @@ zm set-effect <slot> <effect>     replace an effect (not saved)
 zm set <slot> <param> <value>     change a parameter (not saved)
 zm on|off|toggle <slot>           switch an effect on / off (not saved)
 zm rename <name>                  rename the patch (not saved; legacy MS only for now)
+zm tempo <bpm>                    set the patch tempo (not saved; 40–250)
 zm save <n> [--yes]               save the current patch to n (asks first, backs up what it overwrites)
 zm restore <n> [--yes]            undo a save to n
 zm backup                         back up every patch to backups/

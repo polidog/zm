@@ -125,6 +125,7 @@ type protocol interface {
 	setEnabled(z *Zoom, slot int, on bool) error
 	setEffect(z *Zoom, slot int, id uint32) (*patch.Patch, error)
 	setName(z *Zoom, name string) error
+	setTempo(z *Zoom, bpm int) error
 	savePatch(z *Zoom, n int, p *patch.Patch) error
 	writePatchSysex(z *Zoom, n int, msg []byte) error
 	notice(z *Zoom, msg []byte) (*patch.Patch, bool)
@@ -439,6 +440,23 @@ func (z *Zoom) SetName(name string) error {
 		return err
 	}
 	return z.proto.setName(z, name)
+}
+
+// MinTempo / MaxTempo はペダルの画面で選べるテンポ（BPM）の範囲。
+const (
+	MinTempo = 40
+	MaxTempo = 250
+)
+
+// SetTempo は現在パッチのテンポ（BPM）を変える（保存しない）。
+func (z *Zoom) SetTempo(bpm int) error {
+	if err := z.assertEditable(); err != nil {
+		return err
+	}
+	if bpm < MinTempo || bpm > MaxTempo {
+		return fmt.Errorf("テンポは %d〜%d", MinTempo, MaxTempo)
+	}
+	return z.proto.setTempo(z, bpm)
 }
 
 // ---- 保存（フラッシュに書く） ----
