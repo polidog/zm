@@ -25,6 +25,15 @@ Other models are not recognized. The MS-60B uses a different patch format, and t
 
 ## Install
 
+Download a binary for Linux (amd64 / arm64 / armv7) from [Releases](https://github.com/polidog/zm/releases):
+
+```sh
+curl -sL https://github.com/polidog/zm/releases/latest/download/zm_linux_amd64.tar.gz | tar xz zm
+sudo install zm /usr/local/bin/
+```
+
+Or with Go:
+
 ```sh
 go install github.com/polidog/zm/cmd/zm@latest
 ```
@@ -53,6 +62,7 @@ zm board ...                      the board and its scenes (see Boards below)
 zm tui                            TUI
 zm mcp                            MCP server (stdio)
 zm probe                          connectivity check (for development)
+zm version                        version of zm
 ```
 
 - Numbers match the pedal's display (patches 1–300, or 1–50 on legacy MS; slots 1–6)

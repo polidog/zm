@@ -31,6 +31,7 @@ const usage = `usage: zm [--pedal hw:C,D|g2four|ms80irplus|ms50g|ms70cdr] [--dir
   tui                             TUI
   mcp                             MCP サーバー (stdio)
   probe                           P0 の疎通確認（開発用）
+  version                         zm の版
 
 読み出し系は --json で機械向けの出力を出す。番号はペダルの画面に合わせる（パッチ 1〜300 / 旧 MS は 1〜50、スロット 1〜6）。
 backups/ と catalog/ は --dir（無ければ $ZM_DIR、それも無ければ ~/.config/zm）に置く。--dir はコマンドの後ろに書いてもよい。
@@ -65,6 +66,7 @@ func commands() map[string]command {
 		"tui":        TUI,
 		"mcp":        MCP,
 		"probe":      Probe,
+		"version":    VersionCmd,
 	}
 }
 
